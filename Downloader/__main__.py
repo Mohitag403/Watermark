@@ -1,7 +1,7 @@
 import asyncio
 import importlib
 from pyrogram import idle
-from Michiko.modules import ALL_MODULES
+from Downloader.modules import ALL_MODULES
 
  
 
