@@ -25,7 +25,7 @@ async def restart_handler(_, message):
 
 # --------------------------- VIDEO DOWNLOADER -------------------------------- #
 
-@bot.on_message(filters.command(["txt"]))
+@app.on_message(filters.command(["txt"]) & filters.user(SUDO_USERS))
 async def account_login(bot: Client, m: Message):
     user = m.from_user.id if m.from_user is not None else None
     editable = await m.reply_text('SEND TXT FILE 🗃️ OR LINKS TO DOWNLOAD 🔗 ')
