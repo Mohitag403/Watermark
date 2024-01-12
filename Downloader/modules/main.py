@@ -10,7 +10,7 @@ from pyrogram import filters
 from pyrogram.errors import FloodWait
 from pyrogram.types import Message
 from pyrogram.types.messages_and_media import message
-import Downloader.modules import helper
+from Downloader.modules import helper
 from Downloader.modules.utils import progress_bar
 
 
