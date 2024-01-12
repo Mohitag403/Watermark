@@ -1,34 +1,17 @@
 import os,re,sys,json,time,asyncio
 import requests
 import subprocess
-from vars import API_ID, API_HASH, BOT_TOKEN, SUDO_USERS
-
 from aiohttp import ClientSession
 from pyromod import listen
 from subprocess import getstatusoutput
-
-from pyrogram import Client, filters
+from Downloader import app
+from pyrogram import filters
 from pyrogram.errors import FloodWait
 
 
 
 
-app = Client(
-    ":memory:",
-    api_id=API_ID,
-    api_hash=API_HASH,
-    bot_token=BOT_TOKEN
-)
 
-
-
-
-# --------------------------------------------------------------------------------------------------------- #
-
-
-@app.on_message(filters.command(["start"])) 
-async def start(_, message):
-    await message.reply_text("i am video downloader bot and uploader bot !!")
 
 
 # --------------------------------------------------------------------------------------------------------- #
@@ -189,24 +172,4 @@ async def account_login(_, message):
 
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-# --------------------------------------------------------------------------------------------------------- #
-
-print("Successfully Deployed Downloader Bot !!")
-app.run()
-
-# --------------------------------------------------------------------------------------------------------- #
 
