@@ -1,5 +1,9 @@
 import os,time,math
+from datetime import datetime,timedelta
 from pyrogram.errors import FloodWait
+
+
+
 
 class Timer:
     def __init__(self, time_between=5):
@@ -13,9 +17,8 @@ class Timer:
         return False
 
 
-from datetime import datetime,timedelta
 
-#lets do calculations
+
 def hrb(value, digits= 2, delim= "", postfix=""):
     """Return a human-readable file size.
     """
@@ -29,6 +32,9 @@ def hrb(value, digits= 2, delim= "", postfix=""):
         else:
             break
     return f"{value:.{digits}f}" + delim + chosen_unit + postfix
+
+
+
 
 def hrt(seconds, precision = 0):
     """Return a human-readable time delta as a string.
@@ -64,7 +70,6 @@ def hrt(seconds, precision = 0):
 
 timer = Timer()
 
-# Powered By AIR PHEONIX
 async def progress_bar(current, total, reply, start):
     if timer.can_send():
         now = time.time()
