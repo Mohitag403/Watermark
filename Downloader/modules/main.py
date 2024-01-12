@@ -1,6 +1,7 @@
 import os,re,sys,json,time,asyncio
 import requests
 import subprocess
+from config import SUDO_USERS
 from aiohttp import ClientSession
 from pyromod import listen
 from subprocess import getstatusoutput
