@@ -1,4 +1,9 @@
-import os,re,sys,json,time,asyncio
+import os
+import re
+import sys
+import json
+import time
+import asyncio
 import requests
 import subprocess
 from config import SUDO_USERS
@@ -9,10 +14,8 @@ from Downloader import app
 from pyrogram import filters
 from pyrogram.errors import FloodWait
 from pyrogram.types import Message
-from pyrogram.types.messages_and_media import message
 from Downloader.modules import helper
 from Downloader.modules.utils import progress_bar
-
 
 # --------------------------------------------------------------------------------------------------------- #
 
@@ -21,13 +24,10 @@ async def restart_handler(_, message):
     await message.reply_text("**STOPPED**🚦", True)
     os.execl(sys.executable, sys.executable, *sys.argv)
 
-
-
-
 # --------------------------- VIDEO DOWNLOADER -------------------------------- #
 
 @app.on_message(filters.command(["txt"]) & filters.user(SUDO_USERS))
-async def account_login((_, m: Message):
+async def account_login(_, m: Message):  # Corrected here
     user = m.from_user.id if m.from_user is not None else None
     editable = await m.reply_text('SEND TXT FILE 🗃️ OR LINKS TO DOWNLOAD 🔗 ')
     input_msg: Message = await app.listen(editable.chat.id)
@@ -129,7 +129,7 @@ async def account_login((_, m: Message):
            	    url = response.json()['url']
 
             elif 'videos.classplusapp' in url:
-             url = requests.get(f'https://api.classplusapp.com/cams/uploader/video/jw-signed-url?url={url}', headers={'x-access-token': 'eyJhbGciOiJIUzM4NCIsInR5cCI6IkpXVCJ9.eyJpZCI6MzgzNjkyMTIsIm9yZ0lkIjoyNjA1LCJ0eXBlIjoxLCJtb2JpbGUiOiI5MTcwODI3NzQyODkiLCJuYW1lIjoiQWNlIiwiZW1haWwiOm51bGwsImlzRmlyc3RMb2dpbiI6dHJ1ZSwiZGVmYXVsdExhbmd1YWdlIjpudWxsLCJjb3VudHJ5Q29kZSI6IklOIiwiaXNJbnRlcm5hdGlvbmFsIjowLCJpYXQiOjE2NDMyODE4NzcsImV4cCI6MTY0Mzg4NjY3N30.hM33P2ai6ivdzxPPfm01LAd4JWv-vnrSxGXqvCirCSpUfhhofpeqyeHPxtstXwe0'}).json()['url']
+             url = requests.get(f'https://api.classplusapp.com/cams/uploader/video/jw-signed-url?url={url}', headers={'x-access-token': 'eyJhbGciOiJIUzM4NCIsInR5cCI6IkpXVCJ9.eyJpZCI6MzgzNjkyMTIsIm9yZ0lkIjoyNjA1LCJ0eXBlIjoxLCJtb2JpbGUiOiI5MTcwODI3NzQyODkiLCJuYW1lIjoiQWNlIiwiZW1haWwiOm51bGwsImlzRmlyc3RMb2dpbiI6dHJ1ZSwiZGVmYXVsdExhbmd1YWdlIjpudWxsLCJjb3VudHJ5Q29kZSI6IklOIiwiaXNJbnRlcm5hdGlvbmFsIjowLCJpYXQiOjE2NDMyODE4NzcsImV4dCI6MTY0Mzg4NjY3N30.hM33P2ai6ivdzxPPfm01LAd4JWv-vnrSxGXqvCirCSpUfhhofpeqyeHPxtstXwe0'}).json()['url']
 
             elif '/master.mpd' in url:
              id =  url.split("/")[-2]
