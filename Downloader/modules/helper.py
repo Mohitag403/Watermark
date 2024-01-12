@@ -176,7 +176,7 @@ async def download_video(url,cmd, name):
         return os.path.isfile.splitext[0] + "." + "mp4"
 
 
-async def send_doc(m: message,cc,ka,cc1,prog,count,name):
+async def send_doc(m: Message,cc,ka,cc1,prog,count,name):
     reply = await m.reply_text(f"Uploading » `{name}`")
     time.sleep(1)
     start_time = time.time()
@@ -188,7 +188,7 @@ async def send_doc(m: message,cc,ka,cc1,prog,count,name):
     time.sleep(3) 
 
 
-async def send_vid(m: message,cc,filename,thumb,name,prog):
+async def send_vid(m: Message,cc,filename,thumb,name,prog):
     subprocess.run(f'ffmpeg -i "{filename}" -ss 00:01:00 -vframes 1 "{filename}.jpg"', shell=True)
     await prog.delete (True)
     reply = await m.reply_text(f"**⥣ Uploading ...** » `{name}`")
