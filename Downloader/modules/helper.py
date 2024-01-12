@@ -1,16 +1,11 @@
 import os,time,asyncio,datetime,requests
 import aiohttp
-import aiofiles
 import logging
-import tgcrypto
 import subprocess
-import concurrent.futures
 from Downloader import app
 from Downloader.modules.utils import progress_bar
+from pyrogram import filters
 
-from pyrogram import Client, filters
-from pyrogram.types import Message
-from pyrogram.types.messages_and_media import message
 
 
 def duration(filename):
@@ -22,8 +17,6 @@ def duration(filename):
     return float(result.stdout)
     
 
-
-
 async def download(url,name):
     ka = f'{name}.pdf'
     async with aiohttp.ClientSession() as session:
@@ -33,8 +26,6 @@ async def download(url,name):
                 await f.write(await resp.read())
                 await f.close()
     return ka
-
-
 
 
 
@@ -67,10 +58,7 @@ async def download_video(url,cmd, name):
         return os.path.isfile.splitext[0] + "." + "mp4"
 
 
-
-
-
-async def send_vid(m: Message,cc,filename,thumb,name,prog):
+async def send_vid(m,cc,filename,thumb,name,prog):
     subprocess.run(f'ffmpeg -i "{filename}" -ss 00:01:00 -vframes 1 "{filename}.jpg"', shell=True)
     await prog.delete (True)
     reply = await m.reply_text(f"**⥣ Uploading ...** » `{name}`")
@@ -91,3 +79,5 @@ async def send_vid(m: Message,cc,filename,thumb,name,prog):
 
     os.remove(f"{filename}.jpg")
     await reply.delete (True)
+
+
