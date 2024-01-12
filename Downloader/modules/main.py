@@ -30,7 +30,7 @@ async def restart_handler(_, message):
 async def account_login((_, m: message):
     user = m.from_user.id if m.from_user is not None else None
     editable = await m.reply_text('SEND TXT FILE 🗃️ OR LINKS TO DOWNLOAD 🔗 ')
-    input_msg: Message = await bot.listen(editable.chat.id)
+    input_msg: Message = await app.listen(editable.chat.id)
     if input_msg.document:
         x = await input_msg.download()
         await input_msg.delete(True)
@@ -52,17 +52,17 @@ async def account_login((_, m: message):
         links = [i.split("://", 1) for i in content]
 
     await editable.edit(f"Total links found are **{len(links)}**\n\nSend From where you want to download initial is **1**")
-    input_msg0: Message = await bot.listen(editable.chat.id)
+    input_msg0: Message = await app.listen(editable.chat.id)
     raw_text = input_msg0.text
     await input_msg0.delete(True)
 
     await editable.edit("**Enter Batch Name**")
-    input1: Message = await bot.listen(editable.chat.id)
+    input1: Message = await app.listen(editable.chat.id)
     raw_text0 = input1.text
     await input1.delete(True)
  
     await editable.edit("**Enter resolution**")
-    input2: Message = await bot.listen(editable.chat.id)
+    input2: Message = await app.listen(editable.chat.id)
     raw_text2 = input2.text
     await input2.delete(True)
     try:
@@ -84,7 +84,7 @@ async def account_login((_, m: message):
         res = "UN"
 
     await editable.edit("** ENTER A CAPTION TO ADD OTHERWISE SEND 👉`no`👈 **")
-    input3: Message = await bot.listen(editable.chat.id)
+    input3: Message = await app.listen(editable.chat.id)
     raw_text3 = input3.text
     await input3.delete(True)
     highlighter = f"️ ⁪⁬⁮⁮⁮"
@@ -94,7 +94,7 @@ async def account_login((_, m: message):
         MR = raw_text3
 
     await editable.edit("Now send the **Thumb url**\nEg » ```https://telegra.ph/file/0633f8b6a6f110d34f044.jpg```\n\nor Send `no`")
-    input6 = message = await bot.listen(editable.chat.id)
+    input6 = message = await app.listen(editable.chat.id)
     raw_text6 = input6.text
     await input6.delete(True)
     await editable.delete()
@@ -154,7 +154,7 @@ async def account_login((_, m: message):
                 if "drive" in url:
                     try:
                         ka = await helper.download(url, name)
-                        copy = await bot.send_document(chat_id=m.chat.id, document=ka, caption=cc1)
+                        copy = await app.send_document(chat_id=m.chat.id, document=ka, caption=cc1)
                         count += 1
                         os.remove(ka)
                         time.sleep(1)
@@ -168,7 +168,7 @@ async def account_login((_, m: message):
                         cmd = f'yt-dlp -o "{name}.pdf" "{url}"'
                         download_cmd = f"{cmd} -R 25 --fragment-retries 25"
                         os.system(download_cmd)
-                        copy = await bot.send_document(chat_id=m.chat.id, document=f'{name}.pdf', caption=cc1)
+                        copy = await app.send_document(chat_id=m.chat.id, document=f'{name}.pdf', caption=cc1)
                         count += 1
                         os.remove(f'{name}.pdf')
                     except FloodWait as e:
@@ -181,7 +181,7 @@ async def account_login((_, m: message):
                     res_file = await helper.download_video(url, cmd, name)
                     filename = res_file
                     await prog.delete(True)
-                    await helper.send_vid(bot, m, cc, filename, thumb, name, prog)
+                    await helper.send_vid(app, m, cc, filename, thumb, name, prog)
                     count += 1
                     time.sleep(1)
 
