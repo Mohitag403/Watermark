@@ -6,6 +6,7 @@ from aiohttp import ClientSession
 from pyromod import listen
 from subprocess import getstatusoutput
 from Downloader import app
+from Downloader.modules import helper
 from pyrogram import filters
 from pyrogram.errors import FloodWait
 
@@ -17,7 +18,7 @@ from pyrogram.errors import FloodWait
 
 # --------------------------------------------------------------------------------------------------------- #
 
-@app.on_message(filters.command("stopped") & filters.user(SUDO_USERS))
+@app.on_message(filters.command("stop") & filters.user(SUDO_USERS))
 async def restart_handler(_, message):
     await message.reply_text("**STOPPED**🚦", True)
     os.execl(sys.executable, sys.executable, *sys.argv)
@@ -27,7 +28,7 @@ async def restart_handler(_, message):
 
 # --------------------------- VIDEO DOWNLOADER -------------------------------- #
 
-@app.on_message(filters.command(["tnt"]) & filters.user(SUDO_USERS))
+@app.on_message(filters.command(["txt"]) & filters.user(SUDO_USERS))
 async def account_login(_, message):
     editable = await message.reply_text("hello sir please give me your text file in proper formate otherwise file does not work !!")
     input: message = await _.listen(editable.chat.id)
