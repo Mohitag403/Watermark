@@ -160,7 +160,21 @@ async def account_login(_, message):
                 
                 cc = f'**[📂] Vid ID :** {str(count).zfill(3)}\n**Video Title :** {name1} {res} .mkv\n**Batch :** {raw_text0}\n\n**Downloaded By : **{raw_text3}\n\n'
                 cc1 = f'****[📕]Pdf_ID :** {str(count).zfill(3)}\n**Pdf Title :** {name1} .pdf \n**Batch :** {raw_text0}\n\n'
-                if ".pdf" in url:
+                
+                if "drive" in url:
+                    try:
+                        ka = await helper.download(url, name)
+                        copy = await _.send_document(message.chat.id, document=ka, caption=cc1)
+                        count += 1
+                        os.remove(ka)
+                        time.sleep(1)
+                    except FloodWait as e:
+                        await m.reply_text(str(e))
+                        time.sleep(e.x)
+                        continue
+
+                
+                elif ".pdf" in url:
                     try:
                         cmd = f'yt-dlp -o "{name}.pdf" "{url}"'
                         download_cmd = f"{cmd} -R 25 --fragment-retries 25"
