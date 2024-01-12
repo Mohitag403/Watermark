@@ -6,7 +6,7 @@ import tgcrypto
 import subprocess
 import concurrent.futures
 from Downloader import app
-from utils import progress_bar
+from Downloader.modules.utils import progress_bar
 
 from pyrogram import Client, filters
 from pyrogram.types import Message
