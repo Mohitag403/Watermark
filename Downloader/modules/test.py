@@ -173,6 +173,19 @@ async def account_login(_, message):
                         time.sleep(e.x)
                         continue
 
+                else:
+                    show = f"**⥥ Downloading »**\n\n**Name »** `{name}\nQuality » {raw_text2}`\n\n**Url »** `{url}`"
+                    prog = await message.reply_text(show)
+                    res_file = await helper.download_video(url, cmd, name)
+                    filename = res_file
+                    await prog.delete(True)
+                    await helper.send_vid(app, message, cc, filename, thumb, name, prog)
+                    count += 1
+                    time.sleep(1)
+
+
+            
+
             except Exception as e:
                 await message.reply_text(f"Error: {str(e)}\n\n**Name** - {name}\n**Link** - `{url}`")
                 continue
