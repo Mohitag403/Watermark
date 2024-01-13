@@ -89,7 +89,7 @@ async def drm_video(url, url_key, prog, name):
 
 
 
-async def send_vid(m: Message,cc,filename,thumb,name,prog):
+async def send_vid(m,cc,filename,thumb,name,prog):
     subprocess.run(f'ffmpeg -i "{filename}" -ss 00:01:00 -vframes 1 "{filename}.jpg"', shell=True)
     await prog.delete (True)
     reply = await m.reply_text(f"**⥣ Uploading ...** » `{name}`")
