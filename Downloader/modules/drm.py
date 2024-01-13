@@ -1,5 +1,6 @@
 import os,re,sys,json,time,asyncio
 import requests
+import base64
 import xml.etree.ElementTree as ET
 from config import SUDO_USERS
 from pyrogram import filters
@@ -16,18 +17,31 @@ from Downloader import app
 
 async def pssh_link(url):
     r = requests.get(url)
-    manifest_content = r.text
+    manifest_content = r.content  
     root = ET.fromstring(manifest_content)
     content_protections = root.findall(".//{urn:mpeg:dash:schema:mpd:2011}ContentProtection")
-    last_pssh_data = None
+    pssh_values_with_slash = []
+    pssh_values_without_slash = []
 
     for content_protection in content_protections:
         pssh_element = content_protection.find(".//{urn:mpeg:cenc:2013}pssh")
         if pssh_element is not None:
-            last_pssh = pssh_element.text.strip() if pssh_element.text else ""
-            return last_pssh
+            pssh_data = pssh_element.text.strip() if pssh_element.text else ""
+            if '/' in pssh_data:
+                try:
+                    decoded_pssh = base64.b64decode(pssh_data).decode('utf-8')
+                    pssh_values_with_slash.append(decoded_pssh)
+                except UnicodeDecodeError as e:
+                    pass
+            else:
+                pssh_values_without_slash = [pssh_data]
 
-        
+    for pssh_data in pssh_values_without_slash:
+        return pssh_data
+
+
+
+      
 # -------------------------------------------------------- #
 
 
@@ -177,34 +191,6 @@ async def account_login(_,message):
 
 
 
-
-import base64
-
-
-
-async def pssh_urllink(url):
-    r = requests.get(url)
-    manifest_content = r.content  
-    root = ET.fromstring(manifest_content)
-    content_protections = root.findall(".//{urn:mpeg:dash:schema:mpd:2011}ContentProtection")
-    pssh_values_with_slash = []
-    pssh_values_without_slash = []
-
-    for content_protection in content_protections:
-        pssh_element = content_protection.find(".//{urn:mpeg:cenc:2013}pssh")
-        if pssh_element is not None:
-            pssh_data = pssh_element.text.strip() if pssh_element.text else ""
-            if '/' in pssh_data:
-                try:
-                    decoded_pssh = base64.b64decode(pssh_data).decode('utf-8')
-                    pssh_values_with_slash.append(decoded_pssh)
-                except UnicodeDecodeError as e:
-                    pass
-            else:
-                pssh_values_without_slash.append(pssh_data)
-
-    for pssh_data in pssh_values_without_slash:
-        return pssh_data
 
 
 
