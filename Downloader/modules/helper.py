@@ -5,7 +5,7 @@ import subprocess
 from Downloader import app
 from Downloader.modules.utils import progress_bar
 from pyrogram import filters
-
+from pyrogram.types import Message
 
 
 def duration(filename):
@@ -57,7 +57,7 @@ async def download_video(url,cmd, name):
     except FileNotFoundError as exc:
         return os.path.isfile.splitext[0] + "." + "mp4"
 
-
+```
 async def send_vid(message,cc,filename,thumb,name,prog):
     subprocess.run(f'ffmpeg -i "{filename}" -ss 00:01:00 -vframes 1 "{filename}.jpg"', shell=True)
     await prog.delete (True)
@@ -79,7 +79,7 @@ async def send_vid(message,cc,filename,thumb,name,prog):
 
     os.remove(f"{filename}.jpg")
     await reply.delete (True)
-
+```
 
 
 async def drm_video(url, url_key, prog, name):
@@ -109,4 +109,26 @@ async def drm_video(url, url_key, prog, name):
     return f"{name}.mp4"
 
 
-    
+
+async def send_vid(m: Message,cc,filename,thumb,name,prog):
+    subprocess.run(f'ffmpeg -i "{filename}" -ss 00:01:00 -vframes 1 "{filename}.jpg"', shell=True)
+    await prog.delete (True)
+    reply = await m.reply_text(f"**⥣ Uploading ...** » `{name}`")
+    try:
+        if thumb == "no":
+            thumbnail = f"{filename}.jpg"
+        else:
+            thumbnail = thumb
+    except Exception as e:
+        await m.reply_text(str(e))
+    dur = int(duration(filename))
+    start_time = time.time()
+    try:
+        await m.reply_video(filename,caption=cc, supports_streaming=True,height=720,width=1280,thumb=thumbnail,duration=dur, progress=progress_bar,progress_args=(reply,start_time))
+    except Exception:
+   #     await m.reply_document(filename,caption=cc, progress=progress_bar,progress_args=(reply,start_time))
+        await m.reply_video(filename,caption=cc, progress=progress_bar,progress_args=(reply,start_time))
+    os.remove(filename)
+
+    os.remove(f"{filename}.jpg")
+    await reply.delete (True)
