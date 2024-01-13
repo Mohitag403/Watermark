@@ -148,7 +148,7 @@ async def upload_video(message, cc, filename, thumb, name, prog):
             progress_args=(reply, start_time)
         )
     except Exception as e:
-        await message.reply_text{str(e)}
+            await message.reply_text(f"Error: {str(e)}")
         try:
             await app.send_document(
                 chat_id=message.chat.id,
