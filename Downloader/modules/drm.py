@@ -171,7 +171,7 @@ async def account_login(_,message):
                     res_file = await helper.drm_video(url, url_key, prog, name)
                     filename = res_file
                     await prog.delete(True)
-                    await helper.send_vid(m, cc, filename, thumb, name, prog)
+                    await helper.send_vid(mssage, cc, filename, thumb, name, prog)
                     count += 1
                     time.sleep(1)
 
