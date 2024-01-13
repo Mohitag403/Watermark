@@ -6,7 +6,8 @@ import subprocess
 from Downloader import app
 from Downloader.modules.utils import progress_bar
 from pyrogram import filters
-
+from hachoir.metadata import extractMetadata
+from hachoir.parser import createParser
 
 def duration(filename):
     result = subprocess.run(["ffprobe", "-v", "error", "-show_entries",
@@ -15,7 +16,13 @@ def duration(filename):
         stdout=subprocess.PIPE,
         stderr=subprocess.STDOUT)
     return float(result.stdout)
-    
+ 
+def get_width_height(filename):
+    metadata = extractMetadata(createParser(filename))
+    if metadata.has("width") and metadata.has("height"):
+        return metadata.get("width"), metadata.get("height")
+    else:
+        return 1280, 720   
 
 async def download(url,name):
     ka = f'{name}.pdf'
@@ -108,4 +115,51 @@ async def send_vid(message, cc, filename, thumb, name, prog):
         await app.send_video(chat_id=message.chat.id, video=filename, caption=cc, progress=progress_bar, progress_args=(reply, start_time))
     os.remove(filename)
     os.remove(f"{filename}.jpg")
+    await reply.delete(True)
+
+
+
+async def upload_video(message, cc, filename, thumb, name, prog):
+    subprocess.run(f'ffmpeg -i "{filename}" -ss 00:01:00 -vframes 1 "{filename}.jpg"', shell=True)
+    await prog.delete(True)
+    reply = await message.reply_text(f"**⥣ Uploading ...** » `{name}`")
+    try:
+        if thumb == "no":
+            thumbnail = f"{filename}.jpg"
+        else:
+            thumbnail = thumb
+    except Exception as e:
+        await message.reply_text(str(e))
+    duration = int(duration(filename))
+    w, h = await get_width_height(filename)
+    start_time = time.time()
+
+    try:
+        await app.send_video(
+            chat_id=message.chat.id,
+            video=filename,
+            supports_streaming=True,
+            caption=cc,
+            duration=duration,
+            thumb=thumb,
+            width=w,
+            height=h,
+            progress=progress_for_pyrogram,
+            progress_args=(reply, start_time)
+        )
+    except Exception as e:
+        await message.reply_text{str(e})
+        try:
+            await app.send_document(
+                chat_id=message.chat.id,
+                document=filename,
+                caption=cc,
+                thumb=thumb,
+                progress=progress_for_pyrogram,
+                progress_args=(reply, start_time)
+            )
+        except Exception as doc_e:
+            await message.reply_text(f"Error sending document: {str(e)}")
+
+    os.remove(self.file_path)
     await reply.delete(True)
