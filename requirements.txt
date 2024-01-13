@@ -7,4 +7,4 @@ pyromod
 aiofiles
 requests
 cloudscraper
-pycrypto
+pycryptodome
