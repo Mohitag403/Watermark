@@ -6,3 +6,4 @@ yt-dlp
 pyromod
 aiofiles
 requests
+cloudscraper
