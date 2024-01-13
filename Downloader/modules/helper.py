@@ -1,5 +1,6 @@
 import os,time,asyncio,datetime,requests
 import aiohttp
+import aiofiles
 import logging
 import subprocess
 from Downloader import app
@@ -88,9 +89,9 @@ async def drm_video(url, url_key, prog, name):
 
 
 
-async def send_vid(message,cc,filename,thumb,name,prog):
+async def send_vid(message, cc, filename, thumb, name, prog):
     subprocess.run(f'ffmpeg -i "{filename}" -ss 00:01:00 -vframes 1 "{filename}.jpg"', shell=True)
-    await prog.delete (True)
+    await prog.delete(True)
     reply = await message.reply_text(f"**⥣ Uploading ...** » `{name}`")
     try:
         if thumb == "no":
@@ -102,10 +103,9 @@ async def send_vid(message,cc,filename,thumb,name,prog):
     dur = int(duration(filename))
     start_time = time.time()
     try:
-        await app.send_video(chat_id=message.chat.id, filename,caption=cc, supports_streaming=True,height=720,width=1280,thumb=thumbnail,duration=dur, progress=progress_bar,progress_args=(reply,start_time))
+        await app.send_video(chat_id=message.chat.id, video=filename, caption=cc, supports_streaming=True, height=720, width=1280, thumb=thumbnail, duration=dur, progress=progress_bar, progress_args=(reply, start_time))
     except Exception:
-        await app.send_video(chat_id=message.chat.id, filename,caption=cc, progress=progress_bar,progress_args=(reply,start_time))
+        await app.send_video(chat_id=message.chat.id, video=filename, caption=cc, progress=progress_bar, progress_args=(reply, start_time))
     os.remove(filename)
-
     os.remove(f"{filename}.jpg")
-    await reply.delete (True)
+    await reply.delete(True)
