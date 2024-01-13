@@ -1,5 +1,6 @@
 import os,re,sys,json,time,asyncio
 import requests
+import xml.etree.ElementTree as ET
 from config import SUDO_USERS
 from pyrogram import filters
 from aiohttp import ClientSession
@@ -8,6 +9,41 @@ from subprocess import getstatusoutput
 import Downloader.modules import
 from Downloader import app
 
+
+
+# -------------------------------------------------------- #
+
+
+async def pssh_link(url):
+    r = requests.get(url)
+    manifest_content = r.text
+    root = ET.fromstring(manifest_content)
+    content_protections = root.findall(".//{urn:mpeg:dash:schema:mpd:2011}ContentProtection")
+    last_pssh_data = None
+
+    for content_protection in content_protections:
+        pssh_element = content_protection.find(".//{urn:mpeg:cenc:2013}pssh")
+        if pssh_element is not None:
+            last_pssh = pssh_element.text.strip() if pssh_element.text else ""
+            return last_pssh
+
+        
+# -------------------------------------------------------- #
+
+
+async def link_key(pssh_url):
+    api_url = "https://cdrm-project.com/api"
+    license_url = "https://cwip-shaka-proxy.appspot.com/no_auth"
+    pssh = pssh_url
+    headers = {
+        'user-agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/90.0.4430.85 Safari/537.36'
+    }
+    response = requests.post(api_url, headers=headers, json={"license": license_url, "pssh": pssh})
+    response_data = response.json()
+
+    if response_data["keys"]:
+        lol = response_data["keys"][0]["key"]
+        return lol
 
 
 # --------------------------- DRM-DL ----------------------------------------------------------------------- #
@@ -101,6 +137,13 @@ async def account_login(_,message):
             for i in range(count - 1, len(links)):
                 V = links[i][1].replace("file/d/", "uc?export=download&id=").replace("www.youtube-nocookie.com/embed", "youtu.be").replace("?modestbranding=1", "").replace("/view?usp=sharing", "")  # .replace("mpd","m3u8")
                 url = "https://" + V
+
+                pssh_url = await pssh_link(url)
+                url_key = await link_key(pssh_url)
+                
+
+
+
 
                 name1 = links[i][0].replace("\t", "").replace(":", "").replace("/", "").replace("+", "").replace("#", "").replace("|", "").replace("@", "").replace("*", "").replace(".", "").replace("https", "").replace("http", "").strip()
                 name = f'{str(count).zfill(3)}) {name1[:60]}'
