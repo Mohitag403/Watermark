@@ -6,7 +6,7 @@ from pyrogram import filters
 from aiohttp import ClientSession
 from pyromod import listen
 from subprocess import getstatusoutput
-import Downloader.modules import
+from Downloader.modules import helper
 from Downloader import app
 
 
