@@ -1,12 +1,21 @@
-FROM python:3.10.4-slim-buster
-RUN apt update && apt upgrade -y
-RUN apt-get install git curl python3-pip ffmpeg -y
-RUN apt-get -y install git
-RUN apt-get install -y wget python3-pip curl bash neofetch ffmpeg software-properties-common
-COPY requirements.txt .
+FROM ubuntu:latest
 
+RUN apt-get update -y && apt-get upgrade -y \
+    && apt-get install -y --no-install-recommends gcc g++ libffi-dev musl-dev ffmpeg aria2 python3-pip \
+    && apt-get clean \
+    && apt-get install -y curl git wget pv jq python3-dev mediainfo \
+    && git clone https://github.com/axiomatic-systems/Bento4.git \
+    && cd Bento4 \
+    && apt-get install -y cmake \
+    && mkdir cmakebuild \
+    && cd cmakebuild/ \
+    && cmake -DCMAKE_BUILD_TYPE=Release .. \
+    && make \
+    && make install \
+    && rm -rf /var/lib/apt/lists/*
+
+COPY . /app/
+WORKDIR /app/
 RUN pip3 install wheel
-RUN pip3 install --no-cache-dir -U -r requirements.txt
-WORKDIR /app
-COPY . .
+RUN pip3 install --no-cache-dir --upgrade --requirement requirements.txt
 CMD python3 -m Downloader
