@@ -154,7 +154,7 @@ async def account_login(_,message):
                   
                     show = f"**⥥ Downloading »**\n\n**Name »** `{name}\nQuality » {raw_text2}`\n\n**Url »** `{url}`"
                     prog = await message.reply_text(show)
-                    res_file = await helper.drm_video(url, prog, name)
+                    res_file = await helper.drm_video(url, url_key, prog, name)
                     filename = res_file
                     await prog.delete(True)
                     await helper.send_vid(m, cc, filename, thumb, name, prog)
