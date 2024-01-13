@@ -148,18 +148,18 @@ async def upload_video(message, cc, filename, thumb, name, prog):
             progress_args=(reply, start_time)
         )
     except Exception as e:
-            await message.reply_text(f"Error: {str(e)}")
-        try:
-            await app.send_document(
-                chat_id=message.chat.id,
-                document=filename,
-                caption=cc,
-                thumb=thumb,
-                progress=progress_for_pyrogram,
-                progress_args=(reply, start_time)
-            )
-        except Exception as doc_e:
-            await message.reply_text(f"Error sending document: {str(e)}")
+        await message.reply_text(f"Error: {str(e)}")
+    try:
+        await app.send_document(
+            chat_id=message.chat.id,
+            document=filename,
+            caption=cc,
+            thumb=thumb,
+            progress=progress_for_pyrogram,
+            progress_args=(reply, start_time)
+        )
+    except Exception as doc_e:
+        await message.reply_text(f"Error sending document: {str(e)}")
 
     os.remove(self.file_path)
     await reply.delete(True)
