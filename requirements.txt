@@ -8,3 +8,4 @@ aiofiles
 requests
 cloudscraper
 pycryptodome
+hachoir
