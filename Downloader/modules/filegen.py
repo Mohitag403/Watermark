@@ -1,13 +1,16 @@
 import requests
 import json
-from pyrogram import filters, Client
+from pyrogram import filters
 from pyromod import listen
 import cloudscraper
 from Crypto.Cipher import AES
 from Crypto.Util.Padding import unpad
 from base64 import b64decode
+from Downloader import app
 
-async def main(app, message):
+
+
+async def gentxt(app, message):
     def decode(tn):
         key = "638udh3829162018".encode("utf8")
         iv = "fedcba9876543210".encode("utf8")
@@ -136,3 +139,8 @@ async def main(app, message):
         await message.reply_text(f"An error occurred during the request: {e}")
 
 
+@app.on_message(filters.command("gentxt"))
+async def filegen(_,message):
+    txt = await gentxt(_,message)
+    print(txt)
+    
