@@ -81,3 +81,32 @@ async def send_vid(m,cc,filename,thumb,name,prog):
     await reply.delete (True)
 
 
+async def drm_video(url, prog, name):
+    keys = "d43ca6e125d64157815ef956e5df2028:3adad072e15ef01925d2877eae0a106f"
+    print(keys)
+                    
+    cmd1 = f'yt-dlp -k --allow-unplayable-formats -f "bestvideo.3/bestvideo.2/bestvideo" --fixup never "{url}" --external-downloader aria2c --external-downloader-args "-x 16 -s 16 -k 1M" -o "{name}.mp4" --exec echo'
+    cmd2 = f'yt-dlp -k --allow-unplayable-formats -f ba --fixup never "{url}" --external-downloader aria2c --external-downloader-args "-x 16 -s 16 -k 1M" -o "{name}.m4a" --exec echo'
+    os.system(cmd1)
+    os.system(cmd2)
+    avDir = os.listdir
+    print(avDir)
+    
+    await prog.edit("**Decrypting Video.....**")
+    cmd3 = f'mp4decrypt --key {keys} --show-progress "{name}.mp4" "video.mp4"'
+    os.system(cmd3)
+    os.remove(f'{name}.mp4')
+    cmd4 = f'mp4decrypt --key {keys} --show-progress "{name}.m4a" "audio.m4a"'
+    os.system(cmd4)
+    os.remove(f'{name}.m4a')
+
+    await prog.edit("**Merging....**")
+    cmd5 = f'ffmpeg -i "video.mp4" -i "audio.m4a" -c copy "{name}.mp4"'
+    os.system(cmd5)
+    os.remove(f"video.mp4")
+    os.remove(f"audio.m4a")
+
+    return f"{name}.mp4"
+
+
+    
