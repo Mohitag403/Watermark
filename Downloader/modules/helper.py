@@ -81,9 +81,8 @@ async def send_vid(m,cc,filename,thumb,name,prog):
     await reply.delete (True)
 
 
-async def drm_video(url, prog, name):
-    keys = "d43ca6e125d64157815ef956e5df2028:3adad072e15ef01925d2877eae0a106f"
-    print(keys)
+async def drm_video(url, linkkey, prog, name):
+    keys = linkkey
                     
     cmd1 = f'yt-dlp -k --allow-unplayable-formats -f "bestvideo.3/bestvideo.2/bestvideo" --fixup never "{url}" --external-downloader aria2c --external-downloader-args "-x 16 -s 16 -k 1M" -o "{name}.mp4" --exec echo'
     cmd2 = f'yt-dlp -k --allow-unplayable-formats -f ba --fixup never "{url}" --external-downloader aria2c --external-downloader-args "-x 16 -s 16 -k 1M" -o "{name}.m4a" --exec echo'
