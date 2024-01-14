@@ -68,31 +68,31 @@ async def download_video(url,cmd, name):
 
 
 
-async def drm_video(url, url_key, prog, name):
+async def drm_video(url, url_key, prog, name, path): 
     keys = url_key
-                    
-    cmd1 = f'yt-dlp -k --allow-unplayable-formats -f "bestvideo.3/bestvideo.2/bestvideo" --fixup never "{url}" --external-downloader aria2c --external-downloader-args "-x 16 -s 16 -k 1M" -o "{name}.mp4" --exec echo'
-    cmd2 = f'yt-dlp -k --allow-unplayable-formats -f ba --fixup never "{url}" --external-downloader aria2c --external-downloader-args "-x 16 -s 16 -k 1M" -o "{name}.m4a" --exec echo'
+    cmd1 = f'yt-dlp -k --allow-unplayable-formats -f "bestvideo.3/bestvideo.2/bestvideo" --fixup never "{url}" --external-downloader aria2c --external-downloader-args "-x 16 -s 16 -k 1M" -o "{path}/{name}.mp4" --exec echo'
+    cmd2 = f'yt-dlp -k --allow-unplayable-formats -f ba --fixup never "{url}" --external-downloader aria2c --external-downloader-args "-x 16 -s 16 -k 1M" -o "{path}/{name}.m4a" --exec echo'
     os.system(cmd1)
     os.system(cmd2)
-    avDir = os.listdir
+    avDir = os.listdir(path)
     print(avDir)
     
     await prog.edit("**Decrypting Video.....**")
-    cmd3 = f'mp4decrypt --key {keys} --show-progress "{name}.mp4" "video.mp4"'
+    cmd3 = f'mp4decrypt --key {keys} --show-progress "{path}/{name}.mp4" "{path}/video.mp4"'
     os.system(cmd3)
-    os.remove(f'{name}.mp4')
-    cmd4 = f'mp4decrypt --key {keys} --show-progress "{name}.m4a" "audio.m4a"'
+    os.remove(f'{path}/{name}.mp4')
+    cmd4 = f'mp4decrypt --key {keys} --show-progress "{path}/{name}.m4a" "{path}/audio.m4a"'
     os.system(cmd4)
-    os.remove(f'{name}.m4a')
+    os.remove(f'{path}/{name}.m4a')
 
     await prog.edit("**Merging....**")
-    cmd5 = f'ffmpeg -i "video.mp4" -i "audio.m4a" -c copy "{name}.mp4"'
+    cmd5 = f'ffmpeg -i "{path}/video.mp4" -i "{path}/audio.m4a" -c copy "{path}/{name}.mp4"'
     os.system(cmd5)
-    os.remove(f"video.mp4")
-    os.remove(f"audio.m4a")
+    os.remove(f"{path}/video.mp4")
+    os.remove(f"{path}/audio.m4a")
+    await prog.delete(True)
+    return f"{path}/{name}.mp4"
 
-    return f"{name}.mp4"
 
 
 
