@@ -1,6 +1,7 @@
 from pyrogram import filters
 from Downloader import app
 from pyrogram.types import InlineKeyboardMarkup, InlineKeyboardButton
+from pyrogram.errors import UserNotParticipant
 
 
 
