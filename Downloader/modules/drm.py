@@ -65,7 +65,7 @@ async def link_key(pssh_url):
 
 @app.on_message(filters.command(["drm"]) & filters.user(SUDO_USERS))
 async def drm_downloader(_, message):
-    path = f"downloads/{message.chat.id}"
+    path = f"./downloads/{message.chat.id}"
     user = message.from_user.id
     editable = await message.reply_text('SEND TXT FILE 🗃️ OR LINKS TO DOWNLOAD 🔗 ')
     input_msg: message = await _.listen(editable.chat.id)
@@ -153,7 +153,7 @@ async def drm_downloader(_, message):
                 prog = await message.reply_text(show)
             
                 filename = await helper.drm_video(url, url_key, prog, name, path)  
-                await helper.send_vid(message, cc, filename, thumb, path, name)
+                await helper.send_vid(message, cc, filename, thumb, name, prog)
                 count += 1
                 time.sleep(1)
 
