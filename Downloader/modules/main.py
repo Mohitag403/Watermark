@@ -7,6 +7,7 @@ from pyromod import listen
 from subprocess import getstatusoutput
 from Downloader import app
 from Downloader.modules import helper
+from Downloader.modules.start import subscribe
 from pyrogram import filters
 from pyrogram.errors import FloodWait
 
@@ -30,6 +31,9 @@ async def restart_handler(_, message):
 
 @app.on_message(filters.command(["txt"]) & filters.user(SUDO_USERS))
 async def account_login(_, message):
+    join = await subscribe(_,message)
+    if join ==1:
+        return
     editable = await message.reply_text("hello sir please give me your text file in proper formate otherwise file does not work !!")
     input: message = await _.listen(editable.chat.id)
     x = await input.download()
