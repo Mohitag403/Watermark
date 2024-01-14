@@ -26,11 +26,7 @@ def create_html_file(file_name, batch_name, contents):
         fp.write(file_content.replace('tbody_content', tbody).replace('batch_name', batch_name))
 
      
-               
-
-@app.on_message(filters.command(["classplus"]))
-async def cp_txt(app, message):
-    def get_course_content(session, course_id, folder_id=0):
+def get_course_content(session, course_id, folder_id=0):
         fetched_contents = []
 
         params = {
@@ -58,6 +54,12 @@ async def cp_txt(app, message):
                     fetched_contents.append(f'{name}: {url}')
 
         return fetched_contents
+
+
+
+
+@app.on_message(filters.command(["classplus"]))
+async def cp_txt(app, message):   
 
     headers = {
         'accept-encoding': 'gzip',
