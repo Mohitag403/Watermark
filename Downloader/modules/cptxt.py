@@ -1,17 +1,25 @@
 import requests, os, sys, re
 import json, asyncio
 import subprocess
+import datetime
 from pyromod import listen
 from pyrogram import filters, idle
 from subprocess import getstatusoutput
-import datetime
 from Downloader import app
 
+
+
+
+# ------------------------------------------------------------------------------------------------------------------------------- #
 
 
 def get_datetime_str():
     now = datetime.datetime.now()
     return now.strftime("%Y%m%d%H%M%S")
+
+
+# ------------------------------------------------------------------------------------------------------------------------------- #
+
 
 def create_html_file(file_name, batch_name, contents):
     tbody = ''
@@ -25,7 +33,10 @@ def create_html_file(file_name, batch_name, contents):
     with open(file_name, 'w') as fp:
         fp.write(file_content.replace('tbody_content', tbody).replace('batch_name', batch_name))
 
-     
+
+ # ------------------------------------------------------------------------------------------------------------------------------- #
+
+
 def get_course_content(session, course_id, folder_id=0):
         fetched_contents = []
 
@@ -37,7 +48,7 @@ def get_course_content(session, course_id, folder_id=0):
         res = session.get(f'{api}/course/content/get', params=params)
 
         if res.status_code == 200:
-            res_json = res.json()  # Convert the response to JSON
+            res_json = res.json() 
 
             contents = res_json.get('data', {}).get('courseContent', [])
 
@@ -55,6 +66,9 @@ def get_course_content(session, course_id, folder_id=0):
 
         return fetched_contents
 
+
+
+# ------------------------------------------------------------------------------------------------------------------------------- #
 
 
 
@@ -80,19 +94,9 @@ async def cp_txt(app, message):
     api = 'https://api.classplusapp.com/v2'
 
     try:
-        reply = await message.reply(
-            (
-                '**'
-                'Send your credentials as shown below.\n\n'
-                'Organisation Code\n'
-                'Phone Number\n\n'
-                'OR\n\n'
-                'Access Token'
-                '**'
-            ),
-        )
-        creds = reply.text
+        reply = await message.reply_text("SEND YOUR CREDENTIALS AS SHOWN BELOW\n\nORGANISATION CODE:\n\nPHONE NUMBER:\n\nACCESS TOKEN:")
 
+        creds = reply.text
         session = requests.Session()
         session.headers.update(headers)
 
@@ -125,14 +129,7 @@ async def cp_txt(app, message):
 
                         session_id = res['data']['sessionId']
 
-                        reply = await message.chat.ask(
-                            (
-                                '**'
-                                'Send OTP ?'
-                                '**'
-                            )
-                            ,reply_to_message_id = reply.id
-                        )
+                        reply = await app.ask(message.chat.id, "Send your otp")
 
                         if reply.text.isdigit():
                             otp = reply.text.strip()
@@ -153,37 +150,18 @@ async def cp_txt(app, message):
 
                                 user_id = res['data']['user']['id']
                                 token = res['data']['token']
-
                                 session.headers['x-access-token'] = token
 
-                                reply = await reply.reply(
-                                    (
-                                        '**'
-                                        'Your Access Token for future uses - \n\n'
-                                        '**'
-                                        '<pre>'
-                                        f'{token}'
-                                        '</pre>'
-                                    ),
-                                    quote=True
-                                )
-
+                                reply = await app.ask(message.chat.id, f"Your access token for future uses -\n\n{token}")
+                                
                                 logged_in = True
 
                             else:
-                                raise Exception('Failed to verify OTP.')
-                            
-                        else:
-                            raise Exception('Failed to validate OTP.')
-                        
-                    else:
-                        raise Exception('Failed to generate OTP.')
-                    
-                else:
-                    raise Exception('Failed to get organization Id.')
-                
-            else:
-                raise Exception('Failed to validate credentials.')
+                                raise Exception('Failed to verify OTP.')  
+                        raise Exception('Failed to validate OTP.')
+                    raise Exception('Failed to generate OTP.')    
+                raise Exception('Failed to get organization Id.')
+            raise Exception('Failed to validate credentials.')
 
         else:
 
@@ -224,16 +202,8 @@ async def cp_txt(app, message):
                         name = course['name']
                         text += f'{cnt + 1}. {name}\n'
 
-                    reply = await message.chat.ask(
-                        (
-                            '**'
-                            'Send index number of the course to download.\n\n'
-                            f'{text}'
-                            '**'
-                        ),
-                        reply_to_message_id = reply.id
-                    )
-
+                    reply = await app.ask(message.chat.id, f"send index number of the course to download\n\n{text}")
+                        
                     if reply.text.isdigit() and len(reply.text) <= len(courses):
 
                         selected_course_index = int(reply.text.strip())
@@ -243,48 +213,28 @@ async def cp_txt(app, message):
                         selected_course_id = course['id']
                         selected_course_name = course['name']
 
-                        loader = await reply.reply(
-                            (
-                                '**'
-                                'Extracting course...'
-                                '**'
-                            ),
-                            quote=True
-                        )
+                        msg  = await reply.edit("Extracting your course")
+                            
 
                         course_content = get_course_content(session, selected_course_id)
-
-                        await loader.delete()
+                        await msg.delete()
 
                         if course_content:
 
-                            caption = (
-                                '**'
-                                'App Name : Classplus\n'
-                                f'Batch Name : {selected_course_name}'
-                                '**'
-                            )
+                            caption = (f"App Name : Classplus\nBatch Name : {selected_course_name}")
 
                             text_file = f'assets/{get_datetime_str()}.txt'
                             open(text_file, 'w').writelines(course_content)
 
-                            await app.send_document(
-                                message.chat.id,
-                                text_file,
-                                caption=caption,
+                            await app.send_document(message.chat.id, text_file, caption=caption,
                                 file_name=f"{selected_course_name}.txt",
-                                reply_to_message_id=reply.id
                             )
 
                             html_file = f'assets/{get_datetime_str()}.html'
                             create_html_file(html_file, selected_course_name, course_content)
 
-                            await app.send_document(
-                                message.chat.id,
-                                html_file,
-                                caption=caption,
+                            await app.send_document(message.chat.id, html_file, caption=caption,
                                 file_name=f"{selected_course_name}.html",
-                                reply_to_message_id=reply.id
                             )
 
                             os.remove(text_file)
@@ -292,27 +242,15 @@ async def cp_txt(app, message):
 
                         else:
                             raise Exception('Did not found any content in course.')
-
-                    else:
-                        raise Exception('Failed to validate course selection.')
-
-                else:
-                    raise Exception('Did not found any course.')
-
-            else:
-                raise Exception('Failed to get courses.')
+                    raise Exception('Failed to validate course selection.')
+                raise Exception('Did not found any course.')
+            raise Exception('Failed to get courses.')
             
 
    
-    except Exception as error:
-        await message.reply(
-            (
-                '**'
-                f'Error: {error}'
-                '**'
-            ),
-            quote=True
-        )
+    except Exception as e:
+        await message.reply_text(f"Error: {e}")
+            
 
 
 
