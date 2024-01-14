@@ -26,7 +26,7 @@ def create_html_file(file_name, batch_name, contents):
         fp.write(file_content.replace('tbody_content', tbody).replace('batch_name', batch_name))
 
      
-                                       "Press **/classplus** to continue..\n\n")
+               
 
 @app.on_message(filters.command(["classplus"]))
 async def cp_txt(app, message):
