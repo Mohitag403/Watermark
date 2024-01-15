@@ -27,9 +27,9 @@ class upload_tg:
 
     async def get_thumb_duration(self):
         try:
-            duration = helper.get_duration(self.file_path)
+            duration = await helper.get_duration(self.file_path)
         except:
-            duration = int(helper.duration(self.file_path))
+            duration = int(await helper.duration(self.file_path))
 
         if self.thumb.startswith(("http://", "https://")):
             wget.download(self.thumb, f"{self.temp_dir}.jpg")
@@ -41,13 +41,12 @@ class upload_tg:
                 thumbnail = await helper.take_screen_shot(self.file_path, self.name, self.path, (duration / 2))
             except:
                 subprocess.run(
-                    f'ffmpeg -i "{self.filename}" -ss 00:00:01 -vframes 1 "{self.temp_dir}.jpg"', shell=True)
+                    f'ffmpeg -i "{self.file_path}" -ss 00:00:01 -vframes 1 "{self.temp_dir}.jpg"', shell=True)
                 thumbnail = f"{self.temp_dir}.jpg"
         return duration, thumbnail
-    
 
     async def upload_video(self):
-        duration, thumbnail = upload_tg.get_thumb_duration(self)
+        duration, thumbnail = await self.get_thumb_duration()
         w, h = await helper.get_width_height(self.file_path)
         start_time = time.time()
         try:
@@ -71,7 +70,7 @@ class upload_tg:
                 document=self.file_path,
                 caption=self.caption,
                 thumb=thumbnail,
-                progress=bar,
+                progress=progress_bar,
                 progress_args=("<b>Uploading :- </b> `{file_name}`".format(
                         file_name=f"{self.name}"), self.show_msg, start_time
                 )
@@ -79,4 +78,4 @@ class upload_tg:
         os.remove(self.file_path)
         await self.show_msg.delete(True)
 
-    
+
