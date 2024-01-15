@@ -74,14 +74,16 @@ async def neetkaka_login(_, message):
     subjID = output0["data"]
     subjID_data = output0["data"]
     subject_data = [{'subjectid': data['subjectid'], 'subject_name': data['subject_name']} for data in subjID_data]
-    await message.reply_text(json.dumps(subject_data, indent=2))
+    subid = "\n".join([f"subjectid: {item['subjectid']}       subject_name: {item['subject_name']}" for item in subject_data])
+    await message.reply_text(subid)
+
 
 
     editable = await message.reply_text("**Enter the Subject Id Show in above Response")
     input3: message = await _.listen(editable.chat.id)
     raw_text3 = input3.text
 
-    res3 = requests.get("https://neetkakajeeapi.classx.co.in/get/alltopicfrmlivecourseclass?courseid=" + raw_text2,"&subjectid=" + raw_text3, headers=hdr1)
+    res3 = requests.get(f"https://neetkakajeeapi.classx.co.in/get/alltopicfrmlivecourseclass?courseid=" + raw_text2,"&subjectid=" + raw_text3, headers=hdr1)
     b_data2 = res3.json()['data']
     vj = ""
     for data in b_data2:
@@ -129,7 +131,7 @@ async def neetkaka_login(_, message):
                     "Authorization": token
                     }
 
-            res4 = requests.get("https://neetkakajeeapi.classx.co.in/get/livecourseclassbycoursesubtopconceptapiv3?topicid=" + t + "&start=-1&courseid=" + raw_text2 + "&subjectid=" + raw_text3,headers=hdr11).json()
+            res4 = requests.get(f"https://neetkakajeeapi.classx.co.in/get/livecourseclassbycoursesubtopconceptapiv3?topicid=" + t + "&start=-1&courseid=" + raw_text2 + "&subjectid=" + raw_text3,headers=hdr11).json()
 
             topicid = res4["data"]
             vj = ""
@@ -176,7 +178,7 @@ async def neetkaka_login(_, message):
                 
                 with open(f'{mm}.txt', 'a') as f:
                     f.write(f"{tid}:{b}\n")
-        await message.reply_document(f"{mm}.txt")
+                await message.reply_document(f"{mm}.txt")
     except Exception as e:
         await message.reply_text(str(e))
     await message.reply_text("Done")
