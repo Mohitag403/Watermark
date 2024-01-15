@@ -1,25 +1,25 @@
-import os,re,sys,json,time,asyncio
-import requests
-import base64
+import os
+import subprocess
+import requests, base64 
+import shutil,sys
 import xml.etree.ElementTree as ET
-from config import SUDO_USERS
+from fileinput import filename
 from pyrogram import filters
-from aiohttp import ClientSession
-from pyromod import listen
-from subprocess import getstatusoutput
-from Downloader.modules import helper
+from Downloader.modules.core import upload_tg
 from Downloader import app
 
 
 
-# -------------------------------------------------------- #
-
-
+# --------------------------------------------------------------------------------------------------------- #
+        
 async def pssh_link(url):
     r = requests.get(url)
-    manifest_content = r.content  
+    manifest_content = r.content
+
     root = ET.fromstring(manifest_content)
+
     content_protections = root.findall(".//{urn:mpeg:dash:schema:mpd:2011}ContentProtection")
+
     pssh_values_with_slash = []
     pssh_values_without_slash = []
 
@@ -27,6 +27,7 @@ async def pssh_link(url):
         pssh_element = content_protection.find(".//{urn:mpeg:cenc:2013}pssh")
         if pssh_element is not None:
             pssh_data = pssh_element.text.strip() if pssh_element.text else ""
+
             if '/' in pssh_data:
                 try:
                     decoded_pssh = base64.b64decode(pssh_data).decode('utf-8')
@@ -37,13 +38,9 @@ async def pssh_link(url):
                 pssh_values_without_slash = [pssh_data]
 
     for pssh_data in pssh_values_without_slash:
-        return pssh_data
-
-
-
-      
+         return pssh_data
+         
 # -------------------------------------------------------- #
-
 
 async def link_key(pssh_url):
     api_url = "https://cdrm-project.com/api"
@@ -52,21 +49,23 @@ async def link_key(pssh_url):
     headers = {
         'user-agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/90.0.4430.85 Safari/537.36'
     }
+
     response = requests.post(api_url, headers=headers, json={"license": license_url, "pssh": pssh})
     response_data = response.json()
-
+    
     if response_data["keys"]:
         lol = response_data["keys"][0]["key"]
         return lol
 
 
-# --------------------------- DRM-DL ----------------------------------------------------------------------- #
+# --------------------------- DRM--DL ----------------------------------------------------------------------- #
 
+@app.on_message(filters.command("drm"))
+async def drm(_, message):
+    path = f"/drmdownloads/{message.chat.id}"
+    tPath = f"/drmdownloads/THUMB/{message.chat.id}"
+    os.makedirs(path, exist_ok=True)
 
-@app.on_message(filters.command(["drm"]) & filters.user(SUDO_USERS))
-async def drm_downloader(_, message):
-    path = f"./downloads/{message.chat.id}"
-    user = message.from_user.id
     editable = await message.reply_text('SEND TXT FILE 🗃️ OR LINKS TO DOWNLOAD 🔗 ')
     input_msg: message = await _.listen(editable.chat.id)
 
@@ -100,7 +99,7 @@ async def drm_downloader(_, message):
     await input1.delete(True)
 
     await editable.edit("**Enter resolution**")
-    input2: message = await _.listen(editable.chat.id)
+    input2: Message = await bot.listen(editable.chat.id)
     raw_text2 = input2.text
     await input2.delete(True)
     try:
@@ -109,7 +108,7 @@ async def drm_downloader(_, message):
         res = resolution_mapping.get(raw_text2, "UN")
     except Exception:
         res = "UN"
-
+   
     await editable.edit("** ENTER A CAPTION TO ADD OTHERWISE SEND 👉`no`👈 **")
     input3: message = await _.listen(editable.chat.id)
     raw_text3 = input3.text
@@ -123,12 +122,7 @@ async def drm_downloader(_, message):
     await input6.delete(True)
     await editable.delete()
 
-    thumb = input6.text
-    if thumb.startswith("http://") or thumb.startswith("https://"):
-        getstatusoutput(f"wget '{thumb}' -O '{path}/thumb.jpg'")
-        thumb = "{path}/thumb.jpg"
-    else:
-        thumb = "no"
+    Thumb = input6.text
 
     if len(links) == 1:
         count = 1
@@ -138,45 +132,51 @@ async def drm_downloader(_, message):
     try:
         for i in range(count - 1, len(links)):
             V = links[i][1].replace("file/d/", "uc?export=download&id=").replace("www.youtube-nocookie.com/embed", "youtu.be").replace("?modestbranding=1", "").replace("/view?usp=sharing", "")
-            url = "https://" + V
-
-            pssh_url = await pssh_link(url)
-            url_key = await link_key(pssh_url)
+            mpd = "https://" + V
 
             name1 = links[i][0].replace("\t", "").replace(":", "").replace("/", "").replace("+", "").replace("#", "").replace("|", "").replace("@", "").replace("*", "").replace(".", "").replace("https", "").replace("http", "").strip()
             name = f'{str(count).zfill(3)}) {name1[:60]}'
 
-            try:
-                cc = f'** {str(count).zfill(3)}.** {𝗻𝗮𝗺𝗲𝟭}{MR}.mp4\n**Batch »** {raw_text0}\n\n'
-                                                      
-                show = f"**⥥ Downloading »**\n\n**Name »** `{name}\nQuality » {raw_text2}`\n\n**Url »** `{url}`"
-                prog = await message.reply_text(show)
+            pssh_url = await pssh_link(mpd)
+            keys = await link_key(pssh_url)
+
+            cc = f'** {str(count).zfill(3)}.** {MR}.mp4\n**Batch »** {raw_text0}\n\n'
             
-                filename = await helper.drm_video(url, url_key, prog, name, path)  
-                await helper.send_vid(message, cc, filename, thumb, name, prog)
-                count += 1
-                time.sleep(1)
+            prog  = await _.send_message(m.chat.id, f"**⥥ Downloading »**\n\n**Name »** `{name}\nQuality » {raw_text2}`\n\n**Url »** `{mpd}`")
+            await message.reply_text(f'`--key {keys}`')
 
-            except Exception as e:
-                pass
-                
+            cmd1 = f'yt-dlp -k --allow-unplayable-formats -f "bestvideo.3/bestvideo.2/bestvideo" --fixup never "{mpd}" --external-downloader aria2c --external-downloader-args "-x 16 -s 16 -k 1M" -o "{path}/{name}.mp4" --exec echo'
+            cmd2 = f'yt-dlp -k --allow-unplayable-formats -f ba --fixup never "{mpd}" --external-downloader aria2c --external-downloader-args "-x 16 -s 16 -k 1M" -o "{path}/{name}.m4a" --exec echo'
+            os.system(cmd1)
+            os.system(cmd2)
+            avDir = os.listdir(path)
+            print(avDir)
+            print("Decrypting")
+    
+            cmd3 = f'mp4decrypt --key {keys} --show-progress "{path}/{name}.mp4" "{path}/video.mp4"'
+            os.system(cmd3)
+            os.remove(f'{path}/{name}.mp4')
+            cmd4 = f'mp4decrypt --key {keys} --show-progress "{path}/{name}.m4a" "{path}/audio.m4a"'
+            os.system(cmd4)
+            os.remove(f'{path}/{name}.m4a')
+    
+            cmd5 = f'ffmpeg -i "{path}/video.mp4" -i "{path}/audio.m4a" -c copy "{path}/{name}.mp4"'
+            os.system(cmd5)
+            os.remove(f"{path}/video.mp4")
+            os.remove(f"{path}/audio.m4a")
+            filename = f"{path}/{name}.mp4"
+            UL = upload_tg(_, message, filename, name=name,
+                                   Thumb=Thumb, path=path, show_msg=prog, caption=cc)            
+            await UL.upload_video()
+            await prog.delete(True)
+
+            if os.path.exists(tPath):
+                shutil.rmtree(tPath)
+            shutil.rmtree(path)
+            await message.reply_text("Done")
+
     except Exception as e:
-        await message.reply_text(str(e))     
-    await message.reply_text("Done")
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+        await message.reply_text(str(e))
 
 
 
