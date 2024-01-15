@@ -47,7 +47,7 @@ class upload_tg:
     
 
     async def upload_video(self):
-        duration, thumbnail = await upload_tg.get_thumb_duration(self)
+        duration, thumbnail = upload_tg.get_thumb_duration(self)
         w, h = await helper.get_width_height(self.file_path)
         start_time = time.time()
         try:
