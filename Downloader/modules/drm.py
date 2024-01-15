@@ -166,7 +166,7 @@ async def drm(_, message):
             os.remove(f"{path}/video.mp4")
             os.remove(f"{path}/audio.m4a")
             filename = f"{path}/{name}.mp4"
-            UL = upload_tg(_, message, name=name, file_path=filename, path=path
+            UL = upload_tg(_, message, name=name, file_path=filename, path=path,
                                    Thumb=Thumb, show_msg=prog, caption=cc)            
             await UL.upload_video()
             await prog.delete(True)
