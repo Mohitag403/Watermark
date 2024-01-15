@@ -6,6 +6,5 @@ yt-dlp
 pyromod
 aiofiles
 requests
-cloudscraper
-pycryptodome
+wget
 hachoir
