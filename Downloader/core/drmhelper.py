@@ -7,7 +7,7 @@ import datetime
 import subprocess
 from hachoir.metadata import extractMetadata
 from hachoir.parser import createParser
-from helpers.prog_bar import progress_for_pyrogram
+from Download.core.progsbar import progress_bar
 from Downloader import app
 from Downloader.core import helper
 
@@ -60,7 +60,7 @@ class upload_tg:
                 thumb=thumbnail,
                 width=w,
                 height=h,
-                progress=progress_for_pyrogram,
+                progress=progress_bar,
                 progress_args=("<b>Uploading :- </b> `{file_name}`".format(
                         file_name=f"{self.name}"), self.show_msg, start_time
                 )
@@ -71,7 +71,7 @@ class upload_tg:
                 document=self.file_path,
                 caption=self.caption,
                 thumb=thumbnail,
-                progress=progress_for_pyrogram,
+                progress=bar,
                 progress_args=("<b>Uploading :- </b> `{file_name}`".format(
                         file_name=f"{self.name}"), self.show_msg, start_time
                 )
