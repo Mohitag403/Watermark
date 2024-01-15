@@ -168,7 +168,7 @@ async def neetkaka_login(_, message):
                 if len(f'{cool2}{cc0}') > 4096:
                     cool2 = ""
                 cool2 += cc0
-                mm = "NEET Kaka JEE"
+                mm = "NeetKakajee"
                 
                 with open(f'{mm}.txt', 'a') as f:
                     f.write(f"{tid}:{b}\n")
