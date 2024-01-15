@@ -16,7 +16,16 @@ def duration(filename):
         stdout=subprocess.PIPE,
         stderr=subprocess.STDOUT)
     return float(result.stdout)
- 
+
+
+def get_duration(filepath):
+        metadata = extractMetadata(createParser(filepath))
+        if metadata.has("duration"):
+            return metadata.get('duration').seconds
+        else:
+            return 0
+            
+
 def get_width_height(filename):
     metadata = extractMetadata(createParser(filename))
     if metadata.has("width") and metadata.has("height"):
