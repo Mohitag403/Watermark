@@ -127,7 +127,7 @@ async def account_login(_, message):
                         text = await resp.text()
                         url = re.search(r"(https://.*?playlist.m3u8.*?)\"", text).group(1)
 
-            elif "tencdn.classplusapp" in url:
+            if "tencdn.classplusapp" in url:
                 headers = {'Host': 'api.classplusapp.com', 'x-access-token': 'eyJhbGciOiJIUzM4NCIsInR5cCI6IkpXVCJ9.eyJuYW1lIjoiTkVFVCBDaGVtaXN0cnktIEJlV2lzZSBDbGFzc2VzIiwib3JnX2NvZGUiOiJ1Y3Z2YW8iLCJvcmdfaWQiOjU0MjQyMSwicGhvbmUiOiI5MTgyOTg3MzAwMzYiLCJzb3VyY2VfdXNlcl9pZCI6IjkyMzQyMDA1IiwidXNlcl90eXBlIjoxLCJlbWFpbCI6InN1ZGhhbnNodWpoYTE1MUBnbWFpbC5jb20iLCJjb3VudHJ5X2NvZGUiOiJJTiIsImlzX3VzZXJpZF9ldmVuIjpmYWxzZSwic291cmNlIjo1MCwic291cmNlX2FwcCI6ImNsYXNzcGx1cyIsInNlc3Npb25faWQiOiJmYmZiNjI2My1mNmFiLTRlNjAtYWViYS05OWNhN2Q0ZGI2MzUiLCJ2aXNpdG9yX2lkIjoiYTlmNDhhNzktOWQ0NC00Y2E3LTk5ODQtZDAyMDgxMjc4NWUyIiwiY3JlYXRlZF9hdCI6MTcwNDM3NTgzNzkwOSwiaWF0IjoxNzA0ODEwMTk1LCJleHAiOjE3MDYxMDYxOTV9.x0EH5qxYNrq4LtEtuffQ998ajVPkWGEJjlDYTvkgFn__lUDpcB_Qk_xioesjCswH', 'user-agent': 'Mobile-Android', 'app-version': '1.4.37.1', 'api-version': '18', 'device-id': '5d0d17ac8b3c9f51', 'device-details': '2848b866799971ca_2848b8667a33216c_SDK-30', 'accept-encoding': 'gzip'}
             	params = (('url', f'{url}'),)
             	response = requests.get('https://api.classplusapp.com/cams/uploader/video/jw-signed-url', headers=headers, params=params)
