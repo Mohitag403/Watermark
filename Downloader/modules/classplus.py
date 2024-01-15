@@ -49,7 +49,7 @@ def get_course_content(session, course_id, folder_id=0):
                 else:
                     name = content.get('name', '')
                     url = content.get('url', '')
-                    fetched_contents.append(f'{name}: {url}')
+                    fetched_contents.append(f'{name}:{url}\n')
 
         return fetched_contents
 
