@@ -228,17 +228,15 @@ async def classplus_txt(app, message):
 
                             caption = (f"App Name : Classplus\nBatch Name : {selected_course_name}")
 
-                            cp = "classplus"
-                  #          open(text_file, 'w').writelines(course_content)
-                            with open(f'{cp}.txt', 'wb') as f:
-                                    f.write(course_content)
                             
-                            with open(f'{cp}.txt', 'rb') as text_file:
-                                await app.send_document(message.chat.id, text_file, caption=caption,
+                            text_file = f'downloads/{get_datetime_str()}.txt'
+                            open(text_file, 'w').writelines(course_content)
+
+                            await app.send_document(message.chat.id, text_file, caption=caption,
                                 file_name=f"{selected_course_name}.txt",
                             )
 
-                            html_file = f'assets/{get_datetime_str()}.html'
+                            html_file = f'downloads/{get_datetime_str()}.html'
                             create_html_file(html_file, selected_course_name, course_content)
 
                             await app.send_document(message.chat.id, html_file, caption=caption,
