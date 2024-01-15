@@ -50,18 +50,19 @@ async def account_login(_, message):
         "Authorization": token,
     }
     await editable.edit("**login Successful**")
-    cour_url = f"https://neetkakajeeapi.classx.co.in/get/mycourseweb?userid={userid}"
-    res1 = requests.get(cour_url, headers=hdr1)
+    res1 = requests.get("https://neetkakajeeapi.classx.co.in/get/mycourseweb?userid="+userid, headers=hdr1)
     b_data = res1.json()["data"]
     cool = ""
     for data in b_data:
-        t_name = data["course_name"]
-        FFF = "**BATCH-ID - BATCH NAME - INSTRUCTOR**"
-        aa = f" ```{data['id']}```      - **{data['course_name']}**\n\n"
-        if len(f"{cool}{aa}") > 4096:
-            print(aa)
-            cool = ""
-        cool += aa
+        t_name =data['course_name']
+        FFF = "BATCH-ID - BATCH NAME - INSTRUCTOR"
+        aa = f" 
+        {data['id']}
+              - {data['course_name']}**\n\n"
+            if len(f'{cool}{aa}') > 4096:
+                print(aa)
+                cool = ""
+            cool += aa
     await editable.edit(f'{"**You have these batches :-**"}\n\n{FFF}\n\n{cool}')
     editable1 = await message.reply_text("**Now send the Batch ID to Download**")
     input2: Message = await app.listen(editable.chat.id)
