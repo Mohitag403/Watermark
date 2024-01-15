@@ -1,7 +1,23 @@
-async def account_login(bot: Client, m: Message):
+import requests, os, sys, re
+import json
+import requests
+from pyrogram.types.messages_and_media import message
+from pyromod import listen
+from pyrogram.types import Message
+from pyrogram import filters
+import cloudscraper
+from Crypto.Cipher import AES
+from Crypto.Util.Padding import unpad
+from base64 import b64encode, b64decode
+from Downloader import app
+from config import SUDO_USERS
+
+
+@app.on_message(filters.command(["nkj"])& filters.user(SUDO_USERS))
+async def account_login(app, message):
     global cancel
     cancel = False
-    editable = await m.reply_text(
+    editable = await message.reply_text(
         "Send **ID & Password** in this manner otherwise bot will not respond.\n\nSend like this:-  **ID*Password**")
     rwa_url = "https://neetkakajeeapi.classx.co.in/post/userLogin"
     hdr = {"Auth-Key": "appxapi",
@@ -15,7 +31,7 @@ async def account_login(bot: Client, m: Message):
            "User-Agent": "okhttp/4.9.1"
           }
     info = {"email": "", "password": ""}
-    input1: Message = await bot.listen(editable.chat.id)
+    input1: Message = await app.listen(editable.chat.id)
     raw_text = input1.text
     info["email"] = raw_text.split("*")[0]
     info["password"] = raw_text.split("*")[1]
@@ -47,18 +63,18 @@ async def account_login(bot: Client, m: Message):
             cool = ""
         cool += aa
     await editable.edit(f'{"**You have these batches :-**"}\n\n{FFF}\n\n{cool}')
-    editable1 = await m.reply_text("**Now send the Batch ID to Download**")
-    input2 = message = await bot.listen(editable.chat.id)
+    editable1 = await message.reply_text("**Now send the Batch ID to Download**")
+    input2 = message = await app.listen(editable.chat.id)
     raw_text2 = input2.text
 
     scraper = cloudscraper.create_scraper()
     html = scraper.get("https://neetkakajeeapi.classx.co.in/get/allsubjectfrmlivecourseclass?courseid=" + raw_text2,headers=hdr1).content
     output0 = json.loads(html)
     subjID = output0["data"]
-    await m.reply_text(subjID)
+    await message.reply_text(subjID)
 
-    editable1 = await m.reply_text("**Enter the Subject Id Show in above Response")
-    input3 = message = await bot.listen(editable.chat.id)
+    editable1 = await message.reply_text("**Enter the Subject Id Show in above Response")
+    input3 = message = await app.listen(editable.chat.id)
     raw_text3 = input3.text
 
     res3 = requests.get("https://neetkakajeeapi.classx.co.in/get/alltopicfrmlivecourseclass?courseid=" + raw_text2,"&subjectid=" + raw_text3, headers=hdr1)
@@ -68,7 +84,6 @@ async def account_login(bot: Client, m: Message):
         tids = (data["topicid"])
         idid = f"{tids}&"
         if len(f"{vj}{idid}") > 4096:
-            ##await m.reply_text(idid)
             vj = ""
         vj += idid
     vp = ""
@@ -90,12 +105,12 @@ async def account_login(bot: Client, m: Message):
         cool1 += hh
     await m.reply_text(f'Batch details of **{t_name}** are:\n\n{BBB}\n\n{cool1}')
 
-    editable= await m.reply_text(f"Now send the **Topic IDs** to Download\n\nSend like this **1&2&3&4** so on\nor copy paste or edit **below ids** according to you :\n\n**Enter this to download full batch :-**\n```{vj}```")
-    input4 = message = await bot.listen(editable.chat.id)
+    editable= await message.reply_text(f"Now send the **Topic IDs** to Download\n\nSend like this **1&2&3&4** so on\nor copy paste or edit **below ids** according to you :\n\n**Enter this to download full batch :-**\n```{vj}```")
+    input4 = message = await app.listen(editable.chat.id)
     raw_text4 = input4.text
 
-    editable3 = await m.reply_text("**Now send the Resolution**")
-    input5 = message = await bot.listen(editable.chat.id)
+    editable3 = await message.reply_text("**Now send the Resolution**")
+    input5 = message = await app.listen(editable.chat.id)
     raw_text5 = input5.text
     try:
         xv = raw_text4.split('&')
@@ -148,7 +163,6 @@ async def account_login(bot: Client, m: Message):
                 ciphertext = bytearray.fromhex(b64decode(b64.encode()).hex())
                 cipher = AES.new(key, AES.MODE_CBC, iv)
                 plaintext = unpad(cipher.decrypt(ciphertext), AES.block_size)
-                #print(plaintext)
                 b=plaintext.decode('utf-8')
                 cc0 = (f"{tid}:{b}")
                 if len(f'{cool2}{cc0}') > 4096:
@@ -158,7 +172,7 @@ async def account_login(bot: Client, m: Message):
                 
                 with open(f'{mm}.txt', 'a') as f:
                     f.write(f"{tid}:{b}\n")
-        await m.reply_document(f"{mm}.txt")
+        await message.reply_document(f"{mm}.txt")
     except Exception as e:
-        await m.reply_text(str(e))
-    await m.reply_text("Done")
+        await message.reply_text(str(e))
+    await message.reply_text("Done")
