@@ -55,36 +55,28 @@ async def account_login(_, message):
     cool = ""
     for data in b_data:
         t_name =data['course_name']
-        FFF = "BATCH-ID - BATCH NAME - INSTRUCTOR"
-        aa = f" 
-        {data['id']}
-              - {data['course_name']}**\n\n"
-            if len(f'{cool}{aa}') > 4096:
-                print(aa)
-                cool = ""
-            cool += aa
+        FFF = "**BATCH-ID - BATCH NAME - INSTRUCTOR**"
+        aa = f" ```{data['id']}```      - **{data['course_name']}**\n\n"
+        if len(f'{cool}{aa}') > 4096:
+            print(aa)
+            cool = ""
+        cool += aa
     await editable.edit(f'{"**You have these batches :-**"}\n\n{FFF}\n\n{cool}')
     editable1 = await message.reply_text("**Now send the Batch ID to Download**")
-    input2: Message = await app.listen(editable.chat.id)
+    input2 = message = await app.listen(editable.chat.id)
     raw_text2 = input2.text
+
     scraper = cloudscraper.create_scraper()
-    html = scraper.get(
-        f"https://neetkakajeeapi.classx.co.in/get/allsubjectfrmlivecourseclass?courseid={raw_text2}",
-        headers=hdr1,
-    ).content
+    html = scraper.get("https://vidyabiharapi.teachx.in/get/allsubjectfrmlivecourseclass?courseid=" + raw_text2,headers=hdr1).content
     output0 = json.loads(html)
     subjID = output0["data"]
     await message.reply_text(subjID)
-    editable1 = await message.reply_text(
-        "**Enter the Subject Id Show in the above Response**"
-    )
-    input3: Message = await app.listen(editable.chat.id)
+
+    editable1 = await message.reply_text("**Enter the Subject Id Show in above Response")
+    input3 = message = await app.listen(editable.chat.id)
     raw_text3 = input3.text
-    res3 = requests.get(
-        f"https://neetkakajeeapi.classx.co.in/get/alltopicfrmlivecourseclass?courseid={raw_text2}&subjectid={raw_text3}",
-        headers=hdr1,
-    )
-    b_data2 = res3.json()["data"]
+    res3 = requests.get("https://vidyabiharapi.teachx.in/get/alltopicfrmlivecourseclass?courseid=" + raw_text2,"&subjectid=" + raw_text3, headers=hdr1)
+    b_data2 = res3.json()['data']
     vj = ""
     for data in b_data2:
         tids = data["topicid"]
