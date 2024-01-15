@@ -72,7 +72,7 @@ async def neetkaka_login(_, message):
     html = scraper.get("https://neetkakajeeapi.classx.co.in/get/allsubjectfrmlivecourseclass?courseid={raw_text2}",headers=hdr1).content
     output0 = json.loads(html)
     subjID = output0["data"]
-    await message.reply(subjID)
+    
 
     editable = await message.reply_text("**Enter the Subject Id Show in above Response")
     input3: message = await _.listen(editable.chat.id)
