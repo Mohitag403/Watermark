@@ -58,13 +58,13 @@ async def neetkaka_login(_, message):
     for data in b_data:
         t_name =data['course_name']
         FFF = "BATCH-ID - BATCH NAME - INSTRUCTOR"
-        aa = f" {data['id']}      - {data['course_name']}**\n\n"
+        aa = f"**`{data['id']}`      - `{data['course_name']}`**\n\n"
         if len(f'{cool}{aa}') > 4096:
             print(aa)
             cool = ""
         cool += aa
     await editable.edit(f'{"**You have these batches :-"}\n\n{FFF}\n\n{cool}')
-    editable1 = await message.reply_text("**Now send the Batch ID to Download**")
+    editable = await message.reply_text("**Now send the Batch ID to Download**")
     input2 = message = await _.listen(editable.chat.id)
     raw_text2 = input2.text
 
