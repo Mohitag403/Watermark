@@ -8,7 +8,6 @@ import subprocess
 from hachoir.metadata import extractMetadata
 from hachoir.parser import createParser
 from helpers.toolkit import Tools, Vidtools
-from main import Config, Msg, Store, LOGGER as LOGS
 from helpers.prog_bar import progress_for_pyrogram
 from Downloader import app
 
@@ -75,8 +74,7 @@ class upload_tg:
                 width=w,
                 height=h,
                 progress=progress_for_pyrogram,
-                progress_args=(
-                    Msg.CMD_MSG_2.format(
+                progress_args=("<b>Uploading :- </b> `{file_name}`".format(
                         file_name=f"{self.name}"), self.show_msg, start_time
                 )
             )
@@ -87,8 +85,7 @@ class upload_tg:
                 caption=self.caption,
                 thumb=thumbnail,
                 progress=progress_for_pyrogram,
-                progress_args=(
-                    Msg.CMD_MSG_2.format(
+                progress_args=("<b>Uploading :- </b> `{file_name}`".format(
                         file_name=f"{self.name}"), self.show_msg, start_time
                 )
             )
@@ -104,8 +101,7 @@ class upload_tg:
                 caption=self.caption,
                 thumb=await upload_tg.get_doc_thumb(self),
                 progress=progress_for_pyrogram,
-                progress_args=(
-                    Msg.CMD_MSG_2.format(
+                progress_args=("<b>Uploading :- </b> `{file_name}`".format(             
                         file_name=f"{self.name}"), self.show_msg, start_time
                 )
             )
