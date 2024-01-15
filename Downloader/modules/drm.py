@@ -99,7 +99,7 @@ async def drm(_, message):
     await input1.delete(True)
 
     await editable.edit("**Enter resolution**")
-    input2: Message = await bot.listen(editable.chat.id)
+    input2: message = await _.listen(editable.chat.id)
     raw_text2 = input2.text
     await input2.delete(True)
     try:
