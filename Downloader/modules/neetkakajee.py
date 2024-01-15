@@ -73,10 +73,14 @@ async def neetkaka_login(_, message):
     output0 = json.loads(html)
     subjID = output0["data"]
     subjID_data = output0["data"]
-    subject_data = [{'subjectid': data['subjectid'], 'subject_name': data['subject_name']} for data in subjID_data]
-    subid = "\n".join([f"subjectid: {item['subjectid']}       subject_name: {item['subject_name']}" for item in subject_data])
-    await message.reply_text(subid)
-
+    cool = ""
+    for sub in subjID:
+        subjid = sub["subjectid"]
+        subjname = sub["subject_name"]
+        aa = f"`{subjid}` - `{subjname}`"
+        cool += aa
+    await editable.edit(cool)
+    
 
 
     editable = await message.reply_text("**Enter the Subject Id Show in above Response")
