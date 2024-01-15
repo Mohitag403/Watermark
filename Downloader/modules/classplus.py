@@ -11,6 +11,7 @@ from subprocess import getstatusoutput
 
 
 
+api = 'https://api.classplusapp.com/v2'
 
 # ------------------------------------------------------------------------------------------------------------------------------- #
 
@@ -93,8 +94,7 @@ async def classplus_txt(app, message):
         'webengage-luid' : '00000187-6fe4-5d41-a530-26186858be4c'
     }
 
-    api = 'https://api.classplusapp.com/v2'
-
+    
     try:
         editable = await message.reply_text("SEND YOUR CREDENTIALS AS SHOWN BELOW\n\nORGANISATION CODE:\n\nPHONE NUMBER:\n\nACCESS TOKEN:")
         input : message = await app.listen(editable.chat.id)
