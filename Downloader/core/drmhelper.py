@@ -7,7 +7,7 @@ import datetime
 import subprocess
 from hachoir.metadata import extractMetadata
 from hachoir.parser import createParser
-from Download.core.progsbar import progress_bar
+from Downloader.core.progsbar import progress_bar
 from Downloader import app
 from Downloader.core import helper
 
