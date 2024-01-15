@@ -145,8 +145,7 @@ async def drm(_, message):
             cc = f'** {str(count).zfill(3)}.** {MR}.mp4\n**Batch »** {raw_text0}\n\n'
             
             prog  = await _.send_message(message.chat.id, f"**⥥ Downloading »**\n\n**Name »** `{name}\nQuality » {raw_text2}`\n\n**Url »** `{mpd}`")
-            await message.reply_text(f'`--key {keys}`')
-
+            
             cmd1 = f'yt-dlp -k --allow-unplayable-formats -f "bestvideo.3/bestvideo.2/bestvideo" --fixup never "{mpd}" --external-downloader aria2c --external-downloader-args "-x 16 -s 16 -k 1M" -o "{path}/{name}.mp4" --exec echo'
             cmd2 = f'yt-dlp -k --allow-unplayable-formats -f ba --fixup never "{mpd}" --external-downloader aria2c --external-downloader-args "-x 16 -s 16 -k 1M" -o "{path}/{name}.m4a" --exec echo'
             os.system(cmd1)
@@ -167,7 +166,7 @@ async def drm(_, message):
             os.remove(f"{path}/video.mp4")
             os.remove(f"{path}/audio.m4a")
             filename = f"{path}/{name}.mp4"
-            await message.reply_text("........")    
+            
             lol = upload_tg(_, message, name=name, file_path=filename, path=path,
                                    Thumb=Thumb, show_msg=prog, caption=cc)            
             await lol.upload_video()
