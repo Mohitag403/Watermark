@@ -74,7 +74,7 @@ async def neetkaka_login(_, message):
     subjID = output0["data"]
     await message.reply_text(subjID)
 
-    editable1 = await message.reply_text("**Enter the Subject Id Show in above Response")
+    editable = await message.reply_text("**Enter the Subject Id Show in above Response")
     input3 = message = await _.listen(editable.chat.id)
     raw_text3 = input3.text
 
@@ -105,7 +105,7 @@ async def neetkaka_login(_, message):
             cool1 = ""
         cool1 += hh
     await message.reply_text(f'Batch details of **{t_name}** are:\n\n{BBB}\n\n{cool1}')
-    editable= await message.reply_text(f"Now send the **Topic IDs** to Download\n\nSend like this **1&2&3&4** so on\nor copy paste or edit **below ids** according to you :\n\n**Enter this to download full batch :-**\n```{vj}```")
+    editable = await message.reply_text(f"Now send the **Topic IDs** to Download\n\nSend like this **1&2&3&4** so on\nor copy paste or edit **below ids** according to you :\n\n**Enter this to download full batch :-**\n```{vj}```")
     input4 = message = await _.listen(editable.chat.id)
     raw_text4 = input4.text
 
