@@ -73,7 +73,7 @@ async def neetkaka_login(_, message):
     output0 = json.loads(html)
     subjID = output0["data"]
     subjID_data = output0["data"]
-    subject_data = [{'subjectid': `data['subjectid']`, 'subject_name': `data['subject_name']`} for data in subjID_data]
+    subject_data = [{'subjectid': data['subjectid'], 'subject_name': data['subject_name']} for data in subjID_data]
     await message.reply_text(json.dumps(subject_data, indent=2))
 
 
