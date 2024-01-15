@@ -11,8 +11,6 @@ from Downloader.core.progsbar import progress_bar
 from Downloader import app
 from Downloader.core import helper
 
-
-
 class upload_tg:
     def __init__(self, app, message, name: str, file_path, path, Thumb, show_msg, caption: str) -> None:
         self.app = app
@@ -27,9 +25,9 @@ class upload_tg:
 
     async def get_thumb_duration(self):
         try:
-            duration = await helper.get_duration(self.file_path)
+            duration = await asyncio.to_thread(helper.get_duration, self.file_path)
         except:
-            duration = int(await helper.duration(self.file_path))
+            duration = int(await asyncio.to_thread(helper.duration, self.file_path))
 
         if self.thumb.startswith(("http://", "https://")):
             wget.download(self.thumb, f"{self.temp_dir}.jpg")
@@ -38,7 +36,7 @@ class upload_tg:
             thumbnail = self.thumb
         else:
             try:
-                thumbnail = await helper.take_screen_shot(self.file_path, self.name, self.path, (duration / 2))
+                thumbnail = await asyncio.to_thread(helper.take_screen_shot, self.file_path, self.name, self.path, (duration / 2))
             except:
                 subprocess.run(
                     f'ffmpeg -i "{self.file_path}" -ss 00:00:01 -vframes 1 "{self.temp_dir}.jpg"', shell=True)
@@ -47,7 +45,7 @@ class upload_tg:
 
     async def upload_video(self):
         duration, thumbnail = await self.get_thumb_duration()
-        w, h = await helper.get_width_height(self.file_path)
+        w, h = await asyncio.to_thread(helper.get_width_height, self.file_path)
         start_time = time.time()
         try:
             await self.app.send_video(
@@ -78,4 +76,4 @@ class upload_tg:
         os.remove(self.file_path)
         await self.show_msg.delete(True)
 
-
+                
