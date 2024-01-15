@@ -33,6 +33,7 @@ def get_width_height(filename):
     else:
         return 1280, 720   
 
+
 async def download(url,name):
     ka = f'{name}.pdf'
     async with aiohttp.ClientSession() as session:
@@ -98,3 +99,33 @@ async def send_vid(message, cc, filename, thumb, name, prog):
     await reply.delete(True)
 
 
+async def take_screen_shot(video_file, name, path, ttl):
+        out_put_file_name = f"{path}/{name}.jpg"
+        if video_file.upper().endswith(("MKV", "MP4", "WEBM")):
+            file_genertor_command = [
+                "ffmpeg",
+                "-ss",
+                str(ttl),
+                "-i",
+                video_file,
+                "-vframes",
+                "1",
+                out_put_file_name
+            ]
+            process = await asyncio.create_subprocess_exec(
+                *file_genertor_command,
+                stdout=asyncio.subprocess.PIPE,
+                stderr=asyncio.subprocess.PIPE,
+            )
+
+            stdout, stderr = await process.communicate()
+            e_response = stderr.decode().strip()
+            t_response = stdout.decode().strip()
+
+        if os.path.lexists(out_put_file_name):
+            return out_put_file_name
+        else:
+            return None
+
+
+ 
