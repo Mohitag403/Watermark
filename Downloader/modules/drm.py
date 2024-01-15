@@ -5,7 +5,7 @@ import shutil,sys
 import xml.etree.ElementTree as ET
 from fileinput import filename
 from pyrogram import filters
-from Downloader.modules.core import upload_tg
+from Downloader.core import upload_tg
 from Downloader import app
 
 
