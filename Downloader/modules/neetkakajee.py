@@ -87,7 +87,7 @@ async def neetkaka_login(_, message):
     input3: message = await _.listen(editable.chat.id)
     raw_text3 = input3.text
 
-    res3 = requests.get("https://neetkakajeeapi.classx.co.in/get/alltopicfrmlivecourseclass?courseid=" + raw_text2 + "&subjectid=" + raw_text3, headers=hdr1)
+    res3 = requests.get("https://neetkakajeeapi.classx.co.in/get/alltopicfrmlivecourseclass?courseid=" + raw_text2,"&subjectid=" + raw_text3, headers=hdr1)
     b_data2 = res3.json()['data']
     vj = ""
     for data in b_data2:
@@ -97,6 +97,12 @@ async def neetkaka_login(_, message):
             vj = ""
         vj += idid
     vp = ""
+    for data in b_data2:
+        tn = (data["topic_name"])
+        tns = f"{tn}&"
+        if len(f"{vp}{tn}") > 4096:
+            vp = ""
+        vp += tns
     cool1 = ""
     for data in b_data2:
         t_name = (data["topic_name"])
@@ -108,8 +114,6 @@ async def neetkaka_login(_, message):
             cool1 = ""
         cool1 += hh
     await message.reply_text(f'Batch details of **{t_name}** are:\n\n{BBB}\n\n{cool1}')
-
-
 
     editable = await message.reply_text(f"Now send the **Topic IDs** to Download\n\nSend like this **1&2&3&4** so on\nor copy paste or edit **below ids** according to you :\n\n**Enter this to download full batch :-**\n```{vj}```")
     input4: message = await _.listen(editable.chat.id)
