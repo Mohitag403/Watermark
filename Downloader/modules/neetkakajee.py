@@ -87,7 +87,7 @@ async def neetkaka_login(_, message):
     input3: message = await _.listen(editable.chat.id)
     raw_text3 = input3.text
 
-    res3 = requests.get(f"https://neetkakajeeapi.classx.co.in/get/alltopicfrmlivecourseclass?courseid=" + raw_text2,"&subjectid=" + raw_text3, headers=hdr1)
+    res3 = requests.get("https://neetkakajeeapi.classx.co.in/get/alltopicfrmlivecourseclass?courseid=" + raw_text2,"&subjectid=" + raw_text3, headers=hdr1)
     b_data2 = res3.json()['data']
     vj = ""
     for data in b_data2:
