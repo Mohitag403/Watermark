@@ -103,8 +103,8 @@ async def cp_txt(app, message):
         logged_in = False
 
         if '\n' in creds:
-            org_code, phone_no = [cred.strip() for cred in creds.split('\n')]
-
+            org_code, phone_no, access_token = [cred.strip() for cred in creds.split('\n')]
+            
             if org_code.isalpha() and phone_no.isdigit() and len(phone_no) == 10:
                 res = session.get(f'{api}/orgs/{org_code}')
 
