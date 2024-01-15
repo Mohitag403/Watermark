@@ -3,9 +3,11 @@ import json, asyncio
 import subprocess
 import datetime
 from pyromod import listen
+from Downloader import app
+from config import SUDO_USERS
 from pyrogram import filters, idle
 from subprocess import getstatusoutput
-from Downloader import app
+
 
 
 
@@ -72,8 +74,8 @@ def get_course_content(session, course_id, folder_id=0):
 
 
 
-@app.on_message(filters.command(["classplus"]))
-async def cp_txt(app, message):   
+@app.on_message(filters.command(["classplus"])& filters.user(SUDO_USERS))
+async def classplus_txt(app, message):   
 
     headers = {
         'accept-encoding': 'gzip',
@@ -94,17 +96,18 @@ async def cp_txt(app, message):
     api = 'https://api.classplusapp.com/v2'
 
     try:
-        reply = await message.reply_text("SEND YOUR CREDENTIALS AS SHOWN BELOW\n\nORGANISATION CODE:\n\nPHONE NUMBER:\n\nACCESS TOKEN:")
+        editable = await message.reply_text("SEND YOUR CREDENTIALS AS SHOWN BELOW\n\nORGANISATION CODE:\n\nPHONE NUMBER:\n\nACCESS TOKEN:")
+        input : message = await app.listen(editable.chat.id)
 
-        creds = reply.text
+        creds = input.text
         session = requests.Session()
         session.headers.update(headers)
 
         logged_in = False
 
         if '\n' in creds:
-            org_code, phone_no, access_token = [cred.strip() for cred in creds.split('\n')]
-            
+            org_code, phone_no = [cred.strip() for cred in creds.split('\n')]
+
             if org_code.isalpha() and phone_no.isdigit() and len(phone_no) == 10:
                 res = session.get(f'{api}/orgs/{org_code}')
 
@@ -129,10 +132,11 @@ async def cp_txt(app, message):
 
                         session_id = res['data']['sessionId']
 
-                        reply = await app.ask(message.chat.id, "Send your otp")
+                        editable = await message.reply_text("Send your otp ")
+                        user_otp : message = await app.listen(editable.chat.id)
 
-                        if reply.text.isdigit():
-                            otp = reply.text.strip()
+                        if user_otp.text.isdigit():
+                            otp = user_otp.text.strip()
 
                             data = {
                                 'otp'          : otp,
@@ -152,7 +156,7 @@ async def cp_txt(app, message):
                                 token = res['data']['token']
                                 session.headers['x-access-token'] = token
 
-                                reply = await app.ask(message.chat.id, f"Your access token for future uses -\n\n{token}")
+                                await message.reply_text(f"Your access token for future uses -\n\n{token}")
                                 
                                 logged_in = True
 
@@ -202,18 +206,19 @@ async def cp_txt(app, message):
                         name = course['name']
                         text += f'{cnt + 1}. {name}\n'
 
-                    reply = await app.ask(message.chat.id, f"send index number of the course to download\n\n{text}")
+                    editable = await message.reply_text(f"send index number of the course to download\n\n{text}")
+                    num : message = await app.listen(editable.chat.id)
                         
-                    if reply.text.isdigit() and len(reply.text) <= len(courses):
+                    if num.text.isdigit() and len(num.text) <= len(courses):
 
-                        selected_course_index = int(reply.text.strip())
+                        selected_course_index = int(num.text.strip())
 
                         course = courses[selected_course_index - 1]
 
                         selected_course_id = course['id']
                         selected_course_name = course['name']
 
-                        msg  = await reply.edit("Extracting your course")
+                        msg  = await message.reply_text("Now your extracting your course")
                             
 
                         course_content = get_course_content(session, selected_course_id)
