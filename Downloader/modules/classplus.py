@@ -228,7 +228,7 @@ async def classplus_txt(app, message):
 
                             caption = (f"App Name : Classplus\nBatch Name : {selected_course_name}")
 
-                            text_file = f'assets/{get_datetime_str()}.txt'
+                            text_file = f'./downloads/{get_datetime_str()}.txt'
                             open(text_file, 'w').writelines(course_content)
 
                             await app.send_document(message.chat.id, text_file, caption=caption,
