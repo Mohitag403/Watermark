@@ -230,10 +230,11 @@ async def classplus_txt(app, message):
 
                             cp = "classplus"
                   #          open(text_file, 'w').writelines(course_content)
-                            with open(f'{cp}.txt') as f:
+                            with open(f'{cp}.txt', 'wb') as f:
                                     f.write(course_content)
-                            text_file = f"{cp}.txt"
-                            await app.send_document(message.chat.id, text_file, caption=caption,
+                            
+                            with open(f'{cp}.txt', 'rb') as text_file:
+                                await app.send_document(message.chat.id, text_file, caption=caption,
                                 file_name=f"{selected_course_name}.txt",
                             )
 
