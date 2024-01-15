@@ -6,7 +6,7 @@ from aiohttp import ClientSession
 from pyromod import listen
 from subprocess import getstatusoutput
 from Downloader import app
-from Downloader.modules import helper
+from Downloader.core import helper
 from pyrogram import filters
 from pyrogram.errors import FloodWait
 
