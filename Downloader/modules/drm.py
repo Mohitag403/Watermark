@@ -6,6 +6,7 @@ import shutil
 import xml.etree.ElementTree as ET
 from fileinput import filename
 from pyrogram import filters
+from config import SUDO_USERS
 from Downloader.core.drmhelper import upload_tg
 from Downloader import app
 
@@ -61,7 +62,7 @@ async def link_key(pssh_url):
 
 # --------------------------- DRM--DL ----------------------------------------------------------------------- #
 
-@app.on_message(filters.command("drm"))
+@app.on_message(filters.command("drm") & filters.user(SUDO_USERS))
 async def drm(_, message):
     path = f"/drmdownloads/{message.chat.id}"
     tPath = f"/drmdownloads/THUMB/{message.chat.id}"
@@ -166,9 +167,10 @@ async def drm(_, message):
             os.remove(f"{path}/video.mp4")
             os.remove(f"{path}/audio.m4a")
             filename = f"{path}/{name}.mp4"
-            UL = upload_tg(_, message, name=name, file_path=filename, path=path,
+            await message.reply_text("........")    
+            lol = upload_tg(_, message, name=name, file_path=filename, path=path,
                                    Thumb=Thumb, show_msg=prog, caption=cc)            
-            await UL.upload_video()
+            await lol.upload_video()
             await prog.delete(True)
 
             if os.path.exists(tPath):
