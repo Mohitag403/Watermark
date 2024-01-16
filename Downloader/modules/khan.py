@@ -78,7 +78,7 @@ async def khan_login(_, message):
         if len(f'{cool}{aa}') > 4096:
             cool = ""
         cool += aa
-    print(cool)
+    
     await editable.edit(f"**You have these batches :-**\n\n{FFF}\n\n{cool}")
     
     editable = await message.reply_text("**Now send the Batch ID to Download**")
