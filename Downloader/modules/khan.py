@@ -98,7 +98,7 @@ async def khan_login(_, message):
     await editable.edit(f"**Send the Subject id :-**\n\n`{vj}`")
     input4 : message = await _.listen(editable.chat.id)
     raw_text4 = input4.text
-    response02 = s.get(f'https://api.penpencil.xyz/v2/batches/{raw_text3}/subject/{raw_text4}/topics?page=1', headers=headers).json()["data"]
+    response02 = s.get(f'https://api.penpencil.xyz/v2/batches/{raw_text3}/subject/{raw_text4}/topics?page=1', headers=headers).json() 
     print(response02)
     
     cool2 = ""
