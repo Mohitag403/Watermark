@@ -63,7 +63,7 @@ async def neetkaka_login(_, message):
             print(aa)
             cool = ""
         cool += aa
-    await editable.edit(f'{"**You have these batches :-"}\n\n{cool}')
+    await editable.edit(f'{"**You have these batches :-"}\n\n{FFF}\n\n{cool}')
     editable = await message.reply_text("**Now send the Batch ID to Download**")
     input2: message = await _.listen(editable.chat.id)
     raw_text2 = input2.text
@@ -98,7 +98,7 @@ async def neetkaka_login(_, message):
         t_name = data["topic_name"]
         tid = data["topicid"]
         zz = len(tid)
-        BBB = f"**TOPIC-ID    - TOPIC     - VIDEOS**\n"
+        BBB = f"{'**TOPIC-ID    - TOPIC     - VIDEOS**'}\n"
         hh = f'`{tid}`     - **{t_name} - ({zz})**\n'
     
         vj += f"{tid}&"
