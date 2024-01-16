@@ -92,7 +92,7 @@ async def neetkaka_login(_, message):
 
     vj = ""
     vp = ""
-    cool1 = ""
+    lol = ""
 
     BBB = '**TOPIC-ID    - TOPIC     - VIDEOS**\n'
 
@@ -105,13 +105,13 @@ async def neetkaka_login(_, message):
         vj += f"{tid}&"
         vp += f"{t_name}&"
     
-        if len(f'{cool1}{hh}') > 4096:
-            await message.reply_text(f'{BBB}\n\n{cool1}')
-            cool1 = ""
+        if len(f'{lol}{hh}') > 4096:
+            await message.reply_text(f'{BBB}\n\n{lol}')
+            lol = ""
     
-        cool1 += hh
+        lol += hh
 
-    await message.reply_text(f'{BBB}\n\n{cool1}')
+    await message.reply_text(f'{BBB}\n\n{lol}')
 
     editable = await message.reply_text(f"Now send the **Topic IDs** to Download\n\nSend like this **1&2&3&4** so on\nor copy paste or edit **below ids** according to you :\n\n**Enter this to download full batch :-**\n```{vj}```")
     input4: message = await _.listen(editable.chat.id)
