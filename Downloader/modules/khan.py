@@ -72,12 +72,13 @@ async def account_login(_, message):
     cool = ""
     mm = "KhanSir"
     for data in response:
-        FFF = "{'**BATCH-ID  -  BATCH NAME**'}"
+        FFF = "**BATCH-ID  -  BATCH NAME**"
         aa = f" ```{data['_id']}```      - **{data['name']}**\n\n"
 
         if len(f'{cool}{aa}') > 4096:
             cool = ""
         cool += aa
+    print(cool)
     await editable.edit(f'{"**You have these batches :-**"}\n\n{FFF}\n\n{cool}')
     
     editable = await message.reply_text("**Now send the Batch ID to Download**")
