@@ -76,8 +76,8 @@ async def account_login(_, message):
             cool = ""
         cool += aa
     await editable.edit(f'{"**You have these batches :-**"}\n\n{FFF}\n\n{cool}')
-    editable1 = await message.reply_text("**Now send the Batch ID to Download**")
-    input2 = message = await _.listen(editable.chat.id)
+    editable = await message.reply_text("**Now send the Batch ID to Download**")
+    input2 : message = await _.listen(editable.chat.id)
     raw_text2 = input2.text
 
     scraper = cloudscraper.create_scraper()
@@ -87,8 +87,8 @@ async def account_login(_, message):
     await message.reply_text(subjID)
     
 
-    editable1 = await message.reply_text("**Enter the Subject Id Show in above Response")
-    input3 = message = await _.listen(editable.chat.id)
+    editable = await message.reply_text("**Enter the Subject Id Show in above Response")
+    input3 : message = await _.listen(editable.chat.id)
     raw_text3 = input3.text
 
     res3 = requests.get("https://rozgarapinew.teachx.in/get/alltopicfrmlivecourseclass?courseid=" + raw_text2,"&subjectid=" + raw_text3, headers=hdr1)
@@ -126,12 +126,12 @@ async def account_login(_, message):
         cool1 += hh
     await message.reply_text(f'Batch details of **{t_name}** are:\n\n{BBB}\n\n{cool1}')
 
-    editable= await message.reply_text(f"Now send the **Topic IDs** to Download\n\nSend like this **1&2&3&4** so on\nor copy paste or edit **below ids** according to you :\n\n**Enter this to download full batch :-**\n```{vj}```")
-    input4 = message = await _.listen(editable.chat.id)
+    editable = await message.reply_text(f"Now send the **Topic IDs** to Download\n\nSend like this **1&2&3&4** so on\nor copy paste or edit **below ids** according to you :\n\n**Enter this to download full batch :-**\n```{vj}```")
+    input4 : message = await _.listen(editable.chat.id)
     raw_text4 = input4.text
 
-    editable3 = await message.reply_text("**Now send the Resolution**")
-    input5 = message = await _.listen(editable.chat.id)
+    editable = await message.reply_text("**Now send the Resolution**")
+    input5 : message = await _.listen(editable.chat.id)
     raw_text5 = input5.text
     try:
         xv = raw_text4.split('&')
