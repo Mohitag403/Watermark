@@ -17,7 +17,7 @@ async def account_login(_, message):
     editable = await message.reply_text(
         "Send **ID & Password** in this manner otherwise bot will not respond.\n\nSend like this:-  **ID*Password**")
     rwa_url = "https://api.penpencil.xyz/v1/oauth/token"  
-    input1: Message = await _.listen(editable.chat.id)
+    input1: message = await _.listen(editable.chat.id)
     raw_text = input1.text
     
     headers = {
@@ -49,7 +49,7 @@ async def account_login(_, message):
         token = data["data"]["access_token"]
         await editable.edit(f"**Login Successful:** ```{token}```")
     else:
-         await m.reply_text("Go back to response")
+         await message.reply_text("Go back to response")
     headers = {
             'Host': 'api.penpencil.xyz',
             'authorization': f"Bearer {token}",
@@ -80,8 +80,8 @@ async def account_login(_, message):
         cool += aa
     await editable.edit(f'{"**You have these batches :-**"}\n\n{FFF}\n\n{cool}')
     
-    editable1= await message.reply_text("**Now send the Batch ID to Download**")
-    input3 = message = await _.listen(editable.chat.id)
+    editable = await message.reply_text("**Now send the Batch ID to Download**")
+    input3 : message = await _.listen(editable.chat.id)
     raw_text3 = input3.text
     response2 = s.get(f'https://api.penpencil.xyz/v3/batches/{raw_text3}/details', headers=headers).json()["data"]
     response3 = s.get(f'https://api.penpencil.xyz/v3/batches/{raw_text3}/details', headers=headers).json()["data"]["subjects"]
@@ -94,8 +94,8 @@ async def account_login(_, message):
         if len(f"{vj}{idid}")>4096:
             vj = ""
         vj+=tids
-    await editable1.edit(f"**Send the Subject id :-**\n```{vj}```")
-    input4 = message = await _.listen(editable.chat.id)
+    await editable.edit(f"**Send the Subject id :-**\n```{vj}```")
+    input4 : message = await _.listen(editable.chat.id)
     raw_text4 = input4.text
     response02 = s.get(f'https://api.penpencil.xyz/v2/batches/{raw_text3}/subject/{raw_text4}/topics?page=1', headers=headers).json()["data"]
     
@@ -109,8 +109,8 @@ async def account_login(_, message):
             vj = ""
         vj+= idid     
         cool2 += aa
-    await editable1.edit(f'{"**You have these Subjects in this Batch:-**"}\n\n{FF}\n\n{cool2}')
-    editable2 = await message.reply_text(f"**Enter this to download full batch :-**\n```{vj}```")
+    await editable.edit(f'{"**You have these Subjects in this Batch:-**"}\n\n{FF}\n\n{cool2}')
+    editable = await message.reply_text(f"**Enter this to download full batch :-**\n```{vj}```")
     input5: message = await _.listen(editable.chat.id)
     raw_text5 = input5.text
     xv = raw_text5.split('&')
