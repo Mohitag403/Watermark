@@ -110,6 +110,7 @@ async def neetkaka_login(_, message):
             lol = ""
     
         lol += hh
+    print(f"{BBB}\n\n{lol}")
 
     await message.reply_text(f'{BBB}\n\n{lol}')
 
