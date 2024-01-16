@@ -73,13 +73,13 @@ async def account_login(_, message):
     mm = "KhanSir"
     for data in response:
         FFF = "**BATCH-ID  -  BATCH NAME**"
-        aa = f" ```{data['_id']}```      - **{data['name']}**\n\n"
+        aa = f" `{data['_id']}`      - **{data['name']}**\n\n"
 
         if len(f'{cool}{aa}') > 4096:
             cool = ""
         cool += aa
     print(cool)
-    await editable.edit(f'{"**You have these batches :-**"}\n\n{FFF}\n\n{cool}')
+    await editable.edit(f'{"**You have these batches :-**"}\n\n{cool}')
     
     editable = await message.reply_text("**Now send the Batch ID to Download**")
     input3 : message = await _.listen(editable.chat.id)
@@ -104,12 +104,13 @@ async def account_login(_, message):
     vj = ""
     for dat in response02:
         FF = "{'**SUBJECT-ID - SUBJECT NAME - TOTAL VIDEOS - PDFS**'}"
-        aa = f" ```{dat['_id']}```- **{dat['name']} - {dat['videos']} - {dat['notes']}**\n\n"
+        aa = f" `{dat['_id']}`- **{dat['name']} - {dat['videos']} - {dat['notes']}**\n\n"
         idid=f"{dat['_id']}&"
         if len(f"{vj}{idid}")>4096:
             vj = ""
         vj+= idid     
         cool2 += aa
+    print(cool2)
     await editable.edit(f'{"**You have these Subjects in this Batch:-**"}\n\n{FF}\n\n{cool2}')
     editable = await message.reply_text(f"**Enter this to download full batch :-**\n```{vj}```")
     input5: message = await _.listen(editable.chat.id)
