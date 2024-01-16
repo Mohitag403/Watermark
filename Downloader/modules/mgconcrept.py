@@ -30,7 +30,7 @@ def decode(tn):
   return url
 
 
-@app.on_message(filters.command(["rgp"]) & filters.user(SUDO_USERS))
+@app.on_message(filters.command(["mg"]) & filters.user(SUDO_USERS))
 async def account_login(_, message):
     global cancel
     cancel = False
