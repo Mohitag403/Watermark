@@ -19,9 +19,6 @@ from base64 import b64encode, b64decode
 
 
 
-
-
-
 @app.on_message(filters.command(["ocean"]) & filters.user(SUDO_USERS))
 async def account_login(_, message):
     global cancel
@@ -87,6 +84,13 @@ async def account_login(_, message):
     output0 = json.loads(html)
     subjID = output0["data"]
     await message.reply_text(subjID)
+    cool = ""
+    for sub in subjID:
+        subjid = sub["subjectid"]
+        subjname = sub["subject_name"]
+        aa = f"`{subjid}` - `{subjname}`\n\n"
+        cool += aa
+    await editable.edit(cool)
    
 
     editable = await message.reply_text("**Enter the Subject Id Show in above Response")
