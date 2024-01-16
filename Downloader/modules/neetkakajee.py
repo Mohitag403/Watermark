@@ -111,7 +111,7 @@ async def neetkaka_login(_, message):
     
         cool1 += hh
 
-        await message.reply_text(f'{BBB}\n\n{cool1}')
+    await message.reply_text(f'{BBB}\n\n{cool1}')
 
     editable = await message.reply_text(f"Now send the **Topic IDs** to Download\n\nSend like this **1&2&3&4** so on\nor copy paste or edit **below ids** according to you :\n\n**Enter this to download full batch :-**\n```{vj}```")
     input4: message = await _.listen(editable.chat.id)
