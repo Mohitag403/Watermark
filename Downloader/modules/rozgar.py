@@ -84,7 +84,13 @@ async def account_login(_, message):
     html = scraper.get("https://rozgarapinew.teachx.in/get/allsubjectfrmlivecourseclass?courseid=" + raw_text2,headers=hdr1).content
     output0 = json.loads(html)
     subjID = output0["data"]
-    await message.reply_text(subjID)
+    cool = ""
+    for sub in subjID:
+        subjid = sub["subjectid"]
+        subjname = sub["subject_name"]
+        aa = f"`{subjid}` - `{subjname}`\n\n"
+        cool += aa
+    await editable.edit(cool)
     
 
     editable = await message.reply_text("**Enter the Subject Id Show in above Response")
