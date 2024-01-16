@@ -85,7 +85,7 @@ async def account_login(_, message):
     editable1 = await message.reply_text("**Now send the Batch ID to Download**")
     input2: message = await _.listen(editable1.chat.id)
     raw_text2 = input2.text
-    await input2.delete(True)
+    
     await editable1.delete(True)
     html = scraper.get("https://mgconceptapi.classx.co.in/get/course_by_id?id=" + raw_text2,headers=hdr1).json()
     course_title = html["data"][0]["course_name"]
@@ -103,10 +103,11 @@ async def account_login(_, message):
       cool += aa
       vj += idid
     await editable.edit(cool)
+  
     editable = await message.reply_text(f"Now send the **Topic IDs** to Download\n\nSend like this **1&2&3&4** so on\nor copy paste or edit **below ids** according to you :\n\n**Enter this to download full batch :-**\n```{vj}```")
     input3: message = await _.listen(editable.chat.id)
     raw_text3 = input3.text
-    await input3.delete(True)
+    
     await editable.delete(True)
     prog = await editable.edit("**Extracting Videos Links Please Wait  📥 **")
     try:
