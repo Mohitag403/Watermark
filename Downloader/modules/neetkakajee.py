@@ -105,8 +105,9 @@ async def neetkaka_login(_, message):
         if len(f'{cool1}{hh}') > 4096:
             cool1 = ""
         cool1 += hh
-        print(cool1)
-    await message.reply_text(f'**{BBB}\n\n{cool1}**')
+        
+        
+    await editable.edit_text(f'**{BBB}\n\n{cool1}**')
 
     editable = await message.reply_text(f"Now send the **Topic IDs** to Download\n\nSend like this **1&2&3&4** so on\nor copy paste or edit **below ids** according to you :\n\n**Enter this to download full batch :-**\n```{vj}```")
     input4: message = await _.listen(editable.chat.id)
