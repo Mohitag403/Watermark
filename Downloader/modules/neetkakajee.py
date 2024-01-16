@@ -108,7 +108,7 @@ async def neetkaka_login(_, message):
     
         lol += hh
     
-    await message.reply_text(f"**TOPIC-ID    - TOPIC     - VIDEOS**\n\n{lol}")
+    await message.reply_text(f"Batch details of **{t_name}** are:\n**TOPIC-ID    - TOPIC     - VIDEOS**\n\n{lol}")
 
     
     editable = await message.reply_text(f"Now send the **Topic IDs** to Download\n\nSend like this **1&2&3&4** so on\nor copy paste or edit **below ids** according to you :\n\n**Enter this to download full batch :-**\n```{vj}```")
