@@ -92,9 +92,7 @@ async def neetkaka_login(_, message):
 
     vj = ""
     vp = ""
-    lol = ""
-
-    BBB = '**TOPIC-ID    - TOPIC     - VIDEOS**\n'
+    lol = ""   
 
     for data in b_data2:
         t_name = data["topic_name"]
@@ -106,12 +104,11 @@ async def neetkaka_login(_, message):
         vp += f"{t_name}&"
     
         if len(f'{lol}{hh}') > 4096:
-            await message.reply_text(f'{BBB}\n\n{lol}')
             lol = ""
     
         lol += hh
-    print(f"{BBB}\n\n{lol}")
-    await message.reply_text(f"{lol}")
+    
+    await message.reply_text(f"**TOPIC-ID    - TOPIC     - VIDEOS**\n\n{lol}")
 
     
     editable = await message.reply_text(f"Now send the **Topic IDs** to Download\n\nSend like this **1&2&3&4** so on\nor copy paste or edit **below ids** according to you :\n\n**Enter this to download full batch :-**\n```{vj}```")
