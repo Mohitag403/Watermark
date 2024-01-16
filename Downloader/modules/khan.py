@@ -79,7 +79,7 @@ async def account_login(_, message):
             cool = ""
         cool += aa
     print(cool)
-    await editable.edit(f'{"**You have these batches :-**"}\n\n{cool}')
+    await editable.edit(f"**You have these batches :-**{FFF}\n\n{cool}")
     
     editable = await message.reply_text("**Now send the Batch ID to Download**")
     input3 : message = await _.listen(editable.chat.id)
@@ -95,15 +95,16 @@ async def account_login(_, message):
         if len(f"{vj}{idid}")>4096:
             vj = ""
         vj+=tids
-    await editable.edit(f"**Send the Subject id :-**\n```{vj}```")
+    await editable.edit(f"**Send the Subject id :-**\n`{vj}`")
     input4 : message = await _.listen(editable.chat.id)
     raw_text4 = input4.text
     response02 = s.get(f'https://api.penpencil.xyz/v2/batches/{raw_text3}/subject/{raw_text4}/topics?page=1', headers=headers).json()["data"]
     
     cool2 = ""
     vj = ""
-    for dat in response02:
-        FF = "{'**SUBJECT-ID - SUBJECT NAME - TOTAL VIDEOS - PDFS**'}"
+    FF = "{'**SUBJECT-ID - SUBJECT NAME - TOTAL VIDEOS - PDFS**'}"
+    
+    for dat in response02:      
         aa = f" `{dat['_id']}`- **{dat['name']} - {dat['videos']} - {dat['notes']}**\n\n"
         idid=f"{dat['_id']}&"
         if len(f"{vj}{idid}")>4096:
@@ -111,8 +112,8 @@ async def account_login(_, message):
         vj+= idid     
         cool2 += aa
     print(cool2)
-    await editable.edit(f'{"**You have these Subjects in this Batch:-**"}\n\n{FF}\n\n{cool2}')
-    editable = await message.reply_text(f"**Enter this to download full batch :-**\n```{vj}```")
+    await editable.edit(f"**You have these Subjects in this Batch:-**\n\n{FF}\n\n{cool2}")
+    editable = await message.reply_text(f"**Enter this to download full batch :-**\n`{vj}`")
     input5: message = await _.listen(editable.chat.id)
     raw_text5 = input5.text
     xv = raw_text5.split('&')
