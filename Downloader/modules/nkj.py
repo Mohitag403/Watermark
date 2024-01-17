@@ -142,7 +142,7 @@ async def neetkaka_login(_, message):
 
             topicid = res4["data"]
 
-        await message.reply_text(topicid)
+#        await message.reply_text(topicid)
         with open(f'{mm}.txt', 'a') as f:
             f.write(f"{topicid}")
         await message.reply_document(f"{mm}.txt") 
