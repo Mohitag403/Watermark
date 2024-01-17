@@ -147,7 +147,7 @@ async def neetkaka_login(_, message):
             f.write(f"{topicid}")
         await message.reply_document(f"{mm}.txt") 
         filepath = "{mm}.txt"
-        os.remove(filepath}       
+        os.remove(filepath)     
     except Exception as e:
         await message.reply_text(str(e))
     await message.reply_text("Done")
