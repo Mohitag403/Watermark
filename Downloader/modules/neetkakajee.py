@@ -1,11 +1,12 @@
 import json
+import os
 import requests
 from pyrogram import filters
 from pyromod import listen
 import cloudscraper
 from Crypto.Cipher import AES
 from Crypto.Util.Padding import unpad
-from base64 import b64decode
+import base64
 from Downloader import app
 from config import SUDO_USERS
 
@@ -121,6 +122,10 @@ async def neetkaka_login(_, message):
     raw_text5 = input5.text
     try:
         xv = raw_text4.split('&')
+        vj = ""
+        vp = ""
+        vs = ""
+        cool2 = ""
         for y in range(0,len(xv)):
             t =xv[y]
 
@@ -135,7 +140,7 @@ async def neetkaka_login(_, message):
             res4 = requests.get(f"https://neetkakajeeapi.classx.co.in/get/livecourseclassbycoursesubtopconceptapiv3?topicid=" + t + "&start=-1&courseid=" + raw_text2 + "&subjectid=" + raw_text3,headers=hdr11).json()
 
             topicid = res4["data"]
-            vj = ""
+
             for data in topicid:
                 tids = data["Title"]
                 idid = f"{tids}"
@@ -143,21 +148,20 @@ async def neetkaka_login(_, message):
                     vj = ""
                 vj += idid
 
-            vp = ""
             for data in topicid:
                 tn = data["download_link"]
                 tns = f"{tn}"
                 if len(f"{vp}{tn}") > 4096:
                     vp = ""
                 vp += tn
-            vs = ""
+
             for data in topicid:
                 tn0 = data["pdf_link"]
                 tns0 = f"{tn0}"
                 if len(f"{vs}{tn0}") > 4096:
                     vs = ""
                 vs += tn0
-            cool2 = ""
+
             for data in topicid:
                 if data["download_link"]:
                     b64 = data["download_link"]
@@ -167,7 +171,7 @@ async def neetkaka_login(_, message):
                 zz = len(tid)
                 key = "638udh3829162018".encode("utf8")
                 iv = "fedcba9876543210".encode("utf8")
-                ciphertext = bytearray.fromhex(b64decode(b64.encode()).hex())
+                ciphertext = bytearray.fromhex(base64.b64decode(b64.encode()).hex())
                 cipher = AES.new(key, AES.MODE_CBC, iv)
                 plaintext = unpad(cipher.decrypt(ciphertext), AES.block_size)
                 b=plaintext.decode('utf-8')
@@ -178,8 +182,10 @@ async def neetkaka_login(_, message):
                 mm = "NeetKakajee"
                 
                 with open(f'{mm}.txt', 'a') as f:
-                    f.write(f"{tid}:{b}\n")
-                await message.reply_document(f"{mm}.txt")
+                    f.write(f"{cool2}\n")
+            await message.reply_document(f"{mm}.txt")
+            file_path = f"{mm}.txt"
+            os.remove(file_path)
     except Exception as e:
         await message.reply_text(str(e))
     await message.reply_text("Done")
