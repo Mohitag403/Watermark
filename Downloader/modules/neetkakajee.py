@@ -145,21 +145,21 @@ async def neetkaka_login(_, message):
             for data in topicid:
                 tids = data["Title"]
                 idid = f"{tids}"
-                if len(f"{vj}{idid}") > 4096:
+                if len(f"{vk}{idid}") > 4096:
                     vk = ""
                 vk += idid
 
             for data in topicid:
                 tn = data["download_link"]
                 tns = f"{tn}"
-                if len(f"{vp}{tn}") > 4096:
+                if len(f"{vm}{tn}") > 4096:
                     vm = ""
                 vm += tn
 
             for data in topicid:
                 tn0 = data["pdf_link"]
                 tns0 = f"{tn0}"
-                if len(f"{vs}{tn0}") > 4096:
+                if len(f"{vn}{tn0}") > 4096:
                     vn = ""
                 vn += tn0
                 
