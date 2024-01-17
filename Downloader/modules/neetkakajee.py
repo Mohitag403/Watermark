@@ -112,7 +112,7 @@ async def neetkaka_login(_, message):
     await message.reply_text(f"Batch details of **{t_name}** are:\n\n{BBB}\n\n{lol}")
 
     
-    editable = await message.reply_text(f"Now send the **Topic IDs** to Download\n\nSend like this **1&2&3&4** so on\nor copy paste or edit **below ids** according to you :\n\n**Enter this to download full batch :-**\n```{vj}```")
+    editable = await message.reply_text(f"Now send the **Topic IDs** to Download\n\nSend like this **1&2&3&4** so on\nor copy paste or edit **below ids** according to you :\n\n**Enter this to download full batch :-**\n{vj}")
     input4: message = await _.listen(editable.chat.id)
     raw_text4 = input4.text
 
@@ -137,7 +137,7 @@ async def neetkaka_login(_, message):
             topicid = res4["data"]
             vj = ""
             for data in topicid:
-                tids = (data["Title"])
+                tids = data["Title"]
                 idid = f"{tids}"
                 if len(f"{vj}{idid}") > 4096:
                     vj = ""
@@ -145,14 +145,14 @@ async def neetkaka_login(_, message):
 
             vp = ""
             for data in topicid:
-                tn = (data["download_link"])
+                tn = data["download_link"]
                 tns = f"{tn}"
                 if len(f"{vp}{tn}") > 4096:
                     vp = ""
                 vp += tn
             vs = ""
             for data in topicid:
-                tn0 = (data["pdf_link"])
+                tn0 = data["pdf_link"]
                 tns0 = f"{tn0}"
                 if len(f"{vs}{tn0}") > 4096:
                     vs = ""
@@ -160,10 +160,10 @@ async def neetkaka_login(_, message):
             cool2 = ""
             for data in topicid:
                 if data["download_link"]:
-                    b64 = (data["download_link"])
+                    b64 = data["download_link"]
                 else:
-                    b64 = (data["pdf_link"])
-                tid = (data["Title"])
+                    b64 = data["pdf_link"]
+                tid = data["Title"]
                 zz = len(tid)
                 key = "638udh3829162018".encode("utf8")
                 iv = "fedcba9876543210".encode("utf8")
