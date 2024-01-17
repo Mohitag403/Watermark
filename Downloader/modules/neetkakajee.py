@@ -6,7 +6,7 @@ from pyromod import listen
 import cloudscraper
 from Crypto.Cipher import AES
 from Crypto.Util.Padding import unpad
-import base64
+from base64 import b64decode
 from Downloader import app
 from config import SUDO_USERS
 
@@ -122,10 +122,11 @@ async def neetkaka_login(_, message):
     raw_text5 = input5.text
     try:
         xv = raw_text4.split('&')
-        vj = ""
-        vp = ""
-        vs = ""
-        cool2 = ""
+        vk = ""
+        vm = ""
+        vn = ""
+        mm = "NeetKakajee"
+
         for y in range(0,len(xv)):
             t =xv[y]
 
@@ -137,7 +138,7 @@ async def neetkaka_login(_, message):
                     "Authorization": token
                     }
 
-            res4 = requests.get(f"https://neetkakajeeapi.classx.co.in/get/livecourseclassbycoursesubtopconceptapiv3?topicid=" + t + "&start=-1&courseid=" + raw_text2 + "&subjectid=" + raw_text3,headers=hdr11).json()
+            res4 = requests.get(f"https://neetkakajeeapi.classx.co.in/get/livecourseclassbycoursesubtopconceptapiv3?topicid="+ t+"&start=-1&courseid="+raw_text2+"&subjectid="+raw_text3,headers=hdr11).json()
 
             topicid = res4["data"]
 
@@ -145,44 +146,25 @@ async def neetkaka_login(_, message):
                 tids = data["Title"]
                 idid = f"{tids}"
                 if len(f"{vj}{idid}") > 4096:
-                    vj = ""
-                vj += idid
+                    vk = ""
+                vk += idid
 
             for data in topicid:
                 tn = data["download_link"]
                 tns = f"{tn}"
                 if len(f"{vp}{tn}") > 4096:
-                    vp = ""
-                vp += tn
+                    vm = ""
+                vm += tn
 
             for data in topicid:
                 tn0 = data["pdf_link"]
                 tns0 = f"{tn0}"
                 if len(f"{vs}{tn0}") > 4096:
-                    vs = ""
-                vs += tn0
-
-            for data in topicid:
-                if data["download_link"]:
-                    b64 = data["download_link"]
-                else:
-                    b64 = data["pdf_link"]
-                tid = data["Title"]
-                zz = len(tid)
-                key = "638udh3829162018".encode("utf8")
-                iv = "fedcba9876543210".encode("utf8")
-                ciphertext = bytearray.fromhex(base64.b64decode(b64.encode()).hex())
-                cipher = AES.new(key, AES.MODE_CBC, iv)
-                plaintext = unpad(cipher.decrypt(ciphertext), AES.block_size)
-                b=plaintext.decode('utf-8')
-                cc0 = (f"{tid}:{b}")
-                if len(f'{cool2}{cc0}') > 4096:
-                    cool2 = ""
-                cool2 += cc0
-                mm = "NeetKakajee"
+                    vn = ""
+                vn += tn0
                 
-                with open(f'{mm}.txt', 'a') as f:
-                    f.write(f"{cool2}\n")
+            with open(f'{mm}.txt', 'a') as f:
+                f.write(f"{vk} : {vm}\n {vn}")
             await message.reply_document(f"{mm}.txt")
             file_path = f"{mm}.txt"
             os.remove(file_path)
