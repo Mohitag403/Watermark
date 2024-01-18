@@ -168,7 +168,7 @@ async def neetkaka_login(_, message):
                 zz = len(tid)
                 key = "638udh3829162018".encode("utf8")
                 iv = "fedcba9876543210".encode("utf8")
-                ciphertext = base64.b64decode(b64)
+                ciphertext = b64decode(b64)
                 cipher = AES.new(key, AES.MODE_CBC, iv)
                 plaintext = unpad(cipher.decrypt(ciphertext), AES.block_size)
                 b=plaintext.decode('utf-8')
