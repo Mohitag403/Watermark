@@ -10,6 +10,11 @@ from base64 import b64decode
 from Downloader import app
 from config import SUDO_USERS
 
+def decrypt_data(encoded_data, key, iv):
+    decoded_data = b64decode(encoded_data)
+    cipher = AES.new(key, AES.MODE_CBC, iv)
+    decrypted_data = unpad(cipher.decrypt(decoded_data), AES.block_size)
+    return decrypted_data.decode('utf-8')
 
 @app.on_message(filters.command(["nkj"]) & filters.user(SUDO_USERS))
 async def neetkaka_login(_, message):
@@ -161,17 +166,16 @@ async def neetkaka_login(_, message):
             cool2 = ""
             for data in topicid:
                 if data["download_link"]:
-                    b64 = (data["download_link"])
+                    b64s = (data["download_link"])
                 else:
-                    b64 = (data["pdf_link"])
+                    b64s = (data["pdf_link"])
                 tid = (data["Title"])
                 zz = len(tid)
                 key = "638udh3829162018".encode("utf8")
                 iv = "fedcba9876543210".encode("utf8")
-                ciphertext = b64decode(b64)
-                cipher = AES.new(key, AES.MODE_CBC, iv)
-                plaintext = unpad(cipher.decrypt(ciphertext), AES.block_size)
-                b=plaintext.decode('utf-8')
+                for b64 in b64s:
+                    encoded_part, encrypted_part = encoded_string.split(':')
+                    b = decrypt_data(encoded_part, key, iv)
                 cc0 = (f"{tid}:{b}")
                 if len(f'{cool2}{cc0}') > 4096:
                     cool2 = ""
