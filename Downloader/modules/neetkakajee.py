@@ -174,7 +174,7 @@ async def neetkaka_login(_, message):
                 key = "638udh3829162018".encode("utf8")
                 iv = "fedcba9876543210".encode("utf8")
                 for b64 in b64s:
-                    encoded_part, encrypted_part = encoded_string.split(':')
+                    encoded_part, encrypted_part = b64.split(':')
                     b = decrypt_data(encoded_part, key, iv)
                 cc0 = (f"{tid}:{b}")
                 if len(f'{cool2}{cc0}') > 4096:
