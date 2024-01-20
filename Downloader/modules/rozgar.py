@@ -56,7 +56,7 @@ async def rozgar_login(_, message):
     b_data = res1.json()['data']
     cool = ""
     
-    FFF = "BATCH-ID - BATCH NAME - INSTRUCTOR"   
+    FFF = "{'**BATCH-ID - BATCH NAME - INSTRUCTOR**'}"   
     for data in b_data:
         t_name =data['course_name']
         aa = f"**`{data['id']}`      - `{data['course_name']}`**\n\n"
