@@ -62,7 +62,7 @@ async def neetkaka_login(_, message):
         topic_ids, editable = await send_message_and_listen(message, "**Now send the Topic IDs to Download**\n"
                                                                      "Send like this 1&2&3&4 or copy-paste/edit below IDs")
         resolution, editable = await send_message_and_listen(message, "**Now send the Resolution**")
-        await download_topics(userid, token, batch_id, subj_id, topic_ids, resolution)
+        await download_topics(message, userid, token, batch_id, subj_id, topic_ids, resolution)
 
         await message.reply_text("Done")
 
@@ -113,7 +113,7 @@ def get_topic_data(batch_id, subj_id, hdr1):
         lol += hh
     return f"Batch details of **{t_name}** are:\n\n{BBB}\n\n{lol}"
 
-async def download_topics(userid, token, batch_id, subj_id, topic_ids, resolution):
+async def download_topics(message, userid, token, batch_id, subj_id, topic_ids, resolution):
     try:
         xv = topic_ids.split('&')
         for t in xv:
