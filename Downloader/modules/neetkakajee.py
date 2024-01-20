@@ -128,10 +128,7 @@ async def neetkaka_login(_, message):
             cool2 = ""
             for data in topicid:
                 tids = (data["Title"])
-                idid = f"{tids}"
-                if len(f"{vj}{idid}") > 4096:
-                    vj = ""
-                vj += idid  
+                vj = f"{tids}" 
 
                 plinks = [data["pdf_link"]]
                 key = "638udh3829162018".encode("utf8")
@@ -143,10 +140,7 @@ async def neetkaka_login(_, message):
                         bp = decrypt_data(encoded_part, key, iv)
                     else:
                         print(f"Unexpected format: {encoded_string}")
-                    b1 = f"{bp}"
-                    if len(f'{vs}{b1}') > 4096:
-                        vs = ""
-                    vs += b1
+                    vs = f"{bp}"
 
                 dlinks = [link['path'] for link in data['download_links'] if link['quality'] == f"{raw_text5}p"]
                 key = "638udh3829162018".encode("utf8")
@@ -158,9 +152,8 @@ async def neetkaka_login(_, message):
                         b = decrypt_data(encoded_part, key, iv)
                     else:
                         print(f"Unexpected format: {encoded_string}")
-                    if len(f'{cool2}{b}') > 4096:
-                        cool2 = ""
-                    cool2 += b
+                    cool2 = f"{b}"
+ 
             mm = "NEET Kaka JEE"     
             with open(f'{mm}.txt', 'a') as f:
                 f.write(f"{vj} : {cool2}\n {vs}")
