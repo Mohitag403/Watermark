@@ -148,7 +148,6 @@ async def neetkaka_login(_, message):
                 vs += tn0
             cool2 = ""
             for data in topicid:
-                if data["download_links"]:
                 encoded_strings = [next((data['path'] for data in data['download_links'] if data['quality'] == f"{raw_text5}p"), None)]
                 key = "638udh3829162018".encode("utf8")
                 iv = "fedcba9876543210".encode("utf8")
