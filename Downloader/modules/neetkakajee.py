@@ -16,13 +16,13 @@ AUTH_KEY = "appxapi"
 ENCRYPTION_KEY = "638udh3829162018"
 IV = "fedcba9876543210"
 
-def decrypt_data(encoded_data, key, iv):
+async def decrypt_data(encoded_data, key, iv):
     decoded_data = b64decode(encoded_data)
     cipher = AES.new(key.encode("utf8"), AES.MODE_CBC, iv.encode("utf8"))
     decrypted_data = unpad(cipher.decrypt(decoded_data), AES.block_size)
     return decrypted_data.decode('utf-8')
 
-def send_message_and_listen(message, text):
+async def send_message_and_listen(message, text):
     editable = await message.reply_text(text)
     input_msg = await app.listen(editable.chat.id)
     raw_text = input_msg.text
@@ -113,7 +113,7 @@ def get_topic_data(batch_id, subj_id, hdr1):
         lol += hh
     return f"Batch details of **{t_name}** are:\n\n{BBB}\n\n{lol}"
 
-def download_topics(userid, token, batch_id, subj_id, topic_ids, resolution):
+async def download_topics(userid, token, batch_id, subj_id, topic_ids, resolution):
     try:
         xv = topic_ids.split('&')
         for t in xv:
