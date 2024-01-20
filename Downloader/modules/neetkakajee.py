@@ -124,26 +124,20 @@ async def neetkaka_login(_, message):
             res4 = requests.get("https://neetkakajeeapi.classx.co.in/get/livecourseclassbycoursesubtopconceptapiv3?topicid=" + t + "&start=-1&courseid=" + raw_text2 + "&subjectid=" + raw_text3,headers=hdr11).json()
             topicid = res4["data"]
             vj = ""
+            vs = ""
+            cool2 = ""
             for data in topicid:
                 tids = (data["Title"])
                 idid = f"{tids}"
                 if len(f"{vj}{idid}") > 4096:
                     vj = ""
-                vj += idid
-            vp = ""
-            for data in topicid:
-                tn = (data["download_link"])
-                tns = f"{tn}"
-                if len(f"{vp}{tn}") > 4096:
-                    vp = ""
-                vp += tn
-            vs = ""
-            for data in topicid:
-                encoded_strings = [data["pdf_link"]]
+                vj += idid  
+
+                plinks = [data["pdf_link"]]
                 key = "638udh3829162018".encode("utf8")
                 iv = "fedcba9876543210".encode("utf8")
-                for encoded_string in encoded_strings:
-                    parts = encoded_string.split(':')
+                for plink in plinks:
+                    parts = plink.split(':')
                     if len(parts) == 2:
                         encoded_part, encrypted_part = parts
                         bp = decrypt_data(encoded_part, key, iv)
@@ -154,13 +148,11 @@ async def neetkaka_login(_, message):
                         vs = ""
                     vs += b1
 
-            cool2 = ""
-            for data in topicid:
-                encoded_strings = [link['path'] for link in data['download_links'] if link['quality'] == f"{raw_text5}p"]
+                dlinks = [link['path'] for link in data['download_links'] if link['quality'] == f"{raw_text5}p"]
                 key = "638udh3829162018".encode("utf8")
                 iv = "fedcba9876543210".encode("utf8")
-                for encoded_string in encoded_strings:
-                    parts = encoded_string.split(':')
+                for dlink in dlinks:
+                    parts = dlink.split(':')
                     if len(parts) == 2:
                         encoded_part, encrypted_part = parts
                         b = decrypt_data(encoded_part, key, iv)
