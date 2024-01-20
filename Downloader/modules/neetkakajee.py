@@ -71,7 +71,7 @@ async def neetkaka_login(_, message):
 
 # Helper functions
 
-async def get_headers(userid=None, token=None):
+def get_headers(userid=None, token=None):
     return {
         "Host": "neetkakajeeapi.classx.co.in",
         "Client-Service": "Appx",
@@ -80,7 +80,7 @@ async def get_headers(userid=None, token=None):
         "Authorization": token
     }
 
-async def get_batch_details(b_data):
+def get_batch_details(b_data):
     cool = ""
     FFF = "BATCH-ID - BATCH NAME - INSTRUCTOR"
     for data in b_data:
@@ -90,7 +90,7 @@ async def get_batch_details(b_data):
         cool += aa
     return f'{"**You have these batches :-"}\n\n{FFF}\n\n{cool}'
 
-async def get_subject_ids(batch_id, hdr1):
+def get_subject_ids(batch_id, hdr1):
     res = requests.get(API_URL + f"get/allsubjectfrmlivecourseclass?courseid={batch_id}", headers=hdr1).content
     output0 = json.loads(res)
     subjID = output0["data"]
@@ -101,7 +101,7 @@ async def get_subject_ids(batch_id, hdr1):
         cool += aa
     return cool
 
-async def get_topic_data(batch_id, subj_id, hdr1):
+def get_topic_data(batch_id, subj_id, hdr1):
     res = requests.get(API_URL + f"get/alltopicfrmlivecourseclass?courseid={batch_id}&subjectid={subj_id}", headers=hdr1)
     b_data2 = res.json()['data']
     lol = ""
