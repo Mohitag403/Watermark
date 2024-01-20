@@ -150,7 +150,7 @@ async def neetkaka_login(_, message):
                     else:
                         print(f"Unexpected format: {encoded_string}")
                     b1 = f"{bp}"
-                    if len(f'{cool2}{b1}') > 4096:
+                    if len(f'{vs}{b1}') > 4096:
                         vs = ""
                     vs += b1
 
