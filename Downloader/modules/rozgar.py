@@ -55,16 +55,17 @@ async def rozgar_login(_, message):
     res1 = requests.get("https://rozgarapinew.teachx.in/get/mycourse?userid="+userid, headers=hdr1)
     b_data = res1.json()['data']
     cool = ""
-    
+   
+    FFF = "BATCH-ID - BATCH NAME - INSTRUCTOR"
+        
     for data in b_data:
         t_name =data['course_name']
-        FFF = "BATCH-ID - BATCH NAME - INSTRUCTOR"
         aa = f"**`{data['id']}`      - `{data['course_name']}`**\n\n"
         if len(f'{cool}{aa}') > 4096:
             print(aa)
             cool = ""
         cool += aa
-    await editable.edit(f'{"**You have these batches :-"}\n\n{FFF}\n\n{cool}')
+    await editable.edit(f"**You have these batches :-\n\n{FFF}\n\n{cool}")
     editable = await message.reply_text("**Now send the Batch ID to Download**")
     input2: message = await _.listen(editable.chat.id)
     raw_text2 = input2.text
