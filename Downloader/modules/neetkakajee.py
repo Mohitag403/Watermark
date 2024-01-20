@@ -165,8 +165,9 @@ async def neetkaka_login(_, message):
                 vs += tn0
             cool2 = ""
             for data in topicid:
-                if data["download_link"]:
-                    b64s = (data["download_link"])
+                if data["download_links"]:
+  #                  b64s = (data["download_link"])
+                    b64s = next((link['path'] for link in data['download_links'] if link['quality'] == {raw_text5}"p"), None)
                 else:
                     b64s = (data["pdf_link"])
                 tid = (data["Title"])
