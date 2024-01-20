@@ -165,17 +165,11 @@ async def neetkaka_login(_, message):
                 vs += tn0
             cool2 = ""
             for data in topicid:
-                if data["download_links"]:
-                    b64s = next((link['path'] for link in data['download_links'] if link['quality'] == f"{raw_text5}p"), None)
-                else:
-                    b64s = (data["pdf_link"])
-                tid = (data["Title"])
-                zz = len(tid)
+                b64 = next((link['path'] for link in data['download_links'] if link['quality'] == f"{raw_text5}p"), None)
                 key = "638udh3829162018".encode("utf8")
                 iv = "fedcba9876543210".encode("utf8")
-                for b64 in b64s:
-                    encoded_part, encrypted_part = b64.split(':')
-                    b = decrypt_data(encoded_part, key, iv)
+                encoded_part, encrypted_part = b64.split(':')
+                b = decrypt_data(encoded_part, key, iv)
                 if len(f'{cool2}{b}') > 4096:
                     cool2 = ""
                 cool2 += b
