@@ -10,11 +10,8 @@ from base64 import b64decode
 from Downloader import app
 from config import SUDO_USERS
 
-def decrypt_data(encoded_data, key, iv):
-    decoded_data = b64decode(encoded_data)
-    cipher = AES.new(key, AES.MODE_CBC, iv)
-    decrypted_data = unpad(cipher.decrypt(decoded_data), AES.block_size)
-    return decrypted_data.decode('utf-8')
+
+
 
 @app.on_message(filters.command(["nkj"]) & filters.user(SUDO_USERS))
 async def neetkaka_login(_, message):
@@ -165,15 +162,24 @@ async def neetkaka_login(_, message):
                 vs += tn0
             cool2 = ""
             for data in topicid:
-                b64 = next((link['path'] for link in data['download_links'] if link['quality'] == f"{raw_text5}p"), None)
+                if data["download_link"]:
+                    b64 = (data["download_link"])
+                else:
+                    b64 = (data["pdf_link"])
+                tid = (data["Title"])
+                zz = len(tid)
                 key = "638udh3829162018".encode("utf8")
                 iv = "fedcba9876543210".encode("utf8")
-                encoded_part, encrypted_part = b64.split(':')
-                b = decrypt_data(encoded_part, key, iv)
-                if len(f'{cool2}{b}') > 4096:
+                ciphertext = bytearray.fromhex(b64decode(b64.encode()).hex())
+                cipher = AES.new(key, AES.MODE_CBC, iv)
+                plaintext = unpad(cipher.decrypt(ciphertext), AES.block_size)
+                b=plaintext.decode('utf-8')
+                cc0 = (f"{tid}:{b}")
+                if len(f'{cool2}{cc0}') > 4096:
                     cool2 = ""
-                cool2 += b
-            mm = "NEET Kaka JEE"     
+                cool2 += cc0
+                mm = "Neet-Kaka-Jee"
+            
             with open(f'{mm}.txt', 'a') as f:
                 f.write(f"{vj} : {cool2}\n {vs}")
             await message.reply_document(f"{mm}.txt")
