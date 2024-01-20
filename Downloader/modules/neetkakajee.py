@@ -132,7 +132,7 @@ async def neetkaka_login(_, message):
                 idid = f"{tids}"
                 if len(f"{vj}{idid}") > 4096:
                     vj = ""
-                vj += vs 
+                vj += idid 
 
                 plinks = [data["pdf_link"]]
                 key = "638udh3829162018".encode("utf8")
@@ -144,7 +144,8 @@ async def neetkaka_login(_, message):
                         bp = decrypt_data(encoded_part, key, iv)
                     else:
                         print(f"Unexpected format: {encoded_string}")
-                if len(f"{vk}{bp}") > 4096:
+                    vs = f"{bp}"
+                if len(f"{vk}{vs}") > 4096:
                     vk = ""
                 vk += vs 
                 dlinks = [link['path'] for link in data['download_links'] if link['quality'] == f"{raw_text5}p"]
