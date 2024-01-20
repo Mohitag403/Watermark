@@ -56,9 +56,9 @@ async def rozgar_login(_, message):
     b_data = res1.json()['data']
     cool = ""
     
-    FFF = "{'**BATCH-ID - BATCH NAME - INSTRUCTOR**'}"   
     for data in b_data:
         t_name =data['course_name']
+        FFF = "BATCH-ID - BATCH NAME - INSTRUCTOR"
         aa = f"**`{data['id']}`      - `{data['course_name']}`**\n\n"
         if len(f'{cool}{aa}') > 4096:
             print(aa)
@@ -68,6 +68,7 @@ async def rozgar_login(_, message):
     editable = await message.reply_text("**Now send the Batch ID to Download**")
     input2: message = await _.listen(editable.chat.id)
     raw_text2 = input2.text
+    
 
     scraper = cloudscraper.create_scraper()
     html = scraper.get(f"https://rozgarapinew.teachx.in/get/allsubjectfrmlivecourseclass?courseid={raw_text2}",headers=hdr1).content
