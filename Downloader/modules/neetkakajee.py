@@ -139,7 +139,7 @@ async def neetkaka_login(_, message):
                 vp += tn
             vs = ""
             for data in topicid:
-                ecoded_strings = [data["pdf_link"]]
+                encoded_strings = [data["pdf_link"]]
                 key = "638udh3829162018".encode("utf8")
                 iv = "fedcba9876543210".encode("utf8")
                 for encoded_string in encoded_strings:
