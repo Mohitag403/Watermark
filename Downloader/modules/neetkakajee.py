@@ -9,13 +9,11 @@ from Crypto.Util.Padding import unpad
 from base64 import b64decode
 from Downloader import app
 from config import SUDO_USERS
-
 def decrypt_data(encoded_data, key, iv):
     decoded_data = b64decode(encoded_data)
     cipher = AES.new(key, AES.MODE_CBC, iv)
     decrypted_data = unpad(cipher.decrypt(decoded_data), AES.block_size)
     return decrypted_data.decode('utf-8')
-
 @app.on_message(filters.command(["nkj"]) & filters.user(SUDO_USERS))
 async def neetkaka_login(_, message):
     global cancel
@@ -126,51 +124,58 @@ async def neetkaka_login(_, message):
             res4 = requests.get("https://neetkakajeeapi.classx.co.in/get/livecourseclassbycoursesubtopconceptapiv3?topicid=" + t + "&start=-1&courseid=" + raw_text2 + "&subjectid=" + raw_text3,headers=hdr11).json()
             topicid = res4["data"]
             vj = ""
-            vk = ""
-            vl = ""
             for data in topicid:
-                if data["Title"]:
-                    tids = (data["Title"])
-                    idid = f"{tids}"
-                    if len(f"{vj}{idid}") > 4096:
-                        vj = ""
-                    vj += idid
+                tids = (data["Title"])
+                idid = f"{tids}"
+                if len(f"{vj}{idid}") > 4096:
+                    vj = ""
+                vj += idid
+            vp = ""
             for data in topicid:
-                if data['download_links']:
-                    links = [link['path'] for link in data['download_links'] if link['quality'] == f"{raw_text5}p"]
-                    key = "638udh3829162018".encode("utf8")
-                    iv = "fedcba9876543210".encode("utf8")
-                    for link in links:
-                        parts = link.split(':')
-                        if len(parts) == 2:
-                            encoded_part, encrypted_part = parts
-                            b = decrypt_data(encoded_part, key, iv)
-                        else:
-                            print(f"Unexpected format: {link}")
-                    if len(f'{vk}{b}') > 4096:
-                        vk = ""
-                    vk += b
+                tn = (data["download_link"])
+                tns = f"{tn}"
+                if len(f"{vp}{tn}") > 4096:
+                    vp = ""
+                vp += tn
+            vs = ""
             for data in topicid:
-                if data['pdf_link']:
-                    pdfs = data['pdf_link']
-                    key = "638udh3829162018".encode("utf8")
-                    iv = "fedcba9876543210".encode("utf8")
-                    for pdf in pdfs:
-                        parts = pdf.split(':')
-                        if len(parts) == 2:
-                            encoded_part, encrypted_part = parts
-                            b1 = decrypt_data(encoded_part, key, iv)
-                        else:
-                            print(f"Unexpected format: {pdf}")
-                    if len(f'{vl}{b1}') > 4096:
-                        vl = ""
-                    vl += b1
+                ecoded_strings = [data["pdf_link"]]
+                key = "638udh3829162018".encode("utf8")
+                iv = "fedcba9876543210".encode("utf8")
+                for encoded_string in encoded_strings:
+                    parts = encoded_string.split(':')
+                    if len(parts) == 2:
+                        encoded_part, encrypted_part = parts
+                        bp = decrypt_data(encoded_part, key, iv)
+                    else:
+                        print(f"Unexpected format: {encoded_string}")
+                    b1 = f"{bp}"
+                    if len(f'{cool2}{b1}') > 4096:
+                        vs = ""
+                    vs += b1
+
+            cool2 = ""
+            for data in topicid:
+                encoded_strings = [link['path'] for link in data['download_links'] if link['quality'] == f"{raw_text5}p"]
+                key = "638udh3829162018".encode("utf8")
+                iv = "fedcba9876543210".encode("utf8")
+                for encoded_string in encoded_strings:
+                    parts = encoded_string.split(':')
+                    if len(parts) == 2:
+                        encoded_part, encrypted_part = parts
+                        b = decrypt_data(encoded_part, key, iv)
+                    else:
+                        print(f"Unexpected format: {encoded_string}")
+                    if len(f'{cool2}{b}') > 4096:
+                        cool2 = ""
+                    cool2 += b
             mm = "NEET Kaka JEE"     
             with open(f'{mm}.txt', 'a') as f:
-                f.write(f"{vj} : {vk}\n {vl}")
+                f.write(f"{vj} : {cool2}\n {vs}")
             await message.reply_document(f"{mm}.txt")
             file_path = f"{mm}.txt"
             os.remove(file_path)
+  
     except Exception as e:
         await message.reply_text(str(e))
     await message.reply_text("Done")
