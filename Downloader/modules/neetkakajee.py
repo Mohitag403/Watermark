@@ -71,7 +71,7 @@ async def neetkaka_login(_, message):
 
 # Helper functions
 
-def get_headers(userid=None, token=None):
+async def get_headers(userid=None, token=None):
     return {
         "Host": "neetkakajeeapi.classx.co.in",
         "Client-Service": "Appx",
@@ -80,7 +80,7 @@ def get_headers(userid=None, token=None):
         "Authorization": token
     }
 
-def get_batch_details(b_data):
+async def get_batch_details(b_data):
     cool = ""
     FFF = "BATCH-ID - BATCH NAME - INSTRUCTOR"
     for data in b_data:
@@ -90,7 +90,7 @@ def get_batch_details(b_data):
         cool += aa
     return f'{"**You have these batches :-"}\n\n{FFF}\n\n{cool}'
 
-def get_subject_ids(batch_id, hdr1):
+async def get_subject_ids(batch_id, hdr1):
     res = requests.get(API_URL + f"get/allsubjectfrmlivecourseclass?courseid={batch_id}", headers=hdr1).content
     output0 = json.loads(res)
     subjID = output0["data"]
@@ -101,7 +101,7 @@ def get_subject_ids(batch_id, hdr1):
         cool += aa
     return cool
 
-def get_topic_data(batch_id, subj_id, hdr1):
+async def get_topic_data(batch_id, subj_id, hdr1):
     res = requests.get(API_URL + f"get/alltopicfrmlivecourseclass?courseid={batch_id}&subjectid={subj_id}", headers=hdr1)
     b_data2 = res.json()['data']
     lol = ""
@@ -123,10 +123,10 @@ async def download_topics(userid, token, batch_id, subj_id, topic_ids, resolutio
 
             for data in topicid:
                 tids, plinks = data["Title"], [data["pdf_link"]]
-                vs = decrypt_data(plinks[0].split(':')[0], ENCRYPTION_KEY, IV)
+                vs = await decrypt_data(plinks[0].split(':')[0], ENCRYPTION_KEY, IV)
 
                 dlinks = [link['path'] for link in data['download_links'] if link['quality'] == f"{resolution}p"]
-                cool2 = decrypt_data(dlinks[0].split(':')[0], ENCRYPTION_KEY, IV)
+                cool2 = await decrypt_data(dlinks[0].split(':')[0], ENCRYPTION_KEY, IV)
 
                 mm = "NEET Kaka JEE"
                 with open(f'{mm}.txt', 'a') as f:
