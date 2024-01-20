@@ -123,9 +123,7 @@ async def neetkaka_login(_, message):
                     }
             res4 = requests.get("https://neetkakajeeapi.classx.co.in/get/livecourseclassbycoursesubtopconceptapiv3?topicid=" + t + "&start=-1&courseid=" + raw_text2 + "&subjectid=" + raw_text3,headers=hdr11).json()
             topicid = res4["data"]
-            vj = ""
-            vs = ""
-            cool2 = ""
+
             for data in topicid:
                 tids = (data["Title"])
                 vj = f"{tids}" 
