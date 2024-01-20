@@ -65,7 +65,8 @@ async def rozgar_login(_, message):
             print(aa)
             cool = ""
         cool += aa
-    await editable.edit(f"**You have these batches :-\n\n{FFF}\n\n{cool}")
+        print(cool)
+    await editable.edit(f"**You have these batches {t_name}:-\n\n{cool}")
     editable = await message.reply_text("**Now send the Batch ID to Download**")
     input2: message = await _.listen(editable.chat.id)
     raw_text2 = input2.text
@@ -82,6 +83,7 @@ async def rozgar_login(_, message):
         subjname = sub["subject_name"]
         aa = f"`{subjid}` - `{subjname}`\n\n"
         cool += aa
+        print(cool)
     await editable.edit(cool)
     
 
