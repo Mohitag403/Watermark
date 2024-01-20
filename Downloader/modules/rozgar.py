@@ -55,9 +55,10 @@ async def rozgar_login(_, message):
     res1 = requests.get("https://rozgarapinew.teachx.in/get/mycourse?userid="+userid, headers=hdr1)
     b_data = res1.json()['data']
     cool = ""
+    
+    FFF = "BATCH-ID - BATCH NAME - INSTRUCTOR"   
     for data in b_data:
         t_name =data['course_name']
-        FFF = "BATCH-ID - BATCH NAME - INSTRUCTOR"
         aa = f"**`{data['id']}`      - `{data['course_name']}`**\n\n"
         if len(f'{cool}{aa}') > 4096:
             print(aa)
