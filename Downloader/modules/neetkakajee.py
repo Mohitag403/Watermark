@@ -135,6 +135,7 @@ async def neetkaka_login(_, message):
                     if len(f"{vj}{idid}") > 4096:
                         vj = ""
                     vj += idid
+            for data in topicid:
                 if data['download_links']:
                     links = [link['path'] for link in data['download_links'] if link['quality'] == f"{raw_text5}p"]
                     key = "638udh3829162018".encode("utf8")
@@ -149,6 +150,7 @@ async def neetkaka_login(_, message):
                     if len(f'{vk}{b}') > 4096:
                         vk = ""
                     vk += b
+            for data in topicid:
                 if data['pdf_link']:
                     pdfs = data['pdf_link']
                     key = "638udh3829162018".encode("utf8")
@@ -163,8 +165,6 @@ async def neetkaka_login(_, message):
                     if len(f'{vl}{b1}') > 4096:
                         vl = ""
                     vl += b1
-                else:
-                    print(f"Unable to find data")
             mm = "NEET Kaka JEE"     
             with open(f'{mm}.txt', 'a') as f:
                 f.write(f"{vj} : {vk}\n {vl}")
