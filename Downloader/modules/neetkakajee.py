@@ -10,8 +10,11 @@ from base64 import b64decode
 from Downloader import app
 from config import SUDO_USERS
 
-
-
+def decrypt_data(encoded_data, key, iv):
+    decoded_data = b64decode(encoded_data)
+    cipher = AES.new(key, AES.MODE_CBC, iv)
+    decrypted_data = unpad(cipher.decrypt(decoded_data), AES.block_size)
+    return decrypted_data.decode('utf-8')
 
 @app.on_message(filters.command(["nkj"]) & filters.user(SUDO_USERS))
 async def neetkaka_login(_, message):
@@ -31,21 +34,17 @@ async def neetkaka_login(_, message):
         "Accept-Encoding": "gzip, deflate",
         "User-Agent": "okhttp/4.9.1"
     }
-
     info = {"email": "", "password": ""}
     input1: message = await _.listen(editable.chat.id)
     raw_text = input1.text
     info["email"] = raw_text.split("*")[0]
     info["password"] = raw_text.split("*")[1]
     await input1.delete(True)
-
     scraper = cloudscraper.create_scraper()
     res = scraper.post(raw_url, data=info, headers=hdr).content
     output = json.loads(res)
-
     userid = output["data"]["userid"]
     token = output["data"]["token"]
-
     hdr1 = {
             "Host": "neetkakajeeapi.classx.co.in",
             "Client-Service": "Appx",
@@ -53,7 +52,6 @@ async def neetkaka_login(_, message):
             "User-Id": userid,
             "Authorization": token
             }
-
     await editable.edit("**login Successful**")
     res1 = requests.get("https://neetkakajeeapi.classx.co.in/get/mycourseweb?userid="+userid, headers=hdr1)
     b_data = res1.json()['data']
@@ -70,7 +68,6 @@ async def neetkaka_login(_, message):
     editable = await message.reply_text("**Now send the Batch ID to Download**")
     input2: message = await _.listen(editable.chat.id)
     raw_text2 = input2.text
-
     scraper = cloudscraper.create_scraper()
     html = scraper.get(f"https://neetkakajeeapi.classx.co.in/get/allsubjectfrmlivecourseclass?courseid={raw_text2}",headers=hdr1).content
     output0 = json.loads(html)
@@ -84,19 +81,14 @@ async def neetkaka_login(_, message):
         cool += aa
     await editable.edit(cool)
     
-
-
     editable = await message.reply_text("**Enter the Subject Id Show in above Response")
     input3: message = await _.listen(editable.chat.id)
     raw_text3 = input3.text
-
     res3 = requests.get("https://neetkakajeeapi.classx.co.in/get/alltopicfrmlivecourseclass?courseid=" +raw_text2+"&subjectid="+raw_text3, headers=hdr1)
     b_data2 = res3.json()['data']
-
     vj = ""
     vp = ""
     lol = ""   
-
     for data in b_data2:
         t_name = data["topic_name"]
         tid = data["topicid"]
@@ -113,12 +105,10 @@ async def neetkaka_login(_, message):
         lol += hh
     
     await message.reply_text(f"Batch details of **{t_name}** are:\n\n{BBB}\n\n{lol}")
-
     
     editable = await message.reply_text(f"Now send the **Topic IDs** to Download\n\nSend like this **1&2&3&4** so on\nor copy paste or edit **below ids** according to you :\n\n**Enter this to download full batch :-**\n`{vj}`")
     input4: message = await _.listen(editable.chat.id)
     raw_text4 = input4.text
-
     editable = await message.reply_text("**Now send the Resolution**")
     input5: message = await _.listen(editable.chat.id)
     raw_text5 = input5.text
@@ -126,7 +116,6 @@ async def neetkaka_login(_, message):
         xv = raw_text4.split('&')
         for y in range(0,len(xv)):
             t =xv[y]
-
             hdr11 = {
                     "Host": "neetkakajeeapi.classx.co.in",
                     "Client-Service": "Appx",
@@ -134,9 +123,7 @@ async def neetkaka_login(_, message):
                     "User-Id": userid,
                     "Authorization": token
                     }
-
             res4 = requests.get("https://neetkakajeeapi.classx.co.in/get/livecourseclassbycoursesubtopconceptapiv3?topicid=" + t + "&start=-1&courseid=" + raw_text2 + "&subjectid=" + raw_text3,headers=hdr11).json()
-
             topicid = res4["data"]
             vj = ""
             for data in topicid:
@@ -145,7 +132,6 @@ async def neetkaka_login(_, message):
                 if len(f"{vj}{idid}") > 4096:
                     vj = ""
                 vj += idid
-
             vp = ""
             for data in topicid:
                 tn = (data["download_link"])
@@ -162,24 +148,19 @@ async def neetkaka_login(_, message):
                 vs += tn0
             cool2 = ""
             for data in topicid:
-                if data["download_link"]:
-                    b64 = (data["download_link"])
+                if data["download_links"]:
+                    b64s = [next((data['path'] for data in data['download_links'] if data['quality'] == f"{raw_text5}p"), None)]
                 else:
-                    b64 = (data["pdf_link"])
-                tid = (data["Title"])
-                zz = len(tid)
+                    b64s = (data["pdf_link"])
                 key = "638udh3829162018".encode("utf8")
                 iv = "fedcba9876543210".encode("utf8")
-                ciphertext = bytearray.fromhex(b64decode(b64.encode()).hex())
-                cipher = AES.new(key, AES.MODE_CBC, iv)
-                plaintext = unpad(cipher.decrypt(ciphertext), AES.block_size)
-                b=plaintext.decode('utf-8')
-                cc0 = (f"{tid}:{b}")
-                if len(f'{cool2}{cc0}') > 4096:
+                for b64 in b64s:
+                    encoded_part, encrypted_part = b64.split(':')
+                    b = decrypt_data(encoded_part, key, iv)
+                if len(f'{cool2}{b}') > 4096:
                     cool2 = ""
-                cool2 += cc0
-                mm = "Neet-Kaka-Jee"
-            
+                cool2 += b
+            mm = "NEET Kaka JEE"     
             with open(f'{mm}.txt', 'a') as f:
                 f.write(f"{vj} : {cool2}\n {vs}")
             await message.reply_document(f"{mm}.txt")
