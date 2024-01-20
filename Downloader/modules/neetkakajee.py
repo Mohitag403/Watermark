@@ -161,12 +161,12 @@ async def neetkaka_login(_, message):
                     if len(f'{cool2}{b}') > 4096:
                         cool2 = ""
                     cool2 += b
-            mm = "NEET Kaka JEE"     
-            with open(f'{mm}.txt', 'a') as f:
-                f.write(f"{vj} : {cool2}\n {vs}")
-            await message.reply_document(f"{mm}.txt")
-            file_path = f"{mm}.txt"
-            os.remove(file_path)
+                mm = "NEET Kaka JEE"     
+                with open(f'{mm}.txt', 'a') as f:
+                    f.write(f"{vj} : {cool2}\n {vs}")
+                await message.reply_document(f"{mm}.txt")
+                file_path = f"{mm}.txt"
+                os.remove(file_path)
   
     except Exception as e:
         await message.reply_text(str(e))
