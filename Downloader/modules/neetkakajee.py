@@ -33,7 +33,7 @@ async def send_message_and_listen(message, text):
 async def neetkaka_login(_, message):
     try:
         # Step 1: User Login
-        raw_text, editable = await send_message_and_listen(message, "Send ID & Password like this: ID*Password")
+        raw_text, editable = await send_message_and_listen(message, "**Send ID & Password like this: ID*Password**")
         info = {"email": raw_text.split("*")[0], "password": raw_text.split("*")[1]}
         scraper = cloudscraper.create_scraper()
         res = scraper.post(API_URL + "post/userLogin", data=info, headers=get_headers()).content
