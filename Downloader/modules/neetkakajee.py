@@ -166,8 +166,7 @@ async def neetkaka_login(_, message):
             cool2 = ""
             for data in topicid:
                 if data["download_links"]:
-  #                  b64s = (data["download_link"])
-                    b64s = next((link['path'] for link in data['download_links'] if link['quality'] == {raw_text5}"p"), None)
+                    b64s = next((link['path'] for link in data['download_links'] if link['quality'] == f"{raw_text5}p"), None)
                 else:
                     b64s = (data["pdf_link"])
                 tid = (data["Title"])
@@ -177,14 +176,12 @@ async def neetkaka_login(_, message):
                 for b64 in b64s:
                     encoded_part, encrypted_part = b64.split(':')
                     b = decrypt_data(encoded_part, key, iv)
-                cc0 = (f"{tid}:{b}")
-                if len(f'{cool2}{cc0}') > 4096:
+                if len(f'{cool2}{b}') > 4096:
                     cool2 = ""
-                cool2 += cc0
-                mm = "NEET Kaka JEE"   
-                
+                cool2 += b
+            mm = "NEET Kaka JEE"     
             with open(f'{mm}.txt', 'a') as f:
-                f.write(f"{vk} : {vm}\n {vn}")
+                f.write(f"{vj} : {cool2}\n {vs}")
             await message.reply_document(f"{mm}.txt")
             file_path = f"{mm}.txt"
             os.remove(file_path)
