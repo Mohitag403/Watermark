@@ -110,6 +110,9 @@ async def neetkaka_login(_, message):
     editable = await message.reply_text("**Now send the Resolution**")
     input5: message = await _.listen(editable.chat.id)
     raw_text5 = input5.text
+    vj = ""
+    vk = ""
+    vm = ""
     try:
         xv = raw_text4.split('&')
         for y in range(0,len(xv)):
@@ -141,10 +144,9 @@ async def neetkaka_login(_, message):
                         bp = decrypt_data(encoded_part, key, iv)
                     else:
                         print(f"Unexpected format: {encoded_string}")
-                    vs = f"{bp}"
-                    if len(f"{vk}{vs}") > 4096:
-                        vk = ""
-                    vk += vs 
+                if len(f"{vk}{bp}") > 4096:
+                    vk = ""
+                vk += vs 
                 dlinks = [link['path'] for link in data['download_links'] if link['quality'] == f"{raw_text5}p"]
                 key = "638udh3829162018".encode("utf8")
                 iv = "fedcba9876543210".encode("utf8")
@@ -156,9 +158,9 @@ async def neetkaka_login(_, message):
                     else:
                         print(f"Unexpected format: {encoded_string}")
                     cool2 = f"{b}"
-                    if len(f"{vm}{cool2}") > 4096:
-                        vm = ""
-                    vm += cool2
+                if len(f"{vm}{cool2}") > 4096:
+                    vm = ""
+                vm += cool2
                 mm = "NEET Kaka JEE"     
                 with open(f'{mm}.txt', 'a') as f:
                     f.write(f"{vj} : {vm}\n {vk}")
