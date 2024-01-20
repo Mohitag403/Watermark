@@ -152,7 +152,7 @@ async def neetkaka_login(_, message):
                 key = "638udh3829162018".encode("utf8")
                 iv = "fedcba9876543210".encode("utf8")
                 for encoded_string in encoded_strings:
-                    parts = b64.split(':')
+                    parts = encoded_string.split(':')
                     if len(parts) == 2:
                         encoded_part, encrypted_part = parts
                         b = decrypt_data(encoded_part, key, iv)
