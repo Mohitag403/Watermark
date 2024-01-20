@@ -62,7 +62,7 @@ async def neetkaka_login(_, message):
         topic_ids, editable = await send_message_and_listen(message, "**Now send the Topic IDs to Download**\n"
                                                                      "Send like this 1&2&3&4 or copy-paste/edit below IDs")
         resolution, editable = await send_message_and_listen(message, "**Now send the Resolution**")
-        download_topics(userid, token, batch_id, subj_id, topic_ids, resolution)
+        await download_topics(userid, token, batch_id, subj_id, topic_ids, resolution)
 
         await message.reply_text("Done")
 
