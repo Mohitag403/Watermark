@@ -120,17 +120,28 @@ async def download_topics(message, userid, token, batch_id, subj_id, topic_ids, 
             hdr11 = get_headers(userid, token)
             res = requests.get(API_URL + f"get/livecourseclassbycoursesubtopconceptapiv3?topicid={t}&start=-1&courseid={batch_id}&subjectid={subj_id}", headers=hdr11).json()
             topicid = res["data"]
-
+            vj = ""
+            vk = ""
+            vm = ""
             for data in topicid:
                 tids, plinks = data["Title"], [data["pdf_link"]]
                 vs = await decrypt_data(plinks[0].split(':')[0], ENCRYPTION_KEY, IV)
+                if len(f"{vj}{tids}") > 4096:
+                    vj = ""
+                vj += tids  
+
+                if len(f"{vk}{vs}") > 4096:
+                    vk = ""
+                vk += vs 
 
                 dlinks = [link['path'] for link in data['download_links'] if link['quality'] == f"{resolution}p"]
                 cool2 = await decrypt_data(dlinks[0].split(':')[0], ENCRYPTION_KEY, IV)
-
+                if len(f"{vm}{cool2}") > 4096:
+                    vm = ""
+                vm += cool2   
                 mm = "NEET Kaka JEE"
                 with open(f'{mm}.txt', 'a') as f:
-                    f.write(f"{tids} : {cool2}\n {vs}")
+                    f.write(f"{vj} : {vm}\n {vk}")
                 await app.send_document(int(message.chat.id), f"{mm}.txt")
                 file_path = f"{mm}.txt"
                 os.remove(file_path)
