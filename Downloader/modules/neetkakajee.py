@@ -158,9 +158,9 @@ async def neetkaka_login(_, message):
                         b = decrypt_data(encoded_part, key, iv)
                     else:
                         print(f"Unexpected format: {encoded_string}")
-                if len(f'{cool2}{b}') > 4096:
-                    cool2 = ""
-                cool2 += b
+                    if len(f'{cool2}{b}') > 4096:
+                        cool2 = ""
+                    cool2 += b
             mm = "NEET Kaka JEE"     
             with open(f'{mm}.txt', 'a') as f:
                 f.write(f"{vj} : {cool2}\n {vs}")
