@@ -149,14 +149,16 @@ async def neetkaka_login(_, message):
             cool2 = ""
             for data in topicid:
                 if data["download_links"]:
-                    b64s = [next((data['path'] for data in data['download_links'] if data['quality'] == f"{raw_text5}p"), None)]
-                else:
-                    b64s = (data["pdf_link"])
+                encoded_strings = [next((data['path'] for data in data['download_links'] if data['quality'] == f"{raw_text5}p"), None)]
                 key = "638udh3829162018".encode("utf8")
                 iv = "fedcba9876543210".encode("utf8")
-                for b64 in b64s:
-                    encoded_part, encrypted_part = b64.split(':')
-                    b = decrypt_data(encoded_part, key, iv)
+                for encoded_string in encoded_strings:
+                    parts = b64.split(':')
+                    if len(parts) == 2:
+                        encoded_part, encrypted_part = parts
+                        b = decrypt_data(encoded_part, key, iv)
+                    else:
+                        print(f"Unexpected format: {b64}")
                 if len(f'{cool2}{b}') > 4096:
                     cool2 = ""
                 cool2 += b
