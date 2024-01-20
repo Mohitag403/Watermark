@@ -126,44 +126,48 @@ async def neetkaka_login(_, message):
             res4 = requests.get("https://neetkakajeeapi.classx.co.in/get/livecourseclassbycoursesubtopconceptapiv3?topicid=" + t + "&start=-1&courseid=" + raw_text2 + "&subjectid=" + raw_text3,headers=hdr11).json()
             topicid = res4["data"]
             vj = ""
+            vk = ""
+            vl = ""
             for data in topicid:
-                tids = (data["Title"])
-                idid = f"{tids}"
-                if len(f"{vj}{idid}") > 4096:
-                    vj = ""
-                vj += idid
-            vp = ""
-            for data in topicid:
-                tn = (data["download_link"])
-                tns = f"{tn}"
-                if len(f"{vp}{tn}") > 4096:
-                    vp = ""
-                vp += tn
-            vs = ""
-            for data in topicid:
-                tn0 = (data["pdf_link"])
-                tns0 = f"{tn0}"
-                if len(f"{vs}{tn0}") > 4096:
-                    vs = ""
-                vs += tn0
-            cool2 = ""
-            for data in topicid:
-                encoded_strings = [link['path'] for link in data['download_links'] if link['quality'] == f"{raw_text5}p"]
-                key = "638udh3829162018".encode("utf8")
-                iv = "fedcba9876543210".encode("utf8")
-                for encoded_string in encoded_strings:
-                    parts = encoded_string.split(':')
-                    if len(parts) == 2:
-                        encoded_part, encrypted_part = parts
-                        b = decrypt_data(encoded_part, key, iv)
-                    else:
-                        print(f"Unexpected format: {encoded_string}")
-                    if len(f'{cool2}{b}') > 4096:
-                        cool2 = ""
-                    cool2 += b
+                if data["Title"]:
+                    tids = (data["Title"])
+                    idid = f"{tids}"
+                    if len(f"{vj}{idid}") > 4096:
+                        vj = ""
+                    vj += idid
+                if data['download_links']:
+                    links = [link['path'] for link in data['download_links'] if link['quality'] == f"{raw_text5}p"]
+                    key = "638udh3829162018".encode("utf8")
+                    iv = "fedcba9876543210".encode("utf8")
+                    for link in links:
+                        parts = link.split(':')
+                        if len(parts) == 2:
+                            encoded_part, encrypted_part = parts
+                            b = decrypt_data(encoded_part, key, iv)
+                        else:
+                            print(f"Unexpected format: {link}")
+                    if len(f'{vk}{b}') > 4096:
+                        vk = ""
+                    vk += b
+                if data['pdf_link']:
+                    pdfs = data['pdf_link']
+                    key = "638udh3829162018".encode("utf8")
+                    iv = "fedcba9876543210".encode("utf8")
+                    for pdf in pdfs:
+                        parts = pdf.split(':')
+                        if len(parts) == 2:
+                            encoded_part, encrypted_part = parts
+                            b1 = decrypt_data(encoded_part, key, iv)
+                        else:
+                            print(f"Unexpected format: {pdf}")
+                    if len(f'{vl}{b1}') > 4096:
+                        vl = ""
+                    vl += b1
+                else:
+                    print(f"Unable to find data")
             mm = "NEET Kaka JEE"     
             with open(f'{mm}.txt', 'a') as f:
-                f.write(f"{vj} : {cool2}\n {vs}")
+                f.write(f"{vj} : {vk}\n {vl}")
             await message.reply_document(f"{mm}.txt")
             file_path = f"{mm}.txt"
             os.remove(file_path)
