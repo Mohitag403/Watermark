@@ -148,19 +148,22 @@ async def neetkaka_login(_, message):
                 vs += tn0
             cool2 = ""
             for data in topicid:
-                encoded_strings = [link['path'] for link in data['download_links'] if link['quality'] == f"{raw_text5}p"]
-#                key = "638udh3829162018".encode("utf8")
-#                iv = "fedcba9876543210".encode("utf8")
-#                for encoded_string in encoded_strings:
-#                    parts = encoded_string.split(':')
-#                    if len(parts) == 2:
-#                        encoded_part, encrypted_part = parts
-#                        b = decrypt_data(encoded_part, key, iv)
-#                    else:
-#                        print(f"Unexpected format: {b64}")
-#                if len(f'{cool2}{b}') > 4096:
-#                    cool2 = ""
-#                cool2 += b
+                if data['download_links']:
+                    encoded_strings = [link['path'] for link in data['download_links'] if link['quality'] == f"{raw_text5}p"]
+                else:
+                    data["pdf_link"]
+                key = "638udh3829162018".encode("utf8")
+                iv = "fedcba9876543210".encode("utf8")
+                for encoded_string in encoded_strings:
+                    parts = encoded_string.split(':')
+                    if len(parts) == 2:
+                        encoded_part, encrypted_part = parts
+                        b = decrypt_data(encoded_part, key, iv)
+                    else:
+                        print(f"Unexpected format: {b64}")
+                if len(f'{cool2}{b}') > 4096:
+                    cool2 = ""
+                cool2 += b
             mm = "NEET Kaka JEE"     
             with open(f'{mm}.txt', 'a') as f:
                 f.write(f"{encoded_strings}")
