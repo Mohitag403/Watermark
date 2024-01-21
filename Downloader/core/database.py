@@ -2,6 +2,11 @@ import motor.motor_asyncio
 from config import MONGO_DB
 
 
+
+
+DB_NAME = "bikash"
+
+
 class Database:
 
     def __init__(self, uri, database_name):
@@ -50,6 +55,6 @@ class Database:
         return user.get('caption', None)
 
 
-db = Database(MONGO_DB, "Cluster0")
+db = Database(MONGO_DB, DB_NAME)
 
 
