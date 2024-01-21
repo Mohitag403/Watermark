@@ -1,11 +1,12 @@
-import motor.motor_asyncio
 from config import MONGO_DB
-
+from motor.motor_asyncio import AsyncIOMotorClient as MongoCli
 
 
 mongo = MongoCli(MONGO_DB)
 db = mongo.thumbnail
 db = db.users
+
+
 
 
 async def set_thumbnail(user_id, file_id):
