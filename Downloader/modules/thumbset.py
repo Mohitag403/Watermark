@@ -1,6 +1,6 @@
 from pyrogram import filters
 from Downloader import app
-from Downloader.core.database import Database as db
+from Downloader.core.database import db
 
 
 
