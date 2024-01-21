@@ -1,16 +1,12 @@
 import asyncio
 import logging
 from pyromod import listen
-from dotenv import load_dotenv
 from pyrogram import Client
 from config import API_ID, API_HASH, BOT_TOKEN
 
 
 
 loop = asyncio.get_event_loop()
-load_dotenv()
-
-
 
 logging.basicConfig(
     format="[%(levelname) 5s/%(asctime)s] %(name)s: %(message)s",
