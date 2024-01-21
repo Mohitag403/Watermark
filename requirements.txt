@@ -1,6 +1,6 @@
 pyrogram
 aiohttp
-python-dotenv
+motor
 tgcrypto
 yt-dlp
 pyromod
