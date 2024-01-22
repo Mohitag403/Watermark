@@ -78,11 +78,9 @@ async def download_video(url,cmd, name):
         return os.path.isfile.splitext[0] + "." + "mp4"
 
 
-
-
 async def send_vid(message, cc, filename, thumb, name, prog):
     subprocess.run(f'ffmpeg -i "{filename}" -ss 00:01:00 -vframes 1 "{filename}.jpg"', shell=True)
-    await prog.delete(True)
+    await prog.delete (True)
     reply = await message.reply_text(f"**⥣ Uploading ...** » `{name}`")
     try:
         if thumb == "no":
@@ -90,16 +88,17 @@ async def send_vid(message, cc, filename, thumb, name, prog):
         else:
             thumbnail = thumb
     except Exception as e:
-        await message.reply_text(str(e))
+        await m.reply_text(str(e))
     dur = int(duration(filename))
     start_time = time.time()
     try:
-        await app.send_video(chat_id=message.chat.id, video=filename, caption=cc, supports_streaming=True, height=720, width=1280, thumb=thumbnail, duration=dur, progress=progress_bar, progress_args=(reply, start_time))
+        await message.reply_video(filename,caption=cc, supports_streaming=True,height=720,width=1280,thumb=thumbnail,duration=dur, progress=progress_bar,progress_args=(reply,start_time))
     except Exception:
-        await app.send_video(chat_id=message.chat.id, video=filename, caption=cc, progress=progress_bar, progress_args=(reply, start_time))
+        await message.reply_video(filename,caption=cc, progress=progress_bar,progress_args=(reply,start_time))
     os.remove(filename)
+
     os.remove(f"{filename}.jpg")
-    await reply.delete(True)
+    await reply.delete (True)
 
 
 async def take_screen_shot(video_file, name, path, ttl):
