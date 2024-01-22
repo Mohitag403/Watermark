@@ -30,7 +30,7 @@ async def restart_handler(_, message):
 
 @app.on_message(filters.command(["txt"]) & filters.user(SUDO_USERS))
 async def account_login(_, message):
-    editable = await message.reply_text("hello sir please give me your text file in proper formate otherwise file does not work !!")
+    editable = await message.reply_text("**SEND TXT FILE 🗃️ OR LINKS TO DOWNLOAD 🔗**")
     input: message = await _.listen(editable.chat.id)
     if input.document:
         x = await input.download()
