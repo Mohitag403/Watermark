@@ -20,7 +20,7 @@ async def start(_,message):
 @app.on_callback_query(filters.regex("^help_$"))
 async def help_command_callback(_, callback_query):
     await callback_query.answer()
-    await callback_query.message.edit_animation(animation="https://telegra.ph/file/fe495453e3f73da6bfc39.mp4", caption="**𝗕𝗦𝗗𝗞 𝗞𝗛𝗨𝗗 𝗕𝗛𝗜 𝗠𝗘𝗛𝗡𝗔𝗧 𝗞𝗔𝗥 𝗟𝗘 𝗧𝗛𝗢𝗗𝗜**", reply_markup=InlineKeyboardMarkup([
+    await callback_query.message.edit_message_media(video="https://telegra.ph/file/fe495453e3f73da6bfc39.mp4", caption="**𝗕𝗦𝗗𝗞 𝗞𝗛𝗨𝗗 𝗕𝗛𝗜 𝗠𝗘𝗛𝗡𝗔𝗧 𝗞𝗔𝗥 𝗟𝗘 𝗧𝗛𝗢𝗗𝗜**", reply_markup=InlineKeyboardMarkup([
         [
             InlineKeyboardButton("ʙᴀᴄᴋ", callback_data="back_")
         ]
