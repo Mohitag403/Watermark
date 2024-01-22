@@ -11,8 +11,8 @@ async def start(_,message):
                   InlineKeyboardButton("ʜᴇʟᴘ", callback_data="help_")
                 ],             
                 [
-                  InlineKeyboardButton("ᴄʜᴀɴɴᴇʟ", url="https://t.me/DevsXCreations"),
-                  InlineKeyboardButton("sᴜᴘᴘᴏʀᴛ", url="https://t.me/DevsOops")
+                  InlineKeyboardButton("ᴄʜᴀɴɴᴇʟ", url="https://t.me/Mohitag24"),
+                  InlineKeyboardButton("sᴜᴘᴘᴏʀᴛ", url="https://t.me/Mohitag24")
                 ]
                             ]))
 
