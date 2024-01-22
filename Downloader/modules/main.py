@@ -32,7 +32,7 @@ async def restart_handler(_, message):
 async def account_login(_, message):
     editable = await message.reply_text("hello sir please give me your text file in proper formate otherwise file does not work !!")
     input: message = await _.listen(editable.chat.id)
-    if input_msg.document:
+    if input.document:
         x = await input.download()
         await input.delete(True)
 
@@ -54,7 +54,7 @@ async def account_login(_, message):
             return
     
     else:
-        content = input_msg.text
+        content = input.text
         content = content.split("\n")
         links = []
         for i in content:
