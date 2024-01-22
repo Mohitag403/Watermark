@@ -42,8 +42,11 @@ async def account_login(_, message):
            content = f.read()
        content = content.split("\n")
        links = []
+#       for i in content:
+#           links.append(i.split("://", 1))
        for i in content:
-           links.append(i.split("://", 1))
+            if i.strip() and "://" in i:
+                links.append(i.split("://", 1))
        os.remove(x)
             
     except:
