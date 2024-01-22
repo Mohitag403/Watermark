@@ -89,12 +89,16 @@ async def send_vid(message, cc, filename, thumb, name, prog):
             thumbnail = thumb
     except Exception as e:
         await m.reply_text(str(e))
-    dur = int(duration(filename))
+    try:
+        dur = get_duration(filename)
+    except:
+        dur = int(duration(filename))
+    w, h = get_width_height(filename)
     start_time = time.time()
     try:
-        await message.reply_video(filename,caption=cc, supports_streaming=True,height=720,width=1280,thumb=thumbnail,duration=dur, progress=progress_bar,progress_args=(reply,start_time))
+        await app.send_video(chat_id=message.chat.id, video=filename, caption=cc, supports_streaming=True, width=w, height=h, thumb=thumbnail, duration=dur, progress=progress_bar, progress_args=(reply,start_time))
     except Exception:
-        await message.reply_video(filename,caption=cc, progress=progress_bar,progress_args=(reply,start_time))
+        await app.send_video(chat_id=message.chat.id, video=filename, caption=cc, progress=progress_bar, progress_args=(reply,start_time))
     os.remove(filename)
 
     os.remove(f"{filename}.jpg")
