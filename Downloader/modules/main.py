@@ -32,29 +32,36 @@ async def restart_handler(_, message):
 async def account_login(_, message):
     editable = await message.reply_text("hello sir please give me your text file in proper formate otherwise file does not work !!")
     input: message = await _.listen(editable.chat.id)
-    x = await input.download()
-    await input.delete(True)
+    if input_msg.document:
+        x = await input.download()
+        await input.delete(True)
 
-    path = f"./downloads/{message.chat.id}"
+        path = f"./downloads/{message.chat.id}"
 
-    try:
-       with open(x, "r") as f:
-           content = f.read()
-       content = content.split("\n")
-       links = []
-#       for i in content:
-#           links.append(i.split("://", 1))
-       for i in content:
+        try:
+           with open(x, "r") as f:
+               content = f.read()
+           content = content.split("\n")
+           links = []
+           for i in content:
+                if i.strip() and "://" in i:
+                    links.append(i.split("://", 1))
+           os.remove(x)
+            
+        except Exception as e:
+            await message.reply_text(f"Invalid file input. Error: {str(e)}")
+            os.remove(x)
+            return
+    
+    else:
+        content = input_msg.text
+        content = content.split("\n")
+        links = []
+        for i in content:
             if i.strip() and "://" in i:
                 links.append(i.split("://", 1))
-       os.remove(x)
-            
-    except:
-           await message.reply_text("oops sensei Invalid file input.")
-           os.remove(x)
-           return
-    
-   
+
+
     await editable.edit(f"Total links found are **{len(links)}**\n\nSend From where you want to download initial is **1**")
     input0: message = await _.listen(editable.chat.id)
     raw_text = input0.text
