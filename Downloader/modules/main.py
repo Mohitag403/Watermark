@@ -163,8 +163,8 @@ async def account_login(_, message):
 
             try:  
                 
-                cc = f'**[📂] Vid ID :** {str(count).zfill(3)}\n**Video Title :** {name1} {res} .mkv\n**Batch :** {raw_text0}\n\n**Downloaded By : **{raw_text3}\n\n'
-                cc1 = f'****[📕]Pdf_ID :** {str(count).zfill(3)}\n**Pdf Title :** {name1} .pdf \n**Batch :** {raw_text0}\n\n'
+                cc = f'**[📂] Vɪᴅ ID :** {str(count).zfill(3)}\n**Vɪᴅᴇᴏ Tɪᴛʟᴇ :** **{name1}** **{res}** .mkv\n**Bᴀᴛᴄʜ :** **{raw_text0}**\n\n**Dᴏᴡɴʟᴏᴀᴅᴇᴅ Bʏ : ** **{raw_text3}**\n\n'
+                cc1 = f'****[📕]Pᴅғ_ID :** {str(count).zfill(3)}\n**Pᴅғ Tɪᴛʟᴇ :** **{name1}** .pdf \n**Bᴀᴛᴄʜ :** **{raw_text0}**\n\n'
                 
                 if "drive" in url:
                     try:
