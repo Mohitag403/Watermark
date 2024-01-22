@@ -89,10 +89,7 @@ async def send_vid(message, cc, filename, thumb, name, prog):
             thumbnail = thumb
     except Exception as e:
         await m.reply_text(str(e))
-    try:
-        dur = get_duration(filename)
-    except:
-        dur = int(duration(filename))
+    dur = get_duration(filename)
     w, h = get_width_height(filename)
     start_time = time.time()
     try:
