@@ -59,8 +59,10 @@ async def account_login(_, message):
 
     links = []
     for lol in lols:
-        link = re.findall(url_pattern, lol)
-        links.append(link)
+        link = re.search(url_pattern, lol)
+        if link:
+            links.append(link.group())
+
     
     await editable.edit(f"Total links found are **{len(links)}**\n\nSend From where you want to download initial is **1**")
     input0: message = await _.listen(editable.chat.id)
