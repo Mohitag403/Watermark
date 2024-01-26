@@ -156,8 +156,6 @@ async def account_login(_, message):
              url =  "https://d26g5bnklkwsh4.cloudfront.net/" + id + "/master.m3u8"
 
             name1 = links[i][0].replace("\t", "").replace(":", "").replace("/", "").replace("+", "").replace("#", "").replace("|", "").replace("@", "").replace("*", "").replace(".", "").replace("https", "").replace("http", "").strip()
-            for i in range(len(links)):
-                name2 = re.sub(r'https?://\S+|\S+\.com/\S+|\S+\.in/\S+', '', links[i][0])
             name = f'{str(count).zfill(3)}) {name1[:60]}'
 
             if "youtu" in url:
@@ -171,7 +169,7 @@ async def account_login(_, message):
                 cmd = f'yt-dlp -f "{ytf}" "{url}" -o "{name}.mp4"'
 
             try:  
-                cc = f'**{str(count).zfill(3)} **{name2}**.mkv **{res}** \n\n**Bᴀᴛᴄʜ :** **{raw_text0}**\n\n**Dᴏᴡɴʟᴏᴀᴅᴇᴅ Bʏ : ** **{raw_text3}**\n\n'
+                cc = f'**{str(count).zfill(3)} **{name1}**.mkv **{res}** \n\n**Bᴀᴛᴄʜ :** **{raw_text0}**\n\n**Dᴏᴡɴʟᴏᴀᴅᴇᴅ Bʏ : ** **{raw_text3}**\n\n'
                 cc1 = f'**{str(count).zfill(3)}\n**Pᴅғ Tɪᴛʟᴇ :** **{name1}** .pdf \n**Bᴀᴛᴄʜ :** **{raw_text0}**\n\n'
    
                 if "drive" in url:
