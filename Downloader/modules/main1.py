@@ -127,7 +127,7 @@ async def account_login(_, message):
 
     try:
         for i in range(count - 1, len(links)):
-            url = links[i].replace("file/d/","uc?export=download&id=").replace("www.youtube-nocookie.com/embed", "youtu.be").replace("?modestbranding=1", "").replace("/view?usp=sharing","") # .replace("mpd","m3u8")
+            url = links[i]
 
             if '/master.mpd' in url:
              id =  url.split("/")[-2]
