@@ -11,6 +11,17 @@ from hachoir.parser import createParser
 
 
 
+async def get_thumb(path, name, filename,):
+        temp_dir = f"{path}/{name}"
+        if self.thumb.startswith(("http://", "https://")):
+            wget.download(thumb, f"{temp_dir}.jpg")
+            thumbnail = f"{temp_dir}.jpg"
+        else:
+            subprocess.run(
+                f'ffmpeg -i "{filename}" -ss 00:00:01 -vframes 1 "{temp_dir}.jpg"', shell=True)
+            thumbnail = f"{temp_dir}.jpg"
+        return thumbnail
+
 
 def duration(filename):
     result = subprocess.run(["ffprobe", "-v", "error", "-show_entries",
@@ -78,15 +89,10 @@ async def download_video(url,cmd, name):
         return os.path.isfile.splitext[0] + "." + "mp4"
 
 
-async def send_vid(message, cc, filename, thumb, name, prog):
-    subprocess.run(f'ffmpeg -i "{filename}" -ss 00:01:00 -vframes 1 "{filename}.jpg"', shell=True)
+async def send_vid(message, cc, filename, thumb, name, path, prog):
     await prog.delete(True)
     reply = await message.reply_text(f"**⥣ Uploading ...** » `{name}`")
-    try:
-        if thumb == "no":
-            thumbnail = f"{filename}.jpg"
-        else:
-            thumbnail = thumb
+    thumbnail = await get_thumb(path, name, filename)
     except Exception as e:
         await message.reply_text(str(e))
     dur = int(duration(filename))
