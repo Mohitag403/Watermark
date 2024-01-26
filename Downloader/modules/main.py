@@ -115,8 +115,8 @@ async def account_login(_, message):
 
     thumb = input6.text
     if thumb.startswith("http://") or thumb.startswith("https://"):
-        getstatusoutput(f"wget '{thumb}' -O '{path}/thumb.jpg'")
-        thumb = f"{path}/thumb.jpg"
+        getstatusoutput(f"wget '{thumb}' -O 'thumb.jpg'")
+        thumb = f"thumb.jpg"
     else:
         thumb == "no"
 
@@ -219,7 +219,6 @@ async def account_login(_, message):
     except Exception as e:
         await message.reply_text(f"Error : {e}")
     await message.reply_text("Successfully downloaded all video !!")
-    os.remove(thumb)
 
 
 
