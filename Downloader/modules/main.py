@@ -169,8 +169,10 @@ async def account_login(_, message):
                 cmd = f'yt-dlp -f "{ytf}" "{url}" -o "{name}.mp4"'
 
             try:  
-                
-                cc = f'**{str(count).zfill(3)} **{name1}** **{res}** .mkv\n**Bᴀᴛᴄʜ :** **{raw_text0}**\n\n**Dᴏᴡɴʟᴏᴀᴅᴇᴅ Bʏ : ** **{raw_text3}**\n\n'
+                course_name_match = re.search(r"»»\s(.*?)\s==>", links[i])
+                course_name = course_name_match.group(1) if course_name_match else "Unknown Course"
+
+                cc = f'**{str(count).zfill(3)} **{name1}** **{course_name}** .mkv **{res}** \n\n**Bᴀᴛᴄʜ :** **{raw_text0}**\n\n**Dᴏᴡɴʟᴏᴀᴅᴇᴅ Bʏ : ** **{raw_text3}**\n\n'
                 cc1 = f'**{str(count).zfill(3)}\n**Pᴅғ Tɪᴛʟᴇ :** **{name1}** .pdf \n**Bᴀᴛᴄʜ :** **{raw_text0}**\n\n'
                 
                 if "drive" in url:
