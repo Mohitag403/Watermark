@@ -1,4 +1,5 @@
 import os,time,asyncio,datetime,requests
+import wget
 import aiohttp
 import aiofiles
 import logging
