@@ -11,9 +11,9 @@ from hachoir.parser import createParser
 
 
 
-async def get_thumb(path, name, filename,):
+async def get_thumb(thumb, path, name, filename,):
         temp_dir = f"{path}/{name}"
-        if self.thumb.startswith(("http://", "https://")):
+        if thumb.startswith(("http://", "https://")):
             wget.download(thumb, f"{temp_dir}.jpg")
             thumbnail = f"{temp_dir}.jpg"
         else:
@@ -92,7 +92,7 @@ async def download_video(url,cmd, name):
 async def send_vid(message, cc, filename, thumb, name, path, prog):
     await prog.delete(True)
     reply = await message.reply_text(f"**⥣ Uploading ...** » `{name}`")
-    thumbnail = await get_thumb(path, name, filename)
+    thumbnail = await get_thumb(thumb, path, name, filename)
     dur = int(duration(filename))
     start_time = time.time()
     try:
