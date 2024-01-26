@@ -156,7 +156,8 @@ async def account_login(_, message):
              url =  "https://d26g5bnklkwsh4.cloudfront.net/" + id + "/master.m3u8"
 
             name1 = links[i][0].replace("\t", "").replace(":", "").replace("/", "").replace("+", "").replace("#", "").replace("|", "").replace("@", "").replace("*", "").replace(".", "").replace("https", "").replace("http", "").strip()
-            name2 = re.sub(r'https?://\S+|www\.\S+', '', links[i][0])
+            for i in range(len(links)):
+                name2 = re.sub(r'https?://\S+|\S+\.com/\S+|\S+\.in/\S+', '', links[i][0])
             name = f'{str(count).zfill(3)}) {name1[:60]}'
 
             if "youtu" in url:
