@@ -1,5 +1,4 @@
 import os,time,asyncio,datetime,requests
-import wget
 import aiohttp
 import aiofiles
 import logging
@@ -11,17 +10,6 @@ from hachoir.metadata import extractMetadata
 from hachoir.parser import createParser
 
 
-
-async def get_thumb(thumb, path, name, filename,):
-        temp_dir = f"{path}/{name}"
-        if thumb.startswith(("http://", "https://")):
-            wget.download(thumb, f"{temp_dir}.jpg")
-            thumbnail = f"{temp_dir}.jpg"
-        else:
-            subprocess.run(
-                f'ffmpeg -i "{filename}" -ss 00:00:01 -vframes 1 "{temp_dir}.jpg"', shell=True)
-            thumbnail = f"{temp_dir}.jpg"
-        return thumbnail
 
 
 def duration(filename):
@@ -90,10 +78,17 @@ async def download_video(url,cmd, name):
         return os.path.isfile.splitext[0] + "." + "mp4"
 
 
-async def send_vid(message, cc, filename, thumb, name, path, prog):
+async def send_vid(message, cc, filename, thumb, name, prog):
+    subprocess.run(f'ffmpeg -i "{filename}" -ss 00:01:00 -vframes 1 "{filename}.jpg"', shell=True)
     await prog.delete(True)
     reply = await message.reply_text(f"**⥣ Uploading ...** » `{name}`")
-    thumbnail = await get_thumb(thumb, path, name, filename)
+    try:
+        if thumb == "no":
+            thumbnail = f"{filename}.jpg"
+        else:
+            thumbnail = thumb
+    except Exception as e:
+        await message.reply_text(str(e))
     dur = int(duration(filename))
     start_time = time.time()
     try:
@@ -132,6 +127,3 @@ async def take_screen_shot(video_file, name, path, ttl):
             return out_put_file_name
         else:
             return None
-
-
- 
