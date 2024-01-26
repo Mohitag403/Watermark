@@ -93,8 +93,6 @@ async def send_vid(message, cc, filename, thumb, name, path, prog):
     await prog.delete(True)
     reply = await message.reply_text(f"**⥣ Uploading ...** » `{name}`")
     thumbnail = await get_thumb(path, name, filename)
-    except Exception as e:
-        await message.reply_text(str(e))
     dur = int(duration(filename))
     start_time = time.time()
     try:
