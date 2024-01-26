@@ -27,12 +27,12 @@ async def restart_handler(_, message):
 async def account_login(_, message):
     editable = await message.reply_text("**SEND TXT FILE 🗃️ OR LINKS TO DOWNLOAD 🔗**")
     input: message = await _.listen(editable.chat.id)
+    url_pattern = re.compile(r'https?://\S+|www\.\S+')
     if input.document:
         x = await input.download()
         await input.delete(True)
 
         path = f"./downloads/{message.chat.id}"
-        url_pattern = re.compile(r'https?://\S+|www\.\S+')
  
         try:
            with open(x, "r") as f:
