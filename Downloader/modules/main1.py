@@ -38,7 +38,10 @@ async def account_login(_, message):
            with open(x, "r") as f:
                content = f.read()
            content = content.split("\n")
-           lols = [i for i in content if i.strip() and "://" in i]
+           lols = []
+           for i in content:
+                if i.strip() and "://" in i:
+                    lols.append(i)
            os.remove(x)
             
         except Exception as e:
@@ -49,12 +52,15 @@ async def account_login(_, message):
     else:
         content = input.text
         content = content.split("\n")
-        lols = [i for i in content if i.strip() and "://" in i]
+        lols = []
+        for i in content:
+            if i.strip() and "://" in i:
+                lols.append(i)
 
     links = []
     for lol in lols:
         link = re.findall(url_pattern, lol)
-        links.extend(link)
+        links.append(link)
     
     await editable.edit(f"Total links found are **{len(links)}**\n\nSend From where you want to download initial is **1**")
     input0: message = await _.listen(editable.chat.id)
