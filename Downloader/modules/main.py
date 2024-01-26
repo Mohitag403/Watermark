@@ -155,7 +155,8 @@ async def account_login(_, message):
              id =  url.split("/")[-2]
              url =  "https://d26g5bnklkwsh4.cloudfront.net/" + id + "/master.m3u8"
 
-            name1 = links[i][0].replace("\t", "").replace(":", "").replace("/", "").replace("+", "").replace("#", "").replace("|", "").replace("@", "").replace("*", "").replace(".", "").replace("https", "").replace("http", "").strip()
+#            name1 = links[i][0].replace("\t", "").replace(":", "").replace("/", "").replace("+", "").replace("#", "").replace("|", "").replace("@", "").replace("*", "").replace(".", "").replace("https", "").replace("http", "").strip()
+            name1 = re.sub(r'https?://\S+|www\.\S+', '', links[i][0])
             name = f'{str(count).zfill(3)}) {name1[:60]}'
 
             if "youtu" in url:
@@ -169,13 +170,9 @@ async def account_login(_, message):
                 cmd = f'yt-dlp -f "{ytf}" "{url}" -o "{name}.mp4"'
 
             try:  
-                course_name_match = re.search(r"»»\s(.*?)\s==>", links[i])
-                course_name = course_name_match.group(1) if course_name_match else "Unknown Course"
-                cc = f'**{str(count).zfill(3)} **{name1}** **{course_name}** .mkv **{res}** \n\n**Bᴀᴛᴄʜ :** **{raw_text0}**\n\n**Dᴏᴡɴʟᴏᴀᴅᴇᴅ Bʏ : ** **{raw_text3}**\n\n'
-            except:
                 cc = f'**{str(count).zfill(3)} **{name1}**.mkv **{res}** \n\n**Bᴀᴛᴄʜ :** **{raw_text0}**\n\n**Dᴏᴡɴʟᴏᴀᴅᴇᴅ Bʏ : ** **{raw_text3}**\n\n'
                 cc1 = f'**{str(count).zfill(3)}\n**Pᴅғ Tɪᴛʟᴇ :** **{name1}** .pdf \n**Bᴀᴛᴄʜ :** **{raw_text0}**\n\n'
-            try:    
+   
                 if "drive" in url:
                     try:
                         ka = await helper.download(url, name)
