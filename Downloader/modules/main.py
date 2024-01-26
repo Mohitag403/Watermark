@@ -205,7 +205,7 @@ async def account_login(_, message):
                     res_file = await helper.download_video(url, cmd, name)
                     filename = res_file
                     await prog.delete(True)
-                    await helper.send_vid(message, cc, filename, thumb, name, prog)
+                    await helper.send_vid(message, cc, filename, thumb, name, path, prog)
                     count += 1
                     time.sleep(1)
 
