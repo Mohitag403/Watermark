@@ -2,13 +2,9 @@ import json
 import os
 import requests
 from pyrogram import filters
-from pyromod import listen
 from pyrogram import Client, filters
 from pyrogram.types import *
 import cloudscraper
-from Crypto.Cipher import AES
-from Crypto.Util.Padding import unpad
-from base64 import b64decode
 from Downloader import app
 
 
