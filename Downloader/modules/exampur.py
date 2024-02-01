@@ -9,7 +9,7 @@ import cloudscraper
 from Crypto.Cipher import AES
 from Crypto.Util.Padding import unpad
 from base64 import b64decode
-from DAXXMUSIC import app
+from Downloader import app
 
 
 @app.on_message(filters.command(["exampur"]))
