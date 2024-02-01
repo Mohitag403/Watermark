@@ -2,7 +2,6 @@ import json
 import os
 import requests
 from pyrogram import filters
-from main import LOGGER, prefixes
 from pyrogram.types import Message
 from pyromod import listen
 import cloudscraper
