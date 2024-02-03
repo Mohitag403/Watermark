@@ -128,7 +128,7 @@ async def account_login(_, message):
             V = re.search(url_pattern, lol)
             url = V.group().strip()
             name2 = re.sub(url_pattern, '', lol)              
-            name1 = re.sub(r'[^\w\s]', '»»', name2)
+            name1 = re.sub(r'[^\w\s]', '', name2)
 
             if "visionias" in url:
                 async with ClientSession() as session:
@@ -156,8 +156,8 @@ async def account_login(_, message):
                 cmd = f'yt-dlp -f "{ytf}" "{url}" -o "{name}.mp4"'
 
             try:  
-                cc = f'**{str(count).zfill(3)} **{name1}**.mkv **{res}** \n\n**Bᴀᴛᴄʜ :** **{raw_text0}**\n\n**Dᴏᴡɴʟᴏᴀᴅᴇᴅ Bʏ : ** **{raw_text3}**\n\n'
-                cc1 = f'**{str(count).zfill(3)}\n**Pᴅғ Tɪᴛʟᴇ :** **{name1}** .pdf \n**Bᴀᴛᴄʜ :** **{raw_text0}**\n\n'
+                cc = f'**{str(count).zfill(3)}). **{name1}**.mkv **{res}** \n\n**Bᴀᴛᴄʜ :** **{raw_text0}**\n\n**Dᴏᴡɴʟᴏᴀᴅᴇᴅ Bʏ : ** **{raw_text3}**\n\n'
+                cc1 = f'**{str(count).zfill(3)}). **{name1}** .pdf \n**Bᴀᴛᴄʜ :** **{raw_text0}**\n\n'
 
                 if "drive" in url:
                     try:
