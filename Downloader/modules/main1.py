@@ -124,9 +124,11 @@ async def account_login(_, message):
     try:
         for i in range(count - 1, len(links)):
             lol = links[i]
-            url = re.search(url_pattern, lol)
-            name1 = re.sub(url_pattern, '', lol)              
-            name1 = re.sub(r'[^\w\s]', '', name1)
+            url_pattern = re.compile(r'https?://\S+|www\.\S+')
+            V = re.search(url_pattern, lol)
+            url = V.group().strip()
+            name2 = re.sub(url_pattern, '', lol)              
+            name1 = re.sub(r'[^\w\s]', '', name2)
 
             if '/master.mpd' in url:
              id =  url.split("/")[-2]
