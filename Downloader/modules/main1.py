@@ -38,10 +38,10 @@ async def account_login(_, message):
            with open(x, "r") as f:
                content = f.read()
            content = content.split("\n")
-           lols = []
+           links = []
            for i in content:
                 if i.strip() and "://" in i:
-                    lols.append(i)
+                    links.append(i)
            os.remove(x)
             
         except Exception as e:
@@ -52,16 +52,10 @@ async def account_login(_, message):
     else:
         content = input.text
         content = content.split("\n")
-        lols = []
+        links = []
         for i in content:
             if i.strip() and "://" in i:
-                lols.append(i)
-
-    links = []
-    for lol in lols:
-        link = re.search(url_pattern, lol)
-        if link:
-            links.append(link.group())
+                links.append(i)
 
     
     await editable.edit(f"Total links found are **{len(links)}**\n\nSend From where you want to download initial is **1**")
@@ -129,15 +123,16 @@ async def account_login(_, message):
 
     try:
         for i in range(count - 1, len(links)):
-            url = links[i]
+            lol = links[i]
+            url = re.search(url_pattern, lol)
+            name1 = re.sub(url_pattern, '', lol)              
+            name1 = re.sub(r'[^\w\s]', '', name1)
 
             if '/master.mpd' in url:
              id =  url.split("/")[-2]
              url =  "https://d26g5bnklkwsh4.cloudfront.net/" + id + "/master.m3u8"
 
-            for lol in lols:
-              name1 = re.sub(url_pattern, '', lol)
-              name = f'{str(count).zfill(3)}) {name1[:60]}'
+            name = f'{str(count).zfill(3)}) {name1[:60]}'
 
             if "youtu" in url:
                 ytf = f"b[height<={raw_text2}][ext=mp4]/bv[height<={raw_text2}][ext=mp4]+ba[ext=m4a]/b[ext=mp4]"
