@@ -23,13 +23,6 @@ async def restart_handler(_, message):
 
 # --------------------------- VIDEO DOWNLOADER -------------------------------- #
 @app.on_message(filters.command("txt"))
-async def txt_handler(client, message):
-    if message.chat.type == "private" and message.from_user.id in SUDO_USERS:
-        await account_login(_, message)
-    elif message.chat.type in ["group", "supergroup", "channel"]:
-        await account_login(_, message)
-
-
 async def account_login(_, message):
     editable = await message.reply_text("**SEND TXT FILE 🗃️ OR LINKS TO DOWNLOAD 🔗**")
     input: message = await _.listen(editable.chat.id)
