@@ -167,8 +167,8 @@ async def account_login(_, message):
                 cmd = f'yt-dlp -f "{ytf}" "{url}" -o "{name}.mp4"'
 
             try:  
-                cc = f'**{str(count).zfill(3)}). **{name1}**.mkv **{res}** \n\n**Bᴀᴛᴄʜ :** **{raw_text0}**\n\n**Dᴏᴡɴʟᴏᴀᴅᴇᴅ Bʏ : ** **{raw_text3}**\n\n'
-                cc1 = f'**{str(count).zfill(3)}). **{name1}** .pdf \n**Bᴀᴛᴄʜ :** **{raw_text0}**\n\n'
+                cc = f'**{str(count).zfill(3)}).** **{name1}**.mkv **{res}** \n\n**Bᴀᴛᴄʜ :** **{raw_text0}**\n\n**Dᴏᴡɴʟᴏᴀᴅᴇᴅ Bʏ : ** **{raw_text3}**\n\n'
+                cc1 = f'**{str(count).zfill(3)}).** **{name1}** .pdf \n**Bᴀᴛᴄʜ :** **{raw_text0}**\n\n'
 
                 if "drive" in url:
                     try:
