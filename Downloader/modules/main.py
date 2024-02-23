@@ -18,7 +18,7 @@ from Downloader.modules.database import SUDOERS
 
 # --------------------------------------------------------------------------------------------------------- #
 
-@app.on_message(filters.command("stop") & filters.user(SUDOERS))
+@app.on_message(filters.command("stop") & SUDOERS)
 async def restart_handler(_, message):
     await message.reply_text("**STOPPED**🚦", True)
     os.execl(sys.executable, sys.executable, *sys.argv)
@@ -28,7 +28,7 @@ async def restart_handler(_, message):
 
 # --------------------------- VIDEO DOWNLOADER -------------------------------- #
 
-@app.on_message(filters.command(["txt"]) & filters.user(SUDOERS))
+@app.on_message(filters.command(["txt"]) & SUDOERS)
 async def account_login(_, message):
     editable = await message.reply_text("**SEND TXT FILE 🗃️ OR LINKS TO DOWNLOAD 🔗**")
     input: message = await _.listen(editable.chat.id)
