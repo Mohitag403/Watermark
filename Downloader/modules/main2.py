@@ -90,7 +90,7 @@ async def download_link(link, message, count, raw_text2):
             time.sleep(1)
     except Exception as e:
         await message.reply_text(f"Error: {str(e)}\n\n**Name** - {name}\n**Link** - `{url}`")
-        continue
+
 
 # --------------------------- VIDEO DOWNLOADER -------------------------------- #
 
