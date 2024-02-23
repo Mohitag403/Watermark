@@ -1,5 +1,3 @@
-# __main__.py
-
 import asyncio
 import importlib
 from pyrogram import idle
