@@ -9,7 +9,7 @@ from Downloader import app
 from Downloader.core import helper
 from pyrogram import filters
 from pyrogram.errors import FloodWait
-
+from . import SUDOERS
 
 
 
@@ -18,7 +18,7 @@ from pyrogram.errors import FloodWait
 
 # --------------------------------------------------------------------------------------------------------- #
 
-@app.on_message(filters.command("stop") & filters.user(SUDO_USERS))
+@app.on_message(filters.command("stop") & filters.user(SUDOERS))
 async def restart_handler(_, message):
     await message.reply_text("**STOPPED**🚦", True)
     os.execl(sys.executable, sys.executable, *sys.argv)
@@ -28,7 +28,7 @@ async def restart_handler(_, message):
 
 # --------------------------- VIDEO DOWNLOADER -------------------------------- #
 
-@app.on_message(filters.command(["txt"]) & filters.user(SUDO_USERS))
+@app.on_message(filters.command(["txt"]) & filters.user(SUDOERS))
 async def account_login(_, message):
     editable = await message.reply_text("**SEND TXT FILE 🗃️ OR LINKS TO DOWNLOAD 🔗**")
     input: message = await _.listen(editable.chat.id)
