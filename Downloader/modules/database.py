@@ -13,14 +13,20 @@ SUDOERS = filters.user()
 
 async def setup_sudoers():
     global SUDOERS
-    SUDOERS = set()
-    SUDOERS.add(config.OWNER_ID)  # Assuming config.OWNER_ID is defined elsewhere
-    sudoers = await get_sudoers()
+    SUDOERS.add(config.OWNER_ID)
+    sudoersdb = mongodb.sudoers
+    sudoers = await sudoersdb.find_one({"sudo": "sudo"})
+    sudoers = [] if not sudoers else sudoers["sudoers"]
     if config.OWNER_ID not in sudoers:
         sudoers.append(config.OWNER_ID)
-        await set_sudoers(sudoers)
-    for user_id in sudoers:
-        SUDOERS.add(user_id)
+        await sudoersdb.update_one(
+            {"sudo": "sudo"},
+            {"$set": {"sudoers": sudoers}},
+            upsert=True,
+        )
+    if sudoers:
+        for user_id in sudoers:
+            SUDOERS.add(user_id)
 
 
 async def get_sudoers() -> list[int]:
