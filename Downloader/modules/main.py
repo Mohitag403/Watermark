@@ -29,8 +29,7 @@ async def restart_handler(_, message):
 
 @app.on_message(filters.command(["txt"]) & SUDOERS)
 async def account_login(_, message):
-    editable = await message.reply_text("**SEND TXT FILE 🗃️ OR LINKS TO DOWNLOAD 🔗**")
-    input: message = await _.listen(editable.chat.id)
+    input = await app.ask(message.chat.id, text="**SEND TXT FILE 🗃️ OR LINKS TO DOWNLOAD 🔗**")
     if input.document:
         x = await input.download()
         await input.delete(True)
@@ -61,19 +60,16 @@ async def account_login(_, message):
                 links.append(i.split("://", 1))
 
 
-    await editable.edit(f"Total links found are **{len(links)}**\n\nSend From where you want to download initial is **1**")
-    input0: message = await _.listen(editable.chat.id)
+    input0 = await app.ask(message.chat.id, text=f"Total links found are **{len(links)}**\n\nSend From where you want to download initial is **1**")
     raw_text = input0.text
     await input0.delete(True)
 
-    await editable.edit("**Enter Batch Name**")
-    input1: message = await _.listen(editable.chat.id)
+    input1 = await app.ask(message.chat.id, text="**Enter Batch Name**")
     raw_text0 = input1.text
     await input1.delete(True)
     
 
-    await editable.edit("**Enter resolution**")
-    input2: message = await _.listen(editable.chat.id)
+    input2 = await app.ask(message.chat.id, text="**Enter resolution**")
     raw_text2 = input2.text
     await input2.delete(True)
     try:
@@ -96,8 +92,7 @@ async def account_login(_, message):
     
     
 
-    await editable.edit("**Enter A Highlighter (Download By) **")
-    input3: message = await _.listen(editable.chat.id)
+    input3 = await app.ask(message.chat.id, text="**Enter A Highlighter (Download By) **")
     raw_text3 = input3.text
     await input3.delete(True)
     highlighter  = f"️ ⁪⁬⁮⁮⁮"
@@ -106,8 +101,7 @@ async def account_login(_, message):
     else:
         MR = raw_text3
    
-    await editable.edit("Now send the **Thumb url**\nEg : ```https://telegra.ph/file/0633f8b6a6f110d34f044.jpg```\n\nor Send `no`")
-    input6: message = await _.listen(editable.chat.id)
+    input6 = await app.ask(message.chat.id, text="Now send the **Thumb url**\nEg : ```https://telegra.ph/file/0633f8b6a6f110d34f044.jpg```\n\nor Send `no`")
     raw_text6 = input6.text
     await input6.delete(True)
     await editable.delete()
