@@ -10,39 +10,39 @@ from config import OWNER_ID
 async def close_message(_, query):
     await query.message.delete()
 
-@app.on_message(filters.command(["addsudo"]))
+@app.on_message(filters.command(["addsudo"]) & filters.user(OWNER_ID))
 async def useradd(client, message: Message):
     if not message.reply_to_message:
         if len(message.command) != 2:
             return await message.reply_text("» ʀᴇᴘʟʏ ᴛᴏ ᴀ ᴜsᴇʀ's ᴍᴇssᴀɢᴇ ᴏʀ ɢɪᴠᴇ ᴜsᴇʀɴᴀᴍᴇ/ᴜsᴇʀ ɪᴅ.")
     user = await extract_user(message)
     if user.id in SUDOERS:
-        return await message.reply_text(f"» {0} ɪs ᴀʟʀᴇᴀᴅʏ ɪɴ sᴜᴅᴏ ᴜsᴇʀs ʟɪsᴛ.".format(user.mention))
+        return await message.reply_text(f"» {user.mention} ɪs ᴀʟʀᴇᴀᴅʏ ɪɴ sᴜᴅᴏ ᴜsᴇʀs ʟɪsᴛ.")
     added = await add_sudo(user.id)
     if added:
         SUDOERS.add(user.id)
-        await message.reply_text(f"» ᴀᴅᴅᴇᴅ {0} ᴛᴏ sᴜᴅᴏ ᴜsᴇʀs ʟɪsᴛ.".format(user.mention))
+        await message.reply_text(f"» ᴀᴅᴅᴇᴅ {user.mention} ᴛᴏ sᴜᴅᴏ ᴜsᴇʀs ʟɪsᴛ.")
     else:
         await message.reply_text("ғᴀɪʟᴇᴅ.")
 
 
-@app.on_message(filters.command(["delsudo", "rmsudo"]))
+@app.on_message(filters.command(["delsudo", "rmsudo"]) & filters.user(OWNER_ID))
 async def userdel(client, message: Message):
     if not message.reply_to_message:
         if len(message.command) != 2:
             return await message.reply_text("» ʀᴇᴘʟʏ ᴛᴏ ᴀ ᴜsᴇʀ's ᴍᴇssᴀɢᴇ ᴏʀ ɢɪᴠᴇ ᴜsᴇʀɴᴀᴍᴇ/ᴜsᴇʀ ɪᴅ.")
     user = await extract_user(message)
     if user.id not in SUDOERS:
-        return await message.reply_text("» {0} ɪs ɴᴏᴛ ɪɴ sᴜᴅᴏ ᴜsᴇʀs ʟɪsᴛ.".format(user.mention))
+        return await message.reply_text(f"» {user.mention} ɪs ɴᴏᴛ ɪɴ sᴜᴅᴏ ᴜsᴇʀs ʟɪsᴛ.")
     removed = await remove_sudo(user.id)
     if removed:
         SUDOERS.remove(user.id)
-        await message.reply_text("» ʀᴇᴍᴏᴠᴇᴅ {0} ғʀᴏᴍ sᴜᴅᴏ ᴜsᴇʀs ʟɪsᴛ.".format(user.mention))
+        await message.reply_text(f"» ʀᴇᴍᴏᴠᴇᴅ {user.mention} ғʀᴏᴍ sᴜᴅᴏ ᴜsᴇʀs ʟɪsᴛ.")
     else:
         await message.reply_text("ғᴀɪʟᴇᴅ.")
 
 
-@app.on_message(filters.command(["sudolist", "listsudo", "sudoers"]))
+@app.on_message(filters.command(["sudolist", "listsudo", "sudoers"]) & filters.user(OWNER_ID))
 async def sudoers_list(client, message: Message):
     text = "<u><b>🥀 ᴏᴡɴᴇʀ :</b></u>\n"
     user = await app.get_users(OWNER_ID)
