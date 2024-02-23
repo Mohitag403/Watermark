@@ -9,7 +9,7 @@ from Downloader import app
 from Downloader.core import helper
 from pyrogram import filters
 from pyrogram.errors import FloodWait
-from . import SUDOERS
+from Downloader import SUDOERS
 
 
 
