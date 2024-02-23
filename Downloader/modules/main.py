@@ -104,7 +104,6 @@ async def account_login(_, message):
     input6 = await app.ask(message.chat.id, text="Now send the **Thumb url**\nEg : ```https://telegra.ph/file/0633f8b6a6f110d34f044.jpg```\n\nor Send `no`")
     raw_text6 = input6.text
     await input6.delete(True)
-    await editable.delete()
 
     thumb = input6.text
     if thumb.startswith("http://") or thumb.startswith("https://"):
