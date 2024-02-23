@@ -4,6 +4,18 @@ mongo_client = AsyncIOMotorClient(MONGO_DB_URI)
 mongodb = mongo_client.TXT
 sudoersdb = mongodb.sudoers
 
+async def setup_sudoers():
+    global SUDOERS
+    SUDOERS = set()
+    SUDOERS.add(config.OWNER_ID)  # Assuming config.OWNER_ID is defined elsewhere
+    sudoers = await get_sudoers()
+    if config.OWNER_ID not in sudoers:
+        sudoers.append(config.OWNER_ID)
+        await set_sudoers(sudoers)
+    for user_id in sudoers:
+        SUDOERS.add(user_id)
+
+
 async def get_sudoers() -> list[int]:
     try:
         sudoers_doc = await sudoersdb.find_one({"sudo": "sudo"})
