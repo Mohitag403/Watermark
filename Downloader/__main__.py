@@ -1,10 +1,9 @@
+# __main__.py
+
 import asyncio
 import importlib
 from pyrogram import idle
 from Downloader.modules import ALL_MODULES
- 
-
-loop = asyncio.get_event_loop()
 
 
 async def sumit_boot():
@@ -16,4 +15,5 @@ async def sumit_boot():
     print("» ɢᴏᴏᴅ ʙʏᴇ ! sᴛᴏᴘᴘɪɴɢ ʙᴏᴛ.")
 
 if __name__ == "__main__":
+    loop = asyncio.get_event_loop()
     loop.run_until_complete(sumit_boot())
