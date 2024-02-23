@@ -3,7 +3,7 @@ import logging
 from pyromod import listen
 from pyrogram import Client
 from config import API_ID, API_HASH, BOT_TOKEN
-
+from Downloader.modules.sudoers import mongodb
 
 
 loop = asyncio.get_event_loop()
@@ -44,3 +44,19 @@ async def info_bot():
 loop.run_until_complete(info_bot())
 
 
+async def sudo():
+    global SUDOERS
+    SUDOERS.add(config.OWNER_ID)
+    sudoersdb = mongodb.sudoers
+    sudoers = await sudoersdb.find_one({"sudo": "sudo"})
+    sudoers = [] if not sudoers else sudoers["sudoers"]
+    if config.OWNER_ID not in sudoers:
+        sudoers.append(config.OWNER_ID)
+        await sudoersdb.update_one(
+            {"sudo": "sudo"},
+            {"$set": {"sudoers": sudoers}},
+            upsert=True,
+        )
+    if sudoers:
+        for user_id in sudoers:
+            SUDOERS.add(user_id)
