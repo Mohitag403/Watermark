@@ -6,6 +6,9 @@ mongo_client = AsyncIOMotorClient(MONGO_DB_URI)
 mongodb = mongo_client.TXT
 sudoersdb = mongodb.sudoers
 
+SUDOERS = filters.user()
+
+
 async def setup_sudoers():
     global SUDOERS
     SUDOERS = set()
