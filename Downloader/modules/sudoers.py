@@ -66,7 +66,7 @@ async def extract_user(m: Message) -> User:
         return None
 
 
-@app.on_message(filters.command(["addsudo"]) & filters.user(OWNER_ID))
+@app.on_message(filters.command(["addsudo"]))
 async def useradd(client, message: Message):
     if not message.reply_to_message and len(message.command) != 2:
         return await message.reply_text("Invalid usage. Use /addsudo [user]")
