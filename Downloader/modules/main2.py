@@ -58,7 +58,7 @@ async def download_link(link, message, count, raw_text2):
             except FloodWait as e:
                 await message.reply_text(str(e))
                 time.sleep(e.x)
-                continue
+            
         elif ".pdf" in url:
             try:
                 cmd = f'yt-dlp -o "{name}.pdf" "{url}"'
@@ -70,7 +70,7 @@ async def download_link(link, message, count, raw_text2):
             except FloodWait as e:
                 await message.reply_text(str(e))
                 time.sleep(e.x)
-                continue
+    
         else:
             if "youtu" in url:
                 ytf = f"b[height<={raw_text2}][ext=mp4]/bv[height<={raw_text2}][ext=mp4]+ba[ext=m4a]/b[ext=mp4]"
