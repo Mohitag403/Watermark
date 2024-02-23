@@ -3,7 +3,7 @@ import logging
 from pyromod import listen
 from pyrogram import Client
 from config import API_ID, API_HASH, BOT_TOKEN
-
+from Downloader.modules.database import setup_sudoers
 
 
 loop = asyncio.get_event_loop()
@@ -39,6 +39,6 @@ async def info_bot():
         BOT_NAME = getme.first_name + " " + getme.last_name
     else:
         BOT_NAME = getme.first_name
-
+    await setup_sudoers()
 
 loop.run_until_complete(info_bot())
