@@ -1,5 +1,6 @@
 from motor.motor_asyncio import AsyncIOMotorClient
 import config
+from config import MONGO_DB_URI
 
 mongo_client = AsyncIOMotorClient(MONGO_DB_URI)
 mongodb = mongo_client.TXT
