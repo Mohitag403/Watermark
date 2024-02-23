@@ -2,8 +2,11 @@ import asyncio
 import importlib
 from pyrogram import idle
 from Downloader.modules import ALL_MODULES
+from Downloader.modules.database import setup_sudoers
+
 
 async def sumit_boot():
+    await setup_sudoers()
     for all_module in ALL_MODULES:
         importlib.import_module("Downloader.modules." + all_module)
 
