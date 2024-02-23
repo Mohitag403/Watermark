@@ -1,7 +1,7 @@
 from pyrogram import filters
 from pyrogram.types import Message
 from Downloader import app
-from Downloader.modules.database import get_sudoers, add_sudo, remove_sudo, extract_user
+from Downloader.modules.database import get_sudoers, add_sudo, remove_sudo, extract_user, SUDOERS
 import config
 
 
@@ -11,11 +11,11 @@ async def useradd(client, message: Message):
         return await message.reply_text("Invalid usage. Use /addsudo [user]")
     user = await extract_user(message)
     if user:
-        sudoers = await get_sudoers()
-        if user.id in sudoers:
+        if user.id in SUDOERS:
             return await message.reply_text("User is already a sudoer.")
         added = await add_sudo(user.id)
         if added:
+            SUDOERS.add(user.id)
             await message.reply_text(f"Added {user.first_name} as a sudoer.")
         else:
             await message.reply_text("Failed to add user as a sudoer.")
@@ -28,11 +28,11 @@ async def userdel(client, message: Message):
         return await message.reply_text("Invalid usage. Use /delsudo [user]")
     user = await extract_user(message)
     if user:
-        sudoers = await get_sudoers()
-        if user.id not in sudoers:
+        if user.id not in SUDOERS:
             return await message.reply_text("User is not a sudoer.")
         removed = await remove_sudo(user.id)
         if removed:
+            SUDOERS.remove(user.id)
             await message.reply_text(f"Removed {user.first_name} from sudoers.")
         else:
             await message.reply_text("Failed to remove user from sudoers.")
