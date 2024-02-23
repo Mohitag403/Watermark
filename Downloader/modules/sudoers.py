@@ -4,17 +4,6 @@ from Downloader import app
 from Downloader.modules.database import get_sudoers, add_sudo, remove_sudo, extract_user
 import config
 
-async def setup_sudoers():
-    global SUDOERS
-    SUDOERS = set()
-    SUDOERS.add(config.OWNER_ID)  # Assuming config.OWNER_ID is defined elsewhere
-    sudoers = await get_sudoers()
-    if config.OWNER_ID not in sudoers:
-        sudoers.append(config.OWNER_ID)
-        await set_sudoers(sudoers)
-    for user_id in sudoers:
-        SUDOERS.add(user_id)
-
 
 @app.on_message(filters.command(["addsudo"]))
 async def useradd(client, message: Message):
