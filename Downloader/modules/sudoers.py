@@ -1,23 +1,9 @@
 from pyrogram import filters
-from pyrogram.types import Message
+from pyrogram.types import Message, InlineKeyboardMarkup, InlineKeyboardButton
 from Downloader import app
 from Downloader.core.database import get_sudoers, add_sudo, remove_sudo, extract_user, SUDOERS
 import config
 from config import OWNER_ID
-
-
-def close_markup():
-    upl = InlineKeyboardMarkup(
-        [
-            [
-                InlineKeyboardButton(
-                    text="ᴄʟᴏsᴇ",
-                    callback_data="close",
-                ),
-            ]
-        ]
-    )
-    return upl
 
 
 @app.on_callback_query(filters.regex("^close$"))
@@ -58,17 +44,11 @@ async def userdel(client, message: Message):
 
 @app.on_message(filters.command(["sudolist", "listsudo", "sudoers"]))
 async def sudoers_list(client, message: Message):
-#    sudoers = await get_sudoers()
-#    if sudoers:
-#        sudoer_list = "\n".join(str(user_id) for user_id in sudoers)
-#        await message.reply_text(f"Sudoers:\n{sudoer_list}")
-#    else:
-#        await message.reply_text("No sudoers found.")
     text = "<u><b>🥀 ᴏᴡɴᴇʀ :</b></u>\n"
     user = await app.get_users(OWNER_ID)
     user = user.first_name if not user.mention else user.mention
     text += f"1➤ {user}\n"
-    count = 0
+    count = 1
     smex = 0
     for user_id in SUDOERS:
         if user_id != OWNER_ID:
@@ -80,9 +60,15 @@ async def sudoers_list(client, message: Message):
                     text += "\n<u><b>✨ sᴜᴅᴏ ᴜsᴇʀs :</b></u>\n"
                 count += 1
                 text += f"{count}➤ {user}\n"
-            except:
+            except Exception as e:
+                print(f"Error: {e}")
                 continue
-    if not text:
+    if count == 1:
         await message.reply_text("» ɴᴏ sᴜᴅᴏ ᴜsᴇʀs ғᴏᴜɴᴅ.")
     else:
-        await message.reply_text(text, reply_markup=close_markup(_))
+        close_button = InlineKeyboardButton(
+            text="ᴄʟᴏsᴇ",
+            callback_data="close",
+        )
+        close_markup = InlineKeyboardMarkup([[close_button]])
+        await message.reply_text(text, reply_markup=close_markup)
