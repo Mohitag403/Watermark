@@ -1,16 +1,36 @@
 import asyncio
+import logging
+from pyromod import listen
 from pyrogram import Client
 from config import API_ID, API_HASH, BOT_TOKEN
 
+
+
+loop = asyncio.get_event_loop()
+
+logging.basicConfig(
+    format="[%(levelname) 5s/%(asctime)s] %(name)s: %(message)s",
+    level=logging.INFO,
+)
+
+
+
+app = Client(
+    ":Downloader:",
+    api_id=API_ID,
+    api_hash=API_HASH,
+    bot_token=BOT_TOKEN,
+)
+
+
+
+
+
+
+
+
 async def info_bot():
     global BOT_ID, BOT_NAME, BOT_USERNAME
-    app = Client(
-        ":Downloader:",
-        api_id=API_ID,
-        api_hash=API_HASH,
-        bot_token=BOT_TOKEN,
-    )
-
     await app.start()
     getme = await app.get_me()
     BOT_ID = getme.id
@@ -20,5 +40,5 @@ async def info_bot():
     else:
         BOT_NAME = getme.first_name
 
-loop = asyncio.get_event_loop()
+
 loop.run_until_complete(info_bot())
