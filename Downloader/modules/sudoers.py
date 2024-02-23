@@ -2,7 +2,7 @@ from pyrogram import filters
 from pyrogram.types import Message
 from Downloader import app
 from Downloader.modules.database import get_sudoers, add_sudo, remove_sudo, extract_user
-
+import config
 
 async def setup_sudoers():
     global SUDOERS
