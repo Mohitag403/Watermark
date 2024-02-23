@@ -83,7 +83,7 @@ async def useradd(client, message: Message):
     else:
         await message.reply_text("User not found.")
 
-@app.on_message(filters.command(["delsudo", "rmsudo"]) & filters.user(OWNER_ID))
+@app.on_message(filters.command(["delsudo", "rmsudo"]))
 async def userdel(client, message: Message):
     if not message.reply_to_message and len(message.command) != 2:
         return await message.reply_text("Invalid usage. Use /delsudo [user]")
