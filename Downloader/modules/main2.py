@@ -1,6 +1,7 @@
 import os,re,sys,json,time,asyncio
 import requests
 import subprocess
+import threading
 from aiohttp import ClientSession
 from pyromod import listen
 from subprocess import getstatusoutput
@@ -21,73 +22,74 @@ async def restart_handler(_, message):
     await message.reply_text("**STOPPED**🚦", True)
     os.execl(sys.executable, sys.executable, *sys.argv)
 
-async def download_link(link, message, count, raw_text2):
+async def download_link(links, message, count, raw_text2):
     try:
-        # Extracting video URL
-        V = link[1].replace("file/d/", "uc?export=download&id=").replace("www.youtube-nocookie.com/embed", "youtu.be").replace("?modestbranding=1", "").replace("/view?usp=sharing", "")
-        url = "https://" + V
+        for i in range(count - 1, len(links)):
+            # Extracting video URL
+            url = links[i][1].replace("file/d/", "uc?export=download&id=").replace("www.youtube-nocookie.com/embed", "youtu.be").replace("?modestbranding=1", "").replace("/view?usp=sharing", "")
+            url = "https://" + url
+            
+            # Handling different platforms
+            if "visionias" in url:
+                async with ClientSession() as session:
+                    async with session.get(url, headers={'Accept': 'text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,image/apng,*/*;q=0.8,application/signed-exchange;v=b3;q=0.9', 'Accept-Language': 'en-US,en;q=0.9', 'Cache-Control': 'no-cache', 'Connection': 'keep-alive', 'Pragma': 'no-cache', 'Referer': 'http://www.visionias.in/', 'Sec-Fetch-Dest': 'iframe', 'Sec-Fetch-Mode': 'navigate', 'Sec-Fetch-Site': 'cross-site', 'Upgrade-Insecure-Requests': '1', 'User-Agent': 'Mozilla/5.0 (Linux; Android 12; RMX2121) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/107.0.0.0 Mobile Safari/537.36', 'sec-ch-ua': '"Chromium";v="107", "Not=A?Brand";v="24"', 'sec-ch-ua-mobile': '?1', 'sec-ch-ua-platform': '"Android"',}) as resp:
+                        text = await resp.text()
+                        url = re.search(r"(https://.*?playlist.m3u8.*?)\"", text).group(1)
+            elif "tencdn.classplusapp" in url or 'videos.classplusapp' in url or 'awebvideos.classplusapp' in url:
+                headers = {'x-access-token': 'your_token_here'}
+                response = requests.get('https://api.classplusapp.com/cams/uploader/video/jw-signed-url', headers=headers, params={'url': url})
+                url = response.json()['url']
+            elif '/master.mpd' in url:
+                id = url.split("/")[-2]
+                url = f"https://d26g5bnklkwsh4.cloudfront.net/{id}/master.m3u8"
+
+            # Extracting name
+            name1 = links[i][0].replace("\t", "").replace(":", "").replace("/", "").replace("+", "").replace("|", "").replace("@", "").replace("*", "").replace(".", "").replace("https", "").replace("http", "").strip()
+            name = f'{str(count).zfill(3)}) {name1[:60]}'
+
+            # Downloading the video
+            show = f"**⥥ Downloading »**\n\n**Name »** `{name}\nQuality » {raw_text2}`\n\n**Url »** `{url}`"
+            prog = await message.reply_text(show)
+            if "drive" in url:
+                try:
+                    ka = await helper.download(url, name)
+                    copy = await app.send_document(message.chat.id, document=ka, caption=show)
+                    count += 1
+                    os.remove(ka)
+                    time.sleep(1)
+                except FloodWait as e:
+                    await message.reply_text(str(e))
+                    time.sleep(e.x)
+                
+            elif ".pdf" in url:
+                try:
+                    cmd = f'yt-dlp -o "{name}.pdf" "{url}"'
+                    download_cmd = f"{cmd} -R 25 --fragment-retries 25"
+                    subprocess.run(download_cmd, shell=True, check=True)
+                    copy = await app.send_document(message.chat.id, document=f'{name}.pdf', caption=show)
+                    count += 1
+                    os.remove(f'{name}.pdf')
+                except FloodWait as e:
+                    await message.reply_text(str(e))
+                    time.sleep(e.x)
         
-        # Handling different platforms
-        if "visionias" in url:
-            async with ClientSession() as session:
-                async with session.get(url, headers={'Accept': 'text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,image/apng,*/*;q=0.8,application/signed-exchange;v=b3;q=0.9', 'Accept-Language': 'en-US,en;q=0.9', 'Cache-Control': 'no-cache', 'Connection': 'keep-alive', 'Pragma': 'no-cache', 'Referer': 'http://www.visionias.in/', 'Sec-Fetch-Dest': 'iframe', 'Sec-Fetch-Mode': 'navigate', 'Sec-Fetch-Site': 'cross-site', 'Upgrade-Insecure-Requests': '1', 'User-Agent': 'Mozilla/5.0 (Linux; Android 12; RMX2121) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/107.0.0.0 Mobile Safari/537.36', 'sec-ch-ua': '"Chromium";v="107", "Not=A?Brand";v="24"', 'sec-ch-ua-mobile': '?1', 'sec-ch-ua-platform': '"Android"',}) as resp:
-                    text = await resp.text()
-                    url = re.search(r"(https://.*?playlist.m3u8.*?)\"", text).group(1)
-        elif "tencdn.classplusapp" in url or 'videos.classplusapp' in url or 'awebvideos.classplusapp' in url:
-            headers = {'x-access-token': 'your_token_here'}
-            response = requests.get('https://api.classplusapp.com/cams/uploader/video/jw-signed-url', headers=headers, params={'url': url})
-            url = response.json()['url']
-        elif '/master.mpd' in url:
-            id = url.split("/")[-2]
-            url = f"https://d26g5bnklkwsh4.cloudfront.net/{id}/master.m3u8"
+            else:
+                if "youtu" in url:
+                    ytf = f"b[height<={raw_text2}][ext=mp4]/bv[height<={raw_text2}][ext=mp4]+ba[ext=m4a]/b[ext=mp4]"
+                else:
+                    ytf = f"b[height<={raw_text2}]/bv[height<={raw_text2}]+ba/b/bv+ba"
 
-        # Extracting name
-        name1 = link[0].replace("\t", "").replace(":", "").replace("/", "").replace("+", "").replace("|", "").replace("@", "").replace("*", "").replace(".", "").replace("https", "").replace("http", "").strip()
-        name = f'{str(count).zfill(3)}) {name1[:60]}'
-
-        # Downloading the video
-        show = f"**⥥ Downloading »**\n\n**Name »** `{name}\nQuality » {raw_text2}`\n\n**Url »** `{url}`"
-        prog = await message.reply_text(show)
-        if "drive" in url:
-            try:
-                ka = await helper.download(url, name)
-                copy = await app.send_document(message.chat.id, document=ka, caption=show)
+                if "jw-prod" in url:
+                    cmd = f'yt-dlp -o "{name}.mp4" "{url}"'
+                else:
+                    cmd = f'yt-dlp -f "{ytf}" "{url}" -o "{name}.mp4"'
+                
+                res_file = await helper.download_video(url, cmd, name)
+                filename = res_file
+                await prog.delete(True)
+                await helper.send_vid(app, message, show, filename, prog)
                 count += 1
-                os.remove(ka)
                 time.sleep(1)
-            except FloodWait as e:
-                await message.reply_text(str(e))
-                time.sleep(e.x)
-            
-        elif ".pdf" in url:
-            try:
-                cmd = f'yt-dlp -o "{name}.pdf" "{url}"'
-                download_cmd = f"{cmd} -R 25 --fragment-retries 25"
-                os.system(download_cmd)
-                copy = await app.send_document(message.chat.id, document=f'{name}.pdf', caption=show)
-                count += 1
-                os.remove(f'{name}.pdf')
-            except FloodWait as e:
-                await message.reply_text(str(e))
-                time.sleep(e.x)
-    
-        else:
-            if "youtu" in url:
-                ytf = f"b[height<={raw_text2}][ext=mp4]/bv[height<={raw_text2}][ext=mp4]+ba[ext=m4a]/b[ext=mp4]"
-            else:
-                ytf = f"b[height<={raw_text2}]/bv[height<={raw_text2}]+ba/b/bv+ba"
-
-            if "jw-prod" in url:
-                cmd = f'yt-dlp -o "{name}.mp4" "{url}"'
-            else:
-                cmd = f'yt-dlp -f "{ytf}" "{url}" -o "{name}.mp4"'
-            
-            res_file = await helper.download_video(url, cmd, name)
-            filename = res_file
-            await prog.delete(True)
-            await helper.send_vid(app, message, show, filename, prog)
-            count += 1
-            time.sleep(1)
     except Exception as e:
         await message.reply_text(f"Error: {str(e)}\n\n**Name** - {name}\n**Link** - `{url}`")
 
@@ -185,14 +187,8 @@ async def account_login(_, message):
         count = int(raw_text)
 
     try:
-        threads = []
-        for i in range(count - 1, len(links)):
-            t = Thread(target=download_link, args=(links[i], message, count, raw_text2))
-            threads.append(t)
-            t.start()
-
-        for t in threads:
-            t.join()
+        thread = threading.Thread(target=lambda: asyncio.run(download_link(links, message, count, raw_text2)))
+        thread.start()
 
     except Exception as e:
         await message.reply_text(f"Error : {e}")
