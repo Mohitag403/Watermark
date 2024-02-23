@@ -22,7 +22,7 @@ async def restart_handler(_, message):
     await message.reply_text("**STOPPED**🚦", True)
     os.execl(sys.executable, sys.executable, *sys.argv)
 
-async def download_link(links, message, count, raw_text2):
+async def download_link(links, message, count, raw_text2, res):
     for i in range(count - 1, len(links)):
         V = links[i][1].replace("file/d/","uc?export=download&id=").replace("www.youtube-nocookie.com/embed", "youtu.be").replace("?modestbranding=1", "").replace("/view?usp=sharing","") # .replace("mpd","m3u8")
         url = "https://" + V
@@ -66,7 +66,7 @@ async def download_link(links, message, count, raw_text2):
             if "drive" in url:
                 try:
                     ka = await helper.download(url, name)
-                    copy = await _.send_document(message.chat.id, document=ka, caption=cc1)
+                    copy = await app.send_document(message.chat.id, document=ka, caption=cc1)
                     count += 1
                     os.remove(ka)
                     time.sleep(1)
@@ -81,7 +81,7 @@ async def download_link(links, message, count, raw_text2):
                     cmd = f'yt-dlp -o "{name}.pdf" "{url}"'
                     download_cmd = f"{cmd} -R 25 --fragment-retries 25"
                     os.system(download_cmd)
-                    copy = await _.send_document(message.chat.id, document=f'{name}.pdf', caption=cc1)
+                    copy = await app.send_document(message.chat.id, document=f'{name}.pdf', caption=cc1)
                     count += 1
                     os.remove(f'{name}.pdf')
                 except FloodWait as e:
@@ -196,7 +196,7 @@ async def account_login(_, message):
         count = int(raw_text)
 
     try:
-        thread = threading.Thread(target=lambda: asyncio.run(download_link(links, message, count, raw_text2)))
+        thread = threading.Thread(target=lambda: asyncio.run(download_link(links, message, count, raw_text2, res)))
         thread.start()
 
     except Exception as e:
