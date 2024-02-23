@@ -3,7 +3,7 @@ from pyrogram.types import Message
 from Downloader import app
 from Downloader.core.database import get_sudoers, add_sudo, remove_sudo, extract_user, SUDOERS
 import config
-
+from config import OWNER_ID
 
 @app.on_message(filters.command(["addsudo"]))
 async def useradd(client, message: Message):
