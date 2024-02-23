@@ -2,7 +2,6 @@ import asyncio, config, logging
 from pyromod import listen
 from pyrogram import Client
 from config import API_ID, API_HASH, BOT_TOKEN
-from Downloder import app
 from Downloader.modules.sudoers import mongodb
 from Downloader.modules.sudoers import *
 
