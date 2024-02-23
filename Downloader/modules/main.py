@@ -1,7 +1,6 @@
 import os,re,sys,json,time,asyncio
 import requests
 import subprocess
-from config import SUDO_USERS
 from aiohttp import ClientSession
 from pyromod import listen
 from subprocess import getstatusoutput
@@ -9,7 +8,7 @@ from Downloader import app
 from Downloader.core import helper
 from pyrogram import filters
 from pyrogram.errors import FloodWait
-from Downloader.modules.database import SUDOERS
+from Downloader.core.database import SUDOERS
 
 
 
