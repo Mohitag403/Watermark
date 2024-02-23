@@ -14,7 +14,6 @@ from Downloader.core.database import SUDOERS
 
 
 
-
 # --------------------------------------------------------------------------------------------------------- #
 
 @app.on_message(filters.command("stop2") & SUDOERS)
@@ -22,8 +21,7 @@ async def restart_handler(_, message):
     await message.reply_text("**STOPPED**🚦", True)
     os.execl(sys.executable, sys.executable, *sys.argv)
 
-
-async def download_link(link):
+async def download_link(link, message, count, raw_text2):
     try:
         # Extracting video URL
         V = link[1].replace("file/d/", "uc?export=download&id=").replace("www.youtube-nocookie.com/embed", "youtu.be").replace("?modestbranding=1", "").replace("/view?usp=sharing", "")
@@ -53,12 +51,12 @@ async def download_link(link):
         if "drive" in url:
             try:
                 ka = await helper.download(url, name)
-                copy = await _.send_document(message.chat.id, document=ka, caption=cc1)
+                copy = await app.send_document(message.chat.id, document=ka, caption=show)
                 count += 1
                 os.remove(ka)
                 time.sleep(1)
             except FloodWait as e:
-                await m.reply_text(str(e))
+                await message.reply_text(str(e))
                 time.sleep(e.x)
                 continue
         elif ".pdf" in url:
@@ -66,7 +64,7 @@ async def download_link(link):
                 cmd = f'yt-dlp -o "{name}.pdf" "{url}"'
                 download_cmd = f"{cmd} -R 25 --fragment-retries 25"
                 os.system(download_cmd)
-                copy = await _.send_document(message.chat.id, document=f'{name}.pdf', caption=cc1)
+                copy = await app.send_document(message.chat.id, document=f'{name}.pdf', caption=show)
                 count += 1
                 os.remove(f'{name}.pdf')
             except FloodWait as e:
@@ -87,7 +85,7 @@ async def download_link(link):
             res_file = await helper.download_video(url, cmd, name)
             filename = res_file
             await prog.delete(True)
-            await helper.send_vid(message, cc, filename, thumb, name, prog)
+            await helper.send_vid(app, message, show, filename, prog)
             count += 1
             time.sleep(1)
     except Exception as e:
@@ -189,7 +187,7 @@ async def account_login(_, message):
     try:
         threads = []
         for i in range(count - 1, len(links)):
-            t = Thread(target=download_link, args=(links[i],))
+            t = Thread(target=download_link, args=(links[i], message, count, raw_text2))
             threads.append(t)
             t.start()
 
