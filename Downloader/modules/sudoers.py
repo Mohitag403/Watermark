@@ -5,6 +5,25 @@ from Downloader.core.database import get_sudoers, add_sudo, remove_sudo, extract
 import config
 from config import OWNER_ID
 
+
+def close_markup():
+    upl = InlineKeyboardMarkup(
+        [
+            [
+                InlineKeyboardButton(
+                    text="ᴄʟᴏsᴇ",
+                    callback_data="close",
+                ),
+            ]
+        ]
+    )
+    return upl
+
+
+@app.on_callback_query(filters.regex("^close$"))
+async def close_message(_, query):
+    await query.message.delete()
+
 @app.on_message(filters.command(["addsudo"]))
 async def useradd(client, message: Message):
     if not message.reply_to_message:
