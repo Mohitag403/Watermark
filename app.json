@@ -7,8 +7,35 @@
         "video-extract",
         "pyrogram"
     ],
-    "repository": "https://github.com/XdityaHalder/SankiMusic",
-    "success_url": "https://t.me/AdityaDiscus",
+    "repository": "https://github.com/DAXXTEAM",
+    "success_url": "https://t.me/DAXXSUPPORT",
+    "env": {
+      "API_ID": {
+        "description": "Get this value from https://my.telegram.org",
+        "value": "",
+        "required": true
+      },
+      "API_HASH": {
+        "description": "Get this value from https://my.telegram.org",
+        "value": "",
+        "required": true
+      },
+      "BOT_TOKEN": {
+        "description": "A Bot's token from Botfather",
+        "value": "",
+        "required": true
+      },
+      "OWNER_ID": {
+        "description": "Owner's User ID",
+        "value": "",
+        "required": true
+      },
+      "MONGO_DB_URI": {
+        "description": "Mongo DB URL (Database Url)",
+        "value": "",
+        "required": true
+      }
+    },
     "stack": "container",
     "addons": [],
     "buildpacks": [
