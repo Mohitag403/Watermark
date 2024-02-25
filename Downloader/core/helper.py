@@ -77,8 +77,12 @@ async def download_video(url,cmd, name):
     except FileNotFoundError as exc:
         return os.path.isfile.splitext[0] + "." + "mp4"
 
-
 async def send_vid(message, cc, filename, thumb, name, prog):
+    tasks = []
+    tasks.append(upload(message, cc, filename, thumb, name, prog))
+    await asyncio.gather(*tasks)
+
+async def upload(message, cc, filename, thumb, name, prog):
     subprocess.run(f'ffmpeg -i "{filename}" -ss 00:01:00 -vframes 1 "{filename}.jpg"', shell=True)
     await prog.delete(True)
     reply = await message.reply_text(f"**⥣ Uploading ...** » `{name}`")
