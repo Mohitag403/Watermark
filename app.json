@@ -7,8 +7,8 @@
         "video-extract",
         "pyrogram"
     ],
-    "repository": "https://github.com/DAXXTEAM",
-    "success_url": "https://t.me/DAXXSUPPORT",
+    "repository": "https://github.com/Mohitag24",
+    "success_url": "https://t.me/Mohitag24",
     "env": {
       "API_ID": {
         "description": "Get this value from https://my.telegram.org",
