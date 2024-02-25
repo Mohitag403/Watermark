@@ -5,11 +5,11 @@ import threading
 from aiohttp import ClientSession
 from pyromod import listen
 from subprocess import getstatusoutput
-from Downloader import app
-from Downloader.core import helper
+from TXT import app
+from TXT.core import helper
 from pyrogram import filters
 from pyrogram.errors import FloodWait
-from Downloader.core.database import SUDOERS
+from TXT.core.database import SUDOERS
 
 
 
@@ -105,7 +105,7 @@ async def download_link(links, message, count, raw_text2, res, raw_text0, raw_te
             await message.reply_text(f"Error: {str(e)}\n\n**Name** - {name}\n**Link** - `{url}`")
             continue
 
-# --------------------------- VIDEO DOWNLOADER -------------------------------- #
+# --------------------------- VIDEO TXT -------------------------------- #
 
 @app.on_message(filters.command(["txt2"]) & SUDOERS)
 async def account_login(_, message):

@@ -4,11 +4,11 @@ import subprocess
 from aiohttp import ClientSession
 from pyromod import listen
 from subprocess import getstatusoutput
-from Downloader import app
-from Downloader.core import helper
+from TXT import app
+from TXT.core import helper
 from pyrogram import filters
 from pyrogram.errors import FloodWait
-from Downloader.core.database import SUDOERS
+from TXT.core.database import SUDOERS
 
 
 # --------------------------------------------------------------------------------------------------------- #
@@ -18,7 +18,7 @@ async def restart_handler(_, message):
     await message.reply_text("**STOPPED**🚦", True)
     os.execl(sys.executable, sys.executable, *sys.argv)
 
-# --------------------------- VIDEO DOWNLOADER -------------------------------- #
+# --------------------------- VIDEO TXT -------------------------------- #
 
 @app.on_message(filters.command(["txt"]) & SUDOERS)
 async def account_login(_, message):

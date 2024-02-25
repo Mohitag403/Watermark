@@ -3,9 +3,9 @@ import aiohttp
 import aiofiles
 import logging
 import subprocess
-from Downloader.core.utils import progress_bar
+from TXT.core.utils import progress_bar
 from pyrogram import filters
-from Downloader import app
+from TXT import app
 from hachoir.metadata import extractMetadata
 from hachoir.parser import createParser
 
@@ -50,7 +50,7 @@ async def download(url,name):
 
 
 async def download_video(url,cmd, name):
-    download_cmd = f'{cmd} -R 25 --fragment-retries 25 --external-downloader aria2c --downloader-args "aria2c: -x 16 -j 32"'
+    download_cmd = f'{cmd} -R 25 --fragment-retries 25 --external-TXT aria2c --TXT-args "aria2c: -x 16 -j 32"'
     global failed_counter
     print(download_cmd)
     logging.info(download_cmd)

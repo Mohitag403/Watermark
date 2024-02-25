@@ -4,7 +4,7 @@ from config import MONGO_DB_URI
 from pyrogram import filters
 from pyrogram.enums import MessageEntityType
 from pyrogram.types import Message, User
-from Downloader import app
+from TXT import app
 
 mongo_client = AsyncIOMotorClient(MONGO_DB_URI)
 mongodb = mongo_client.TXT

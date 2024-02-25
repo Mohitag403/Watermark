@@ -1,7 +1,7 @@
 from pyrogram import filters
 from pyrogram.types import Message, InlineKeyboardMarkup, InlineKeyboardButton
-from Downloader import app
-from Downloader.core.database import get_sudoers, add_sudo, remove_sudo, extract_user, SUDOERS
+from TXT import app
+from TXT.core.database import get_sudoers, add_sudo, remove_sudo, extract_user, SUDOERS
 import config
 from config import OWNER_ID
 
