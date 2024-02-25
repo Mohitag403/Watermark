@@ -47,7 +47,13 @@ async def download_link(links, message, count, raw_text2, res, raw_text0, raw_te
             url =  "https://d26g5bnklkwsh4.cloudfront.net/" + id + "/master.m3u8"
 
         name1 = links[i][0].replace("\t", "").replace(":", "").replace("/", "").replace("+", "").replace("|", "").replace("@", "").replace("*", "").replace(".", "").replace("https", "").replace("http", "").strip()
-        name = f'{str(count).zfill(3)}) {name1[:60]}'
+#        name = f'{str(count).zfill(3)}) {name1[:60]}'
+        if not name1:
+            file_id_match = re.search(r"/file/d/(.*?)(?:/|$)", url)
+            if file_id_match:
+                name = f'{str(count).zfill(3)}) {file_id_match.group(1)[:60]}'
+            else:
+                name = "unknown_file"
 
         if "youtu" in url:
             ytf = f"b[height<={raw_text2}][ext=mp4]/bv[height<={raw_text2}][ext=mp4]+ba[ext=m4a]/b[ext=mp4]"
@@ -55,9 +61,9 @@ async def download_link(links, message, count, raw_text2, res, raw_text0, raw_te
             ytf = f"b[height<={raw_text2}]/bv[height<={raw_text2}]+ba/b/bv+ba"
 
         if "jw-prod" in url:
-            cmd = f'yt-dlp -o "{name}.mp4" "{url}"'
+            cmd = f'yt-dlp -o "message.chat.id{name}.mp4" "{url}"'
         else:
-            cmd = f'yt-dlp -f "{ytf}" "{url}" -o "{name}.mp4"'
+            cmd = f'yt-dlp -f "{ytf}" "{url}" -o "message.chat.id{name}.mp4"'
 
         try:  
             cc = f'**{str(count).zfill(3)}).  {name1}.mkv {res}** \n\n**Bᴀᴛᴄʜ : {raw_text0}**\n\n**Dᴏᴡɴʟᴏᴀᴅᴇᴅ Bʏ : {raw_text3}**\n\n'
