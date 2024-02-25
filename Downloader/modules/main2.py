@@ -96,7 +96,8 @@ async def download_link(links, message, count, raw_text2, res, raw_text0, raw_te
                 res_file = await helper.download_video(url, cmd, name)
                 filename = res_file
 #                await prog.delete(True)
-                await helper.send_vid(message, cc, filename, thumb, name, prog)
+#                await helper.send_vid(message, cc, filename, thumb, name, prog)
+                asyncio.create_task(helper.send_vid(message, cc, filename, thumb, name, prog))
                 count += 1
                 time.sleep(1)
 
