@@ -88,7 +88,7 @@ async def account_login(_, message):
     raw_text5 = input5.text
     await input5.delete(True)
 
-    thumb = input6.text
+    thumb = input5.text
     if thumb.startswith("http://") or thumb.startswith("https://"):
         getstatusoutput(f"wget '{thumb}' -O 'thumb.jpg'")
         thumb = f"thumb.jpg"
