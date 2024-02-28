@@ -23,6 +23,7 @@ async def restart_handler(_, message):
 @app.on_message(filters.command(["txt"]) & SUDOERS)
 async def account_login(_, message):
     input = await app.ask(message.chat.id, text="**SEND TXT FILE 🗃️ OR LINKS TO DOWNLOAD 🔗**")
+    user = message.from_user.mention
     if input.document:
         x = await input.download()
         await input.delete(True)
@@ -82,21 +83,10 @@ async def account_login(_, message):
             res = "UN"
     except Exception:
             res = "UN"
-    
-    
-
-    input3 = await app.ask(message.chat.id, text="**Enter A Highlighter (Download By) **")
-    raw_text3 = input3.text
-    await input3.delete(True)
-    highlighter  = f"️ ⁪⁬⁮⁮⁮"
-    if raw_text3 == 'Co':
-        MR = highlighter 
-    else:
-        MR = raw_text3
    
-    input6 = await app.ask(message.chat.id, text="Now send the **Thumb url**\nEg : ```https://telegra.ph/file/0633f8b6a6f110d34f044.jpg```\n\nor Send `no`")
-    raw_text6 = input6.text
-    await input6.delete(True)
+    input5 = await app.ask(message.chat.id, text="Now send the **Thumb url**\nEg : ```https://telegra.ph/file/0633f8b6a6f110d34f044.jpg```\n\nor Send `no`")
+    raw_text5 = input5.text
+    await input5.delete(True)
 
     thumb = input6.text
     if thumb.startswith("http://") or thumb.startswith("https://"):
@@ -165,8 +155,8 @@ async def account_login(_, message):
                 cmd = f'yt-dlp -f "{ytf}" "{url}" -o "{name}.mp4"'
 
             try:  
-                cc = f'**{str(count).zfill(3)}).  {name1}.mkv {res}** \n\n**Bᴀᴛᴄʜ : {raw_text0}**\n\n**Dᴏᴡɴʟᴏᴀᴅᴇᴅ Bʏ : {raw_text3}**\n\n'
-                cc1 = f'**{str(count).zfill(3)}).**\n**Pᴅғ Tɪᴛʟᴇ : {name1} .pdf** \n**Bᴀᴛᴄʜ : {raw_text0}**\n\n**Dᴏᴡɴʟᴏᴀᴅᴇᴅ Bʏ : {raw_text3}**\n\n'
+                cc = f'**{str(count).zfill(3)}).  {name1}.mkv {res}** \n\n**Bᴀᴛᴄʜ : {raw_text0}**\n\n**Dᴏᴡɴʟᴏᴀᴅᴇᴅ Bʏ : {user}**\n\n'
+                cc1 = f'**{str(count).zfill(3)}). Pᴅғ Tɪᴛʟᴇ : {name1}.pdf** \n**Bᴀᴛᴄʜ : {raw_text0}**\n\n**Dᴏᴡɴʟᴏᴀᴅᴇᴅ Bʏ : {user}**\n\n'
    
                 if "drive" in url:
                     try:
