@@ -88,7 +88,7 @@ async def send_multiple_videos(video_list):
         tasks.append(upload(*video_info))
     await asyncio.gather(*tasks)
 
-async def send_vid(chat_id, message_id, message, cc, filename, thumb, name, prog):
+async def send_vid(message, cc, filename, thumb, name, prog):
     subprocess.run(f'ffmpeg -i "{filename}" -ss 00:01:00 -vframes 1 "{filename}.jpg"', shell=True)
     await prog.delete(True)
     reply = await message.reply_text(f"**⥣ Uploading ...** » `{name}`")
@@ -102,9 +102,9 @@ async def send_vid(chat_id, message_id, message, cc, filename, thumb, name, prog
     dur = int(duration(filename))
     start_time = time.time()
     try:
-        await app.send_video(chat_id=chat_id, reply_to_message_id=message_id, video=filename, caption=cc, supports_streaming=True, height=720, width=1280, thumb=thumbnail, duration=dur, progress=progress_bar, progress_args=(reply, start_time))
+        await app.send_video(message.chat.id, reply_to_message_id=message.reply_to_message_id, video=filename, caption=cc, supports_streaming=True, height=720, width=1280, thumb=thumbnail, duration=dur, progress=progress_bar, progress_args=(reply, start_time))
     except Exception:
-        await app.send_video(chat_id=chat_id, reply_to_message_id=message_id, video=filename, caption=cc, progress=progress_bar, progress_args=(reply, start_time))
+        await app.send_video(message.chat.id, reply_to_message_id=message.reply_to_message_id, video=filename, caption=cc, progress=progress_bar, progress_args=(reply, start_time))
     os.remove(filename)
     os.remove(f"{filename}.jpg")
     await reply.delete(True)
