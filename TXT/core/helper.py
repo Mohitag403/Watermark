@@ -11,7 +11,6 @@ from hachoir.parser import createParser
 
 
 
-
 def duration(filename):
     result = subprocess.run(["ffprobe", "-v", "error", "-show_entries",
                              "format=duration", "-of",
@@ -19,22 +18,6 @@ def duration(filename):
         stdout=subprocess.PIPE,
         stderr=subprocess.STDOUT)
     return float(result.stdout)
-
-
-def get_duration(filepath):
-        metadata = extractMetadata(createParser(filepath))
-        if metadata.has("duration"):
-            return metadata.get('duration').seconds
-        else:
-            return 0
-            
-
-def get_width_height(filename):
-    metadata = extractMetadata(createParser(filename))
-    if metadata.has("width") and metadata.has("height"):
-        return metadata.get("width"), metadata.get("height")
-    else:
-        return 1280, 720   
 
 
 async def download(url,name):
@@ -46,7 +29,6 @@ async def download(url,name):
                 await f.write(await resp.read())
                 await f.close()
     return ka
-
 
 
 async def download_video(url,cmd, name):
@@ -77,16 +59,6 @@ async def download_video(url,cmd, name):
     except FileNotFoundError as exc:
         return os.path.isfile.splitext[0] + "." + "mp4"
 
-async def up(message, cc, filename, thumb, name, prog):
-    video_list = []
-    video_list.append((message, cc, filename, thumb, name, prog))
-    await send_multiple_videos(video_list)
-
-async def send_multiple_videos(video_list):
-    tasks = []
-    for video_info in video_list:
-        tasks.append(upload(*video_info))
-    await asyncio.gather(*tasks)
 
 async def send_vid(message, cc, filename, thumb, name, prog):
     subprocess.run(f'ffmpeg -i "{filename}" -ss 00:01:00 -vframes 1 "{filename}.jpg"', shell=True)
@@ -108,32 +80,3 @@ async def send_vid(message, cc, filename, thumb, name, prog):
     os.remove(filename)
     os.remove(f"{filename}.jpg")
     await reply.delete(True)
-
-
-async def take_screen_shot(video_file, name, path, ttl):
-        out_put_file_name = f"{path}/{name}.jpg"
-        if video_file.upper().endswith(("MKV", "MP4", "WEBM")):
-            file_genertor_command = [
-                "ffmpeg",
-                "-ss",
-                str(ttl),
-                "-i",
-                video_file,
-                "-vframes",
-                "1",
-                out_put_file_name
-            ]
-            process = await asyncio.create_subprocess_exec(
-                *file_genertor_command,
-                stdout=asyncio.subprocess.PIPE,
-                stderr=asyncio.subprocess.PIPE,
-            )
-
-            stdout, stderr = await process.communicate()
-            e_response = stderr.decode().strip()
-            t_response = stdout.decode().strip()
-
-        if os.path.lexists(out_put_file_name):
-            return out_put_file_name
-        else:
-            return None
