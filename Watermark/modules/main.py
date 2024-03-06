@@ -30,7 +30,7 @@ async def watcher(app, message):
         dur = int(duration(video))
         start_time = time.time() 
 #        await app.send_video(chat_id=message.chat.id, video=video) 
-        await app.send_video(chat_id=message.chat.id, video=video, caption=cc, supports_streaming=True, height=720, width=1280, thumb=thumbnail, duration=dur, progress=progress_bar, progress_args=(reply, start_time))    
+        await app.send_video(chat_id=message.chat.id, video=video, supports_streaming=True, height=720, width=1280, thumb=thumbnail, duration=dur, progress=progress_bar, progress_args=(reply, start_time))    
         os.remove("video.jpg")        
     else:
         pass
