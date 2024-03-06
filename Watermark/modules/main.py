@@ -17,23 +17,23 @@ from pyrogram.types import InlineKeyboardButton, InlineKeyboardMarkup, ForceRepl
 
 
 @app.on_message((filters.document | filters.video | filters.photo) & filters.private)
-async def watcher(app, message):
+async def watcher(_, message):
     if message.photo or (message.document and message.document.mime_type.startswith("photo/")):
         photo = await message.download()
+        await app.send_photo(chat_id=message.chat.id, photo=photo, reply_to_message_id=message.message_id)
         await message.reply_text("Yes, it's a photo\nWait downloading...")
-        await app.send_photo(chat_id=message.chat.id, photo=photo)
-        
+
     elif message.video or (message.document and message.document.mime_type.startswith("video/")):
         button = [
-        [
-            InlineKeyboardButton("DOC", callback_data="upload_document"),
-            InlineKeyboardButton("VIDEO", callback_data="upload_video")
-        ],
-        [
-            InlineKeyboardButton("CLOSE", callback_data="close_data")
-        ]]
-           
-        await message.reply("**CHOOSE YOUR FORMAT**", reply_to_message_id=message.reply_to_message_id, reply_markup=InlineKeyboardMarkup(button))
+            [
+                InlineKeyboardButton("DOC", callback_data="upload_document"),
+                InlineKeyboardButton("VIDEO", callback_data="upload_video")
+            ],
+            [
+                InlineKeyboardButton("CLOSE", callback_data="close_data")
+            ]
+        ]
+        await app.send_message(chat_id=message.chat.id, text="**CHOOSE YOUR FORMAT**", reply_markup=InlineKeyboardMarkup(button), reply_to_message_id=message.message_id)
         
         
 
