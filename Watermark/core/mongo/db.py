@@ -7,6 +7,14 @@ db = mongo.watermark
 db = db.watermark_db
 
 
+async def bot_on_off(x, y):
+    data = await get_thumbnail(user_id)
+    if data and data.get("_id"):
+        await db.update_one({"_id": x}, {"$set": {"Bot": y}})
+    else:
+        await db.insert_one({"_id": x, "Bot": y})
+
+
 
 async def set_thumbnail(user_id, thumb):
     data = await get_thumbnail(user_id)
@@ -33,6 +41,7 @@ async def get_caption(user_id):
     return x
     
 
+
 async def set_watermarl(user_id, watermark):
     data = await get_thumbnail(user_id)
     if data and data.get("_id"):
@@ -40,10 +49,10 @@ async def set_watermarl(user_id, watermark):
     else:
         await db.insert_one({"_id": user_id, "watermark": watermark})
 
-
 async def get_watermark(user_id):
     x = await db.find_one({"_id": user_id})
     return x
+
 
 
 async def remove_thumbnail(user_id):
