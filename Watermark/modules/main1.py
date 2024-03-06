@@ -47,7 +47,8 @@ async def dl_send(message):
 @app.on_message((filters.document | filters.video | filters.photo) & filters.private)
 async def watcher(app, message):     
     if message.video or (message.document and message.document.mime_type.startswith("video/")):
-        thread = threading.Thread(target=lambda: asyncio.run(dl_send(message)))
-        thread.start() 
+#        thread = threading.Thread(target=lambda: asyncio.run(dl_send(message)))
+#        thread.start() 
+        await dl_send(message)
     else:
         pass
