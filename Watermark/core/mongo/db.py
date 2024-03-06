@@ -10,7 +10,7 @@ db = db.watermark_db
 
 
 async def get_data(user_id):
-    x = await db.find_one({"_id": "Bot"})
+    x = await db.find_one({"_id": user_id})
     return x
     
 async def set_thumbnail(user_id, thumb):
