@@ -24,7 +24,7 @@ async def add_thumb(client, message):
     mkn = await app.ask(message.chat.id, text="Give me your thumbnail photo")
     photo = mkn.text
     await db.set_thumbnail(message.from_user.id, file_id=photo)                
-    await mkn.edit("✅️**ʏᴏᴜʀ ᴛʜᴜᴍʙɴᴀɪʟ sᴜᴄᴄᴇssғᴜʟʟʏ sᴀᴠᴇᴅ**")
+    await message.reply_text("✅️**ʏᴏᴜʀ ᴛʜᴜᴍʙɴᴀɪʟ sᴜᴄᴄᴇssғᴜʟʟʏ sᴀᴠᴇᴅ**")
 
 
 
