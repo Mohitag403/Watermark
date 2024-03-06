@@ -96,7 +96,7 @@ async def doc(_, query):
             caption = f"**{file_name}**"
 
         if data and data.get("thumb"):
-            ph_path = c_thumb = data.get("thumb")
+            ph_path = data.get("thumb")
 #            img = Image.open(c_thumb)
 #            img = img.resize((width, height), Image.LANCZOS)
 #            img.save(f"{file_name}.jpg")
@@ -125,8 +125,14 @@ async def doc(_, query):
                 progress_args=("Trying to uploading...", ms, c_time)
             )
         
+        if os.path.exists(f"{file_name}.jpg"):
+            os.remove(f"{file_name}.jpg")
+        if os.path.exists(path):
+            os.remove(path)
     except Exception as e:
         await ms.edit(f"Error: {e}")
+        if os.path.exists(f"{file_name}.jpg"):
+            os.remove(f"{file_name}.jpg")
         if os.path.exists(path):
             os.remove(path)
         return
