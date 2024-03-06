@@ -105,17 +105,26 @@ async def doc(_, query):
             ph_path = f"{file_name}.jpg"
 
         if query.data=="upload_video":
-            await _.send_video(
-                query.message.chat.id,
-                video=path,
-                caption=caption,
-                height=720, 
-                width=1280,
-                thumb=ph_path,
-                duration=duration,
-                progress=progress_bar,
-                progress_args=("Trying to uploading...", ms, c_time)
-            )
+            try:
+                await _.send_video(
+                    query.message.chat.id,
+                    video=path,
+                    caption=caption,
+                    height=720, 
+                    width=1280,
+                    thumb=ph_path,
+                    duration=duration,
+                    progress=progress_bar,
+                    progress_args=("Trying to uploading...", ms, c_time)
+                )
+            except Exception:
+                await _.send_video(
+                    query.message.chat.id,
+                    video=path,
+                    caption=caption,
+                    progress=progress_bar,
+                    progress_args=("Trying to uploading...", ms, c_time)
+                )
         elif query.data=="upload_document":
             await _.send_document(
                 query.message.chat.id,
