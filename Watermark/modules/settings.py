@@ -15,7 +15,7 @@ async def view_thumb(query):
 
 
 async def remove_thumb(query):
-    data = await db.get_thumbnail(query.mesaage.from_user.id)  
+    data = await db.get_thumbnail(query.message.from_user.id)  
     if data and data.get("_id"):
       await db.remove_thumbnail(query.message.from_user.id)
       await query.answer("❌️ **ʏᴏᴜʀ ᴛʜᴜᴍʙɴᴀɪʟ sᴜᴄᴄᴇssғᴜʟʟʏ ᴅᴇʟᴇᴛᴇᴅ.**", show_alert=True)
