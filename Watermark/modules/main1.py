@@ -14,6 +14,7 @@ async def dl_send(message):
     video1 = await message.download()
     video = VideoFileClip(video1)
     watermark_text = await app.ask(message.chat.id, text="send your text")
+    watermark_text = str(watermark_text)
     fontsize = 50
     color = 'white'
     font = 'Arial-Bold'
