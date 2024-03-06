@@ -4,20 +4,7 @@ import asyncio,threading
 import subprocess
 from Watermark import app
 from config import OWNER_ID
-#from Watermark.core.utils import progress_bar
-#testing
-import time
-import asyncio
-
-async def progress_bar(reply, start_time):
-    while True:
-        current_time = time.time()
-        elapsed_time = current_time - start_time
-        bar = "[" + "=" * int(elapsed_time) + " " * (10 - int(elapsed_time)) + "]"
-        await reply.edit_text(f"**UPLOADING ...** » {bar} {int(elapsed_time)}s")
-        await asyncio.sleep(1)
-        if int(elapsed_time) >= 10:  # Assuming the upload takes 10 seconds
-            break
+from Watermark.core.utils import progress_bar
 
 
 
