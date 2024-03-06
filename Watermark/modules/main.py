@@ -74,6 +74,10 @@ async def doc(_, query):
             metadata = extractMetadata(createParser(path))
             if metadata.has("duration"):
                 duration = metadata.get('duration').seconds
+            if metadata.has("width") and metadata.has("height"):
+                width, height = metadata.get("width"), metadata.get("height")
+            else:
+                width, height = 1280, 720   
         except:
             pass
 
@@ -93,14 +97,13 @@ async def doc(_, query):
 
         if data and data.get("thumb"):
             c_thumb = data.get("thumb")
-            ph_path = c_thumb
-#            ph_path = await _.download_media(c_thumb) 
-#            img = Image.open(ph_path)
-#            resized_img = img.resize((320, 320))
-#            resized_img.convert("RGB").save(ph_path, "JPEG")
+            img = Image.open(c_thumb)
+            img = img.resize((width, height), Image.LANCZOS)
+            img.save(f"{file_name}.jpg")
         else:
             subprocess.run(f'ffmpeg -i "{path}" -ss 00:01:00 -vframes 1 "{file_name}.jpg"', shell=True)
-            ph_path = f"{file_name}.jpg"
+
+        ph_path = f"{file_name}.jpg"
 
         if query.data=="upload_video":
             await _.send_video(
