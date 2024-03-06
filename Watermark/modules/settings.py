@@ -22,11 +22,13 @@ async def remove_thumb(query):
 	
 
 async def add_thumb(query):
-    mkn = await app.ask(query.message.chat.id, text="Give me your thumbnail photo")
-    photo = mkn.text
-    await db.set_thumbnail(query.message.from_user.id, file_id=photo)                
-    await query.message.reply_text("✅️**ʏᴏᴜʀ ᴛʜᴜᴍʙɴᴀɪʟ sᴜᴄᴄᴇssғᴜʟʟʏ sᴀᴠᴇᴅ**")
-
+    mkn = await app.ask(query.message.chat.id, text="Please send me your thumbnail photo.")
+    if mkn.photo:
+        photo_id = mkn.photo.file_id
+        await db.set_thumbnail(query.from_user.id, file_id=photo_id)
+        await query.message.reply_text("✅️ Your thumbnail has been successfully saved.")
+    else:
+        await query.message.reply_text("❌️ Please send a valid photo for your thumbnail.")
 
 
 
