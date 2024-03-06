@@ -48,17 +48,17 @@ async def delete_caption(query):
     data = await db.get_caption(query.from_user.id)  
     if data and data.get("_id"):
       await db.remove_caption(query.from_user.id)
-      await query.message.reply_text(" ʏᴏᴜʀ ᴄᴀᴘᴛɪᴏɴ sᴜᴄᴄᴇssғᴜʟʟʏ ᴅᴇʟᴇᴛᴇᴅ.")
+      await query.answer(" ʏᴏᴜʀ ᴄᴀᴘᴛɪᴏɴ sᴜᴄᴄᴇssғᴜʟʟʏ ᴅᴇʟᴇᴛᴇᴅ.")
 
     else:
-      await query.answer("ʏᴏᴜ ᴅᴏɴʏ ʜᴀᴠᴇ ᴄᴀᴘᴛɪᴏɴ.", show_alert=True)    
+      await query.answer("ʏᴏᴜ ᴅᴏɴᴛ ʜᴀᴠᴇ ᴄᴀᴘᴛɪᴏɴ.", show_alert=True)    
                                              
 
 async def see_caption(query):
     data = await db.get_thumbnail(query.from_user.id)
     if data and data.get("caption"):
        caption = data.get("caption")
-       await query.message.reply_text(caption)
+       return caption
     else:
        return ("ʏᴏᴜ ᴅᴏɴᴛ ʜᴀᴠᴇ ᴀɴʏ ᴄᴀᴘᴛɪᴏɴ.")
 
