@@ -47,7 +47,7 @@ async def close_data(_,query):
            return
 
 
-@app.on_callback_query(filters.regex("upload_document|upload_video"))
+@app.on_callback_query(filters.regex("upload"))
 async def doc(_,query):
      type = query.data.split("_")[1]
      new_name = query.message.text
