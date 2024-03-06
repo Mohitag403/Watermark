@@ -7,7 +7,7 @@ from config import OWNER_ID
 from Watermark.core.utils import progress_bar
 
 
-async def dl_send(_, messgae):
+async def dl_send(messgae):
     reply = await message.reply_text("Yes, it's a video\nwait downloading...")     
     video = await message.download()
     subprocess.run(f'ffmpeg -i "{video}" -ss 00:01:00 -vframes 1 "video.jpg"', shell=True)
