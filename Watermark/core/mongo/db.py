@@ -20,6 +20,14 @@ async def get_thumbnail(user_id):
     return x
 
 
+async def remove_thumbnail(user_id):
+    await db.update_one({"_id": user_id}, {"$set": {"thumb": None}})
+
+async def remove_caption(user_id):
+    await db.update_one({"_id": user_id}, {"$set": {"caption": None}})
+
+
+
 async def set_caption(user_id, caption):
     data = await get_thumbnail(user_id)
     if data and data.get("_id"):
