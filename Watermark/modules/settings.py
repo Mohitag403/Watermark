@@ -87,11 +87,11 @@ async def settings(_, message):
 @app.on_callback_query()
 async def callback(_, query):
     if query.data=="thumb":
-        await message.reply_text("Choose from Below", reply_markup=buttons2)
+        await query.message.edit_text("Choose from Below", reply_markup=buttons2)
 
     elif query.data=="caption":
         caption = await see_caption(query)
-        await message.reply_text(f"Choose from Below\n\n**ʏᴏᴜʀ ᴄᴀᴘᴛɪᴏɴ:** `{caption}`", reply_markup=buttons3)
+        await query.message.edit_text(f"Choose from Below\n\n**ʏᴏᴜʀ ᴄᴀᴘᴛɪᴏɴ:** `{caption}`", reply_markup=buttons3)
 
     elif query.data=="Sthumb":
         await add_thumb(query)
