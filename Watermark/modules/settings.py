@@ -5,7 +5,7 @@ from Watermark import app
 
 
 async def view_thumb(query):    
-    data = await db.get_thumbnail(query.from_user.id)
+    data = await db.get_data(query.from_user.id)
     if data and data.get("thumb"):
        thumb = data.get("thumb")    
        await query.message.reply_photo(photo=thumb)
@@ -15,8 +15,8 @@ async def view_thumb(query):
 
 
 async def remove_thumb(query):
-    data = await db.get_thumbnail(query.from_user.id)  
-    if data and data.get("_id"):
+    data = await db.get_data(query.from_user.id)  
+    if data and data.get("thumb"):
       await db.remove_thumbnail(query.from_user.id)
       await query.answer("❌️ **ʏᴏᴜʀ ᴛʜᴜᴍʙɴᴀɪʟ sᴜᴄᴄᴇssғᴜʟʟʏ ᴅᴇʟᴇᴛᴇᴅ.**", show_alert=True)
     else:
@@ -45,8 +45,8 @@ async def add_caption(query):
     
 
 async def delete_caption(query):
-    data = await db.get_caption(query.from_user.id)  
-    if data and data.get("_id"):
+    data = await db.get_data(query.from_user.id)  
+    if data and data.get("caption"):
       await db.remove_caption(query.from_user.id)
       await query.answer(" ʏᴏᴜʀ ᴄᴀᴘᴛɪᴏɴ sᴜᴄᴄᴇssғᴜʟʟʏ ᴅᴇʟᴇᴛᴇᴅ.", show_alert=True)
 
@@ -55,7 +55,7 @@ async def delete_caption(query):
                                              
 
 async def see_caption(query):
-    data = await db.get_thumbnail(query.from_user.id)
+    data = await db.get_data(query.from_user.id)
     if data and data.get("caption"):
        caption = data.get("caption")
        await query.message.reply_text(f"**ʏᴏᴜʀ ᴄᴀᴘᴛɪᴏɴ:** `{caption}`")
@@ -63,12 +63,45 @@ async def see_caption(query):
        await query.message.reply_text("ʏᴏᴜ ᴅᴏɴᴛ ʜᴀᴠᴇ ᴀɴʏ ᴄᴀᴘᴛɪᴏɴ.")
 
 
+async def view_watermark(query):    
+    data = await db.get_data(query.from_user.id)
+    if data and data.get("watermark"):
+       thumb = data.get("watermark")    
+       await query.message.reply_photo(photo=thumb)
+    else:
+        await query.answer("**ʏᴏᴜ ᴅᴏɴᴛ ʜᴀᴠᴇ ᴀɴʏ watermark.**", show_alert=True) 
+
+
+
+async def remove_watermark(query):
+    data = await db.get_data(query.from_user.id)  
+    if data and data.get("watermark"):
+      await db.remove_watermark(query.from_user.id)
+      await query.answer("❌️ **ʏᴏᴜʀ watermark sᴜᴄᴄᴇssғᴜʟʟʏ ᴅᴇʟᴇᴛᴇᴅ.**", show_alert=True)
+    else:
+      await query.answer("Empty !! watermark", show_alert=True)
+	
+
+async def add_watermark(query):
+    mkn = await app.ask(query.message.chat.id, text="Please send me your watermark photo.")
+    if mkn.photo:
+        file_name = str(query.from_user.id) + "watermark.jpg"
+        photo_id = mkn.photo.file_id
+        photo_path = await app.download_media(photo_id, file_name=file_name)
+        await db.set_watermark(query.from_user.id, photo_path)
+        await query.message.reply_text("✅️ Your watermark has been successfully saved.")
+    else:
+        await query.message.reply_text("❌️ Please send a valid photo for your watermark.")
+
 
 
 buttons1 = InlineKeyboardMarkup([
             [
                 InlineKeyboardButton("Thumbnail", callback_data="thumb"),
                 InlineKeyboardButton("Caption", callback_data="caption")
+            ],
+            [
+                InlineKeyboardButton("Watermark", callback_data="watermark"),
             ]
         ])
 
@@ -92,6 +125,16 @@ buttons3 = InlineKeyboardMarkup([
             ]
         ])
 
+buttons4 = InlineKeyboardMarkup([
+            [
+                InlineKeyboardButton("Set Watermark", callback_data="Swatermark"),
+                InlineKeyboardButton("Remove Watermark", callback_data="Rwatermark")
+            ],
+            [
+                InlineKeyboardButton("View Watermark", callback_data="Vwatermark"),
+            ]
+        ])
+
 
 @app.on_message(filters.command("settings") & filters.private)
 async def settings(_, message):
@@ -105,6 +148,9 @@ async def callback(_, query):
 
     elif query.data=="caption":
         await query.message.edit_text(f"Choose from Below", reply_markup=buttons3)
+
+    elif query.data=="thumb":
+        await query.message.edit_text("Choose from Below", reply_markup=buttons4)
 
     elif query.data=="Sthumb":
         await add_thumb(query)
@@ -124,3 +170,11 @@ async def callback(_, query):
     elif query.data=="Vcaption":
         await see_caption(query)
 
+    elif query.data=="Swatermark":
+        await add_watermark(query)
+
+    elif query.data=="Rwatermark":
+        await remove_watermark(query)
+
+    elif query.data=="Vwatermark":
+        await view_watermark(query)
