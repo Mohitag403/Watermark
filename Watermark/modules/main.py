@@ -10,7 +10,7 @@ from Watermark.core.utils import progress_bar
 async def dl_send(message):
     reply = await message.reply_text("Yes, it's a video\nwait downloading...")     
     video = await message.download()
-    video_id = video.file_id
+    video_id = message.video.file_id
     subprocess.run(f'ffmpeg -i "{video}" -ss 00:01:00 -vframes 1 "{video_id}.jpg"', shell=True)
     thumbnail = f"{video_id}.jpg"
     dur = int(duration(video))
