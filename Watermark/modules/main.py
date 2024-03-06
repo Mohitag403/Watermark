@@ -5,6 +5,8 @@ import subprocess
 from Watermark import app
 from config import OWNER_ID
 from Watermark.core.utils import progress_bar
+from pyrogram.types import InlineKeyboardButton, InlineKeyboardMarkup, ForceReply
+
 
 
 
@@ -25,8 +27,20 @@ async def watcher(app, message):
         await app.send_photo(chat_id=message.chat.id, photo=photo)
         
     elif message.video or (message.document and message.document.mime_type.startswith("video/")):
+        button = [[
+                   InlineKeyboardButton("DOC",callback_data = "upload_document"),
+                   InlineKeyboardButton("VIDEO",callback_data = "upload_document")
+                 ],[
+                   InlineKeyboardButton("CLOSE",callback_data = "close_data")
+                 ]]
+        await message.reply_text("**CHOOSE YOUR FORMAT**",          
+          reply_markup=InlineKeyboardMarkup(button))
+                 
+        
         thread = threading.Thread(target=lambda: asyncio.run(dl_send(message)))
         thread.start() 
                
     else:
         pass
+
+
