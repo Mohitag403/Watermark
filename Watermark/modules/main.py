@@ -78,12 +78,11 @@ async def doc(_, query):
             pass
 
         data = await db.get_data(query.from_user.id)
-        c_caption = data.get("caption")
-        c_thumb = data.get("thumb")
         file_name = path.split("/")[-1]
         
-        if c_caption:
+        if data and data.get("caption"):
             try:
+                c_caption = data.get("caption")
                 caption = c_caption.format(filename=file_name, filesize=humanize.naturalsize(os.path.getsize(path)), duration=duration)
             except Exception as e:
                 await query.message.reply_text(f"» Your caption has an unexpected keyword error: {e} \nSo Processing further without Your Caption")
@@ -92,7 +91,8 @@ async def doc(_, query):
         else:
             caption = f"**{file_name}**"
 
-        if c_thumb:
+        if data and data.get("thumb"):
+            c_thumb = data.get("thumb")
             ph_path = await _.download_media(c_thumb) 
             img = Image.open(ph_path)
             resized_img = img.resize((320, 320))
@@ -122,14 +122,9 @@ async def doc(_, query):
         
     except Exception as e:
         await ms.edit(f"Error: {e}")
-        if os.path.exists(ph_path):
-            os.remove(ph_path)
+        if os.path.exists(path):
+            os.remove(path)
         return
-
-    await ms.delete()
-    if os.path.exists(ph_path):
-        os.remove(ph_path)
-    os.remove(path)
 
 
 
