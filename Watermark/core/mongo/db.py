@@ -7,16 +7,16 @@ db = mongo.watermark
 db = db.watermark_db
 
 
-async def get_data(user_id):
-    x = await db.find_one({"_id": user_id})
+async def get_data():
+    x = await db.find_one({"_id": "Bot"})
     return x
 
-async def bot_on_off(x, y):
-    data = await get_data(user_id)
+async def bot_on_off(y):
+    data = await get_data()
     if data and data.get("_id"):
-        await db.update_one({"_id": x}, {"$set": {"Bot": y}})
+        await db.update_one({"_id": "Bot"}, {"$set": {"setup": y}})
     else:
-        await db.insert_one({"_id": x, "Bot": y})
+        await db.insert_one({"_id": "Bot", "setup": y})
 
 
 
