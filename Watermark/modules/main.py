@@ -25,17 +25,16 @@ async def watcher(app, message):
         
     elif message.video or (message.document and message.document.mime_type.startswith("video/")):
         reply_message = message.reply_to_message
-        if (reply_message.reply_markup) and isinstance(reply_message.reply_markup, ForceReply):
-           button = [
-            [
-                InlineKeyboardButton("DOC", callback_data="upload_document"),
-                InlineKeyboardButton("VIDEO", callback_data="upload_video")
-            ],
-            [
-                InlineKeyboardButton("CLOSE", callback_data="close_data")
-            ]]
+        button = [
+        [
+            InlineKeyboardButton("DOC", callback_data="upload"),
+            InlineKeyboardButton("VIDEO", callback_data="upload")
+        ],
+        [
+            InlineKeyboardButton("CLOSE", callback_data="close_data")
+        ]]
            
-           await message.reply_text("**CHOOSE YOUR FORMAT**", reply_markup=InlineKeyboardMarkup(button))
+        await message.reply_text("**CHOOSE YOUR FORMAT**", reply_markup=InlineKeyboardMarkup(button))
         
         
 
@@ -47,7 +46,7 @@ async def close_data(_,query):
 	except:
            return
 
-"""
+
 @app.on_callback_query(filters.regex("upload"))
 async def doc(_,query):
      type = query.data.split("_")[1]
@@ -127,7 +126,6 @@ async def doc(_,query):
      if ph_path:
         os.remove(ph_path) 
 
-"""
 
 
 
