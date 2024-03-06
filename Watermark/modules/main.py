@@ -77,8 +77,9 @@ async def doc(_, query):
         except:
             pass
 
-        c_caption = await db.get_caption(query.message.chat.id)
-        c_thumb = await db.get_thumbnail(query.message.chat.id)
+        data = await db.get_data(query.from_user.id)
+        c_caption = data.get("caption")
+        c_thumb = data.get("thumb")
         file_name = path.split("/")[-1]
         
         if c_caption:
@@ -120,7 +121,7 @@ async def doc(_, query):
             )
         
     except Exception as e:
-        await _.edit_message_text(f"Error: {e}")
+        await ms.edit(f"Error: {e}")
         if os.path.exists(ph_path):
             os.remove(ph_path)
         return
