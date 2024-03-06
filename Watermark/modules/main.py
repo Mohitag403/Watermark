@@ -96,20 +96,21 @@ async def doc(_, query):
             caption = f"**{file_name}**"
 
         if data and data.get("thumb"):
-            c_thumb = data.get("thumb")
-            img = Image.open(c_thumb)
-            img = img.resize((width, height), Image.LANCZOS)
-            img.save(f"{file_name}.jpg")
+            ph_path = c_thumb = data.get("thumb")
+#            img = Image.open(c_thumb)
+#            img = img.resize((width, height), Image.LANCZOS)
+#            img.save(f"{file_name}.jpg")
         else:
             subprocess.run(f'ffmpeg -i "{path}" -ss 00:01:00 -vframes 1 "{file_name}.jpg"', shell=True)
-
-        ph_path = f"{file_name}.jpg"
+            ph_path = f"{file_name}.jpg"
 
         if query.data=="upload_video":
             await _.send_video(
                 query.message.chat.id,
                 video=path,
                 caption=caption,
+                height=720, 
+                width=1280,
                 thumb=ph_path,
                 duration=duration,
                 progress=progress_bar,
