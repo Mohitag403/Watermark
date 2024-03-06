@@ -7,17 +7,18 @@ from config import OWNER_ID
 from Watermark.core.utils import progress_bar
 
 
-async def dl_send(messgae):
+async def dl_send(message):
     reply = await message.reply_text("Yes, it's a video\nwait downloading...")     
     video = await message.download()
-    subprocess.run(f'ffmpeg -i "{video}" -ss 00:01:00 -vframes 1 "video.jpg"', shell=True)
-    thumbnail = f"{video.file_id}.jpg"
+    video_id = video.file_id
+    subprocess.run(f'ffmpeg -i "{video}" -ss 00:01:00 -vframes 1 "{video_id}.jpg"', shell=True)
+    thumbnail = f"{video_id}.jpg"
     dur = int(duration(video))
     start_time = time.time() 
 #    await app.send_video(chat_id=message.chat.id, video=video) 
     await reply.edit_text(f"**⥣ Uploading ...** » `")
     await app.send_video(chat_id=message.chat.id, video=video, supports_streaming=True, height=720, width=1280, thumb=thumbnail, duration=dur, progress=progress_bar, progress_args=(reply, start_time))    
-    os.remove(f"{video.file_id}.jpg") 
+    os.remove(f"{video_id}.jpg") 
 
 def duration(filename):
     result = subprocess.run(["ffprobe", "-v", "error", "-show_entries",
