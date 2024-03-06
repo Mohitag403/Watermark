@@ -36,7 +36,7 @@ async def set_caption(user_id, caption):
         await db.insert_one({"_id": user_id, "caption": caption})
 
 
-async def set_watermarl(user_id, watermark):
+async def set_watermark(user_id, watermark):
     data = await get_data(user_id)
     if data and data.get("_id"):
         await db.update_one({"_id": user_id}, {"$set": {"watermark": watermark}})
