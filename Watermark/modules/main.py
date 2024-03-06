@@ -23,13 +23,14 @@ async def watcher(app, message):
         await app.send_photo(chat_id=message.chat.id, photo=photo)
         
     elif message.video or (message.document and message.document.mime_type.startswith("video/")):
+        reply = await message.reply_text("Yes, it's a video\nwait downloading...")     
         video = await message.download()
-        await message.reply_text("Yes, it's a video\nwait downloading...")     
         subprocess.run(f'ffmpeg -i "{video}" -ss 00:01:00 -vframes 1 "video.jpg"', shell=True)
         thumbnail = f"video.jpg"
         dur = int(duration(video))
         start_time = time.time() 
 #        await app.send_video(chat_id=message.chat.id, video=video) 
+        await reply.edit_text(f"**⥣ Uploading ...** » `")
         await app.send_video(chat_id=message.chat.id, video=video, supports_streaming=True, height=720, width=1280, thumb=thumbnail, duration=dur, progress=progress_bar, progress_args=(reply, start_time))    
         os.remove("video.jpg")        
     else:
