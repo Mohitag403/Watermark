@@ -47,7 +47,7 @@ async def close_data(_,query):
 	except:
            return
 
-
+"""
 @app.on_callback_query(filters.regex("upload"))
 async def doc(_,query):
      type = query.data.split("_")[1]
@@ -127,7 +127,7 @@ async def doc(_,query):
      if ph_path:
         os.remove(ph_path) 
 
-
+"""
 
 
 
