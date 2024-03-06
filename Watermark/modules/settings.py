@@ -5,7 +5,7 @@ from Watermark import app
 
 
 async def view_thumb(query):    
-    data = await db.get_thumbnail(query.message.from_user.id)
+    data = await db.get_thumbnail(query.from_user.id)
     if data and data.get("thumb"):
        thumb = data.get("thumb")    
        await query.message.reply_photo(photo=thumb)
@@ -15,9 +15,9 @@ async def view_thumb(query):
 
 
 async def remove_thumb(query):
-    data = await db.get_thumbnail(query.message.from_user.id)  
+    data = await db.get_thumbnail(query.from_user.id)  
     if data and data.get("_id"):
-      await db.remove_thumbnail(query.message.from_user.id)
+      await db.remove_thumbnail(query.from_user.id)
       await query.answer("❌️ **ʏᴏᴜʀ ᴛʜᴜᴍʙɴᴀɪʟ sᴜᴄᴄᴇssғᴜʟʟʏ ᴅᴇʟᴇᴛᴇᴅ.**", show_alert=True)
     else:
       await query.answer("Empty !! Thumbnail", show_alert=True)
@@ -26,7 +26,7 @@ async def remove_thumb(query):
 async def add_thumb(query):
     mkn = await app.ask(query.message.chat.id, text="Please send me your thumbnail photo.")
     if mkn.photo:
-        file_name = str(query.message.chat.id) + "thumb.jpg"
+        file_name = str(query.from_user.id) + "thumb.jpg"
         photo_id = mkn.photo.file_id
         photo_path = await app.download_media(photo_id, file_name=file_name)
         await db.set_thumbnail(query.from_user.id, photo_path)
@@ -39,15 +39,15 @@ async def add_thumb(query):
 async def add_caption(query):    
     cap = await app.ask(query.message.chat.id, text="» ɢɪᴠᴇ ᴍᴇ ᴀ ᴄᴀᴘᴛɪᴏɴ ᴛᴏ sᴇᴛ.")
     caption = cap.text
-    await db.set_caption(query.message.from_user.id, caption=caption)
+    await db.set_caption(query.from_user.id, caption=caption)
     await query.message.reply_text("✅ ʏᴏᴜʀ ᴄᴀᴘᴛɪᴏɴ sᴜᴄᴄᴇssғᴜʟʟʏ.")
 
     
 
 async def delete_caption(query):
-    data = await db.get_caption(query.mesaage.from_user.id)  
+    data = await db.get_caption(query.from_user.id)  
     if data and data.get("_id"):
-      await db.remove_caption(query.message.from_user.id)
+      await db.remove_caption(query.from_user.id)
       await query.message.reply_text(" ʏᴏᴜʀ ᴄᴀᴘᴛɪᴏɴ sᴜᴄᴄᴇssғᴜʟʟʏ ᴅᴇʟᴇᴛᴇᴅ.")
 
     else:
@@ -55,7 +55,7 @@ async def delete_caption(query):
                                              
 
 async def see_caption(query):
-    data = await db.get_thumbnail(query.message.from_user.id)
+    data = await db.get_thumbnail(query.from_user.id)
     if data and data.get("caption"):
        caption = data.get("caption")
        await query.message.reply_text(caption)
