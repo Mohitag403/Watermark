@@ -12,13 +12,13 @@ async def dl_send(message):
     video = await message.download()
     video_id = message.video.file_id
     subprocess.run(f'ffmpeg -i "{video}" -ss 00:01:00 -vframes 1 "{video_id}.jpg"', shell=True)
-    thumbnail = f"{video_id}.jpg"
+   # thumbnail = f"{video_id}.jpg"
     dur = int(duration(video))
     start_time = time.time() 
 #    await app.send_video(chat_id=message.chat.id, video=video) 
     await reply.edit_text(f"**⥣ Uploading ...** » `")
-    await app.send_video(chat_id=message.chat.id, video=video, supports_streaming=True, height=720, width=1280, thumb=thumbnail, duration=dur, progress=progress_bar, progress_args=(reply, start_time))    
-    os.remove(f"{video_id}.jpg") 
+    await app.send_video(chat_id=message.chat.id, video=video, supports_streaming=True, duration=dur, progress=progress_bar, progress_args=(reply, start_time))    
+  #  os.remove(f"{video_id}.jpg") 
 
 def duration(filename):
     result = subprocess.run(["ffprobe", "-v", "error", "-show_entries",
