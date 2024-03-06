@@ -20,13 +20,6 @@ async def get_thumbnail(user_id):
     return x
 
 
-async def remove_thumbnail(user_id):
-    await db.update_one({"_id": user_id}, {"$set": {"thumb": None}})
-
-async def remove_caption(user_id):
-    await db.update_one({"_id": user_id}, {"$set": {"caption": None}})
-
-
 
 async def set_caption(user_id, caption):
     data = await get_thumbnail(user_id)
@@ -40,5 +33,26 @@ async def get_caption(user_id):
     return x
     
 
+async def set_watermarl(user_id, watermark):
+    data = await get_thumbnail(user_id)
+    if data and data.get("_id"):
+        await db.update_one({"_id": user_id}, {"$set": {"watermark": watermark}})
+    else:
+        await db.insert_one({"_id": user_id, "watermark": watermark})
+
+
+async def get_watermark(user_id):
+    x = await db.find_one({"_id": user_id})
+    return x
+
+
+async def remove_thumbnail(user_id):
+    await db.update_one({"_id": user_id}, {"$set": {"thumb": None}})
+
+async def remove_caption(user_id):
+    await db.update_one({"_id": user_id}, {"$set": {"caption": None}})
+
+async def remove_watermark(user_id):
+    await db.update_one({"_id": user_id}, {"$set": {"watermark": None}})
 
 
