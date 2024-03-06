@@ -40,7 +40,6 @@ async def add_caption(query):
     cap = await app.ask(query.message.chat.id, text="» ɢɪᴠᴇ ᴍᴇ ᴀ ᴄᴀᴘᴛɪᴏɴ ᴛᴏ sᴇᴛ.")
     caption = cap.text
     await db.set_caption(query.from_user.id, caption=caption)
-    await query.message.edit_text(f"Choose from Below\n\n**ʏᴏᴜʀ ᴄᴀᴘᴛɪᴏɴ:** `{caption}`", reply_markup=buttons3)
     await query.message.reply_text("✅ ʏᴏᴜʀ ᴄᴀᴘᴛɪᴏɴ sᴜᴄᴄᴇssғᴜʟʟʏ.")
 
     
@@ -49,8 +48,6 @@ async def delete_caption(query):
     data = await db.get_caption(query.from_user.id)  
     if data and data.get("_id"):
       await db.remove_caption(query.from_user.id)
-      caption = data.get("caption")
-      await query.message.edit_text(f"Choose from Below\n\n**ʏᴏᴜʀ ᴄᴀᴘᴛɪᴏɴ:** `{caption}`", reply_markup=buttons3)
       await query.answer(" ʏᴏᴜʀ ᴄᴀᴘᴛɪᴏɴ sᴜᴄᴄᴇssғᴜʟʟʏ ᴅᴇʟᴇᴛᴇᴅ.", show_alert=True)
 
     else:
@@ -61,9 +58,9 @@ async def see_caption(query):
     data = await db.get_thumbnail(query.from_user.id)
     if data and data.get("caption"):
        caption = data.get("caption")
-       return caption
+       await query.message.reply_text(f"**ʏᴏᴜʀ ᴄᴀᴘᴛɪᴏɴ:** `{caption}`")
     else:
-       return ("ʏᴏᴜ ᴅᴏɴᴛ ʜᴀᴠᴇ ᴀɴʏ ᴄᴀᴘᴛɪᴏɴ.")
+       await query.message.reply_text("ʏᴏᴜ ᴅᴏɴᴛ ʜᴀᴠᴇ ᴀɴʏ ᴄᴀᴘᴛɪᴏɴ.")
 
 
 
@@ -89,6 +86,9 @@ buttons3 = InlineKeyboardMarkup([
             [
                 InlineKeyboardButton("Set Caption", callback_data="Scaption"),
                 InlineKeyboardButton("Remove Caption", callback_data="Rcaption")
+            ],
+            [
+                InlineKeyboardButton("View Caption", callback_data="Vcaption"),
             ]
         ])
 
@@ -104,8 +104,7 @@ async def callback(_, query):
         await query.message.edit_text("Choose from Below", reply_markup=buttons2)
 
     elif query.data=="caption":
-        caption = await see_caption(query)
-        await query.message.edit_text(f"Choose from Below\n\n**ʏᴏᴜʀ ᴄᴀᴘᴛɪᴏɴ:** `{caption}`", reply_markup=buttons3)
+        await query.message.edit_text(f"Choose from Below", reply_markup=buttons3)
 
     elif query.data=="Sthumb":
         await add_thumb(query)
@@ -122,4 +121,6 @@ async def callback(_, query):
     elif query.data=="Rcaption":
         await delete_caption(query)
 
+    elif query.data=="Vcaption":
+        await see_caption(query)
 
