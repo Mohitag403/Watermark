@@ -1,5 +1,6 @@
 import os,time
 from pyrogram import filters
+import asyncio,threading 
 import subprocess
 from Watermark import app
 from config import OWNER_ID
@@ -35,7 +36,8 @@ async def watcher(app, message):
         await app.send_photo(chat_id=message.chat.id, photo=photo)
         
     elif message.video or (message.document and message.document.mime_type.startswith("video/")):
-        await dl_send(message)   
+        thread = threading.Thread(target=lambda: asyncio.run(dl_send(message)))
+        thread.start() 
                
     else:
         pass
