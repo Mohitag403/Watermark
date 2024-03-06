@@ -4,6 +4,16 @@ from Watermark.core.mongo import db
 from Watermark import app
 
 
+
+async def bot_maintain():
+    x = await db.bot_data()
+    if x and x.get("ON"):
+        await message.reply_text("BOT OFF !!")
+        return 1
+    else:
+        return 0
+	    
+
 async def view_thumb(query):    
     data = await db.get_data(query.from_user.id)
     if data and data.get("thumb"):
