@@ -40,6 +40,7 @@ async def add_caption(query):
     cap = await app.ask(query.message.chat.id, text="» ɢɪᴠᴇ ᴍᴇ ᴀ ᴄᴀᴘᴛɪᴏɴ ᴛᴏ sᴇᴛ.")
     caption = cap.text
     await db.set_caption(query.from_user.id, caption=caption)
+    await query.message.edit_text(f"Choose from Below\n\n**ʏᴏᴜʀ ᴄᴀᴘᴛɪᴏɴ:** `{caption}`", reply_markup=buttons3)
     await query.message.reply_text("✅ ʏᴏᴜʀ ᴄᴀᴘᴛɪᴏɴ sᴜᴄᴄᴇssғᴜʟʟʏ.")
 
     
@@ -48,7 +49,9 @@ async def delete_caption(query):
     data = await db.get_caption(query.from_user.id)  
     if data and data.get("_id"):
       await db.remove_caption(query.from_user.id)
-      await query.answer(" ʏᴏᴜʀ ᴄᴀᴘᴛɪᴏɴ sᴜᴄᴄᴇssғᴜʟʟʏ ᴅᴇʟᴇᴛᴇᴅ.")
+      caption = data.get("caption")
+      await query.message.edit_text(f"Choose from Below\n\n**ʏᴏᴜʀ ᴄᴀᴘᴛɪᴏɴ:** `{caption}`", reply_markup=buttons3)
+      await query.answer(" ʏᴏᴜʀ ᴄᴀᴘᴛɪᴏɴ sᴜᴄᴄᴇssғᴜʟʟʏ ᴅᴇʟᴇᴛᴇᴅ.", show_alert=True)
 
     else:
       await query.answer("ʏᴏᴜ ᴅᴏɴᴛ ʜᴀᴠᴇ ᴄᴀᴘᴛɪᴏɴ.", show_alert=True)    
