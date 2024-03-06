@@ -125,6 +125,7 @@ async def doc(_, query):
                 progress_args=("Trying to uploading...", ms, c_time)
             )
         
+        await ms.delete()
         if os.path.exists(f"{file_name}.jpg"):
             os.remove(f"{file_name}.jpg")
         if os.path.exists(path):
