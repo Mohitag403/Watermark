@@ -15,14 +15,6 @@ from pyrogram.types import InlineKeyboardButton, InlineKeyboardMarkup, ForceRepl
 
 
 
-async def dl_send(message):
-    reply = await message.reply_text("Yes, it's a video\nwait downloading...")     
-    video = await message.download()
-    start_time = time.time()
-    await reply.edit_text(f"**UPLOADING ...** » ")
-    await app.send_video(chat_id=message.chat.id, video=video, supports_streaming=True,  progress=progress_bar, progress_args=(reply, start_time))    
- 
-
 
 @app.on_message((filters.document | filters.video | filters.photo) & filters.private & filters.reply)
 async def watcher(app, message):
@@ -32,24 +24,20 @@ async def watcher(app, message):
         await app.send_photo(chat_id=message.chat.id, photo=photo)
         
     elif message.video or (message.document and message.document.mime_type.startswith("video/")):
-        button = [[
-                   InlineKeyboardButton("DOC",callback_data = "upload_document"),
-                   InlineKeyboardButton("VIDEO",callback_data = "upload_document")
-                 ],[
-                   InlineKeyboardButton("CLOSE",callback_data = "close_data")
-                 ]]
-        await message.reply_text("**CHOOSE YOUR FORMAT**",          
-          reply_markup=InlineKeyboardMarkup(button))
-                 
+        reply_message = message.reply_to_message
+        if (reply_message.reply_markup) and isinstance(reply_message.reply_markup, ForceReply):
+           button = [
+            [
+                InlineKeyboardButton("DOC", callback_data="upload_document"),
+                InlineKeyboardButton("VIDEO", callback_data="upload_video")
+            ],
+            [
+                InlineKeyboardButton("CLOSE", callback_data="close_data")
+            ]]
+           
+           await message.reply_text("**CHOOSE YOUR FORMAT**", reply_markup=InlineKeyboardMarkup(button))
         
-        thread = threading.Thread(target=lambda: asyncio.run(dl_send(message)))
-        thread.start()                
-    else:
-        pass
-
-
-
-
+        
 
 
 @app.on_callback_query(filters.regex('close_data'))
