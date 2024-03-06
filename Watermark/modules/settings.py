@@ -1,4 +1,5 @@
 from pyrogram import Client, filters
+from pyrogram.types import CallbackQuery, InlineKeyboardMarkup, InlineKeyboardButton
 from Watermark.core.mongo import db
 from Watermark import app
 
