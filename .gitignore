@@ -1,4 +1,4 @@
 .env
-TXT/sumit.session-journal
-TXT/sumit.session
+Watermark/sumit.session-journal
+Watermark/sumit.session
 __pycache__/

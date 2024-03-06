@@ -1,1 +1,1 @@
-worker: python -m TXT
+worker: python -m Watermark

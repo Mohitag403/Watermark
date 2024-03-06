@@ -1,14 +1,14 @@
 import asyncio
 import importlib
 from pyrogram import idle
-from TXT.modules import ALL_MODULES
-from TXT.core.database import setup_sudoers
+from Watermark.modules import ALL_MODULES
+from Watermark.core.database import setup_sudoers
 
 
 async def sumit_boot():
     await setup_sudoers()
     for all_module in ALL_MODULES:
-        importlib.import_module("TXT.modules." + all_module)
+        importlib.import_module("Watermark.modules." + all_module)
 
     print("» ʙᴏᴛ ᴅᴇᴘʟᴏʏ sᴜᴄᴄᴇssғᴜʟʟʏ ✨ 🎉")
     await idle()

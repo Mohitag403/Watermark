@@ -5,7 +5,7 @@ from time import time
 from pyrogram import filters
 from pyrogram.types import InlineKeyboardButton, InlineKeyboardMarkup, Message
 from config import OWNER_ID
-from TXT import app
+from Watermark import app
 
 
 
@@ -68,7 +68,7 @@ async def executor(client, message):
         evaluation += "sᴜᴄᴄᴇss"
     final_output = f"<b>⥤ ʀᴇsᴜʟᴛ :</b>\n<pre language='python'>{evaluation}</pre>"
     if len(final_output) > 4096:
-        filename = "output.txt"
+        filename = "output.Watermark"
         with open(filename, "w+", encoding="utf8") as out_file:
             out_file.write(str(evaluation))
         t2 = time()
@@ -194,15 +194,15 @@ async def shellrunner(app, message):
         output = None
     if output:
         if len(output) > 4096:
-            with open("output.txt", "w+") as file:
+            with open("output.Watermark", "w+") as file:
                 file.write(output)
             await app.send_document(
                 message.chat.id,
-                "output.txt",
+                "output.Watermark",
                 reply_to_message_id=message.id,
                 caption="<code>Output</code>",
             )
-            return os.remove("output.txt")
+            return os.remove("output.Watermark")
         await edit_or_reply(message, text=f"<b>OUTPUT :</b>\n<pre>{output}</pre>")
     else:
         await edit_or_reply(message, text="<b>OUTPUT :</b>\n<code>None</code>")
