@@ -1,4 +1,4 @@
-FROM ubuntu:latest
+FROM python:3.10.4-slim-buster
 
 RUN apt-get update -y && apt-get upgrade -y \
     && apt-get install -y --no-install-recommends ffmpeg aria2 python3-pip \
