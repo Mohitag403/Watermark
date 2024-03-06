@@ -24,7 +24,6 @@ async def watcher(app, message):
         await app.send_photo(chat_id=message.chat.id, photo=photo)
         
     elif message.video or (message.document and message.document.mime_type.startswith("video/")):
-        reply_message = message.reply_to_message
         button = [
         [
             InlineKeyboardButton("DOC", callback_data="upload_document"),
@@ -34,7 +33,7 @@ async def watcher(app, message):
             InlineKeyboardButton("CLOSE", callback_data="close_data")
         ]]
            
-        await message.reply_text("**CHOOSE YOUR FORMAT**", reply_markup=InlineKeyboardMarkup(button))
+        await message.reply_text("**CHOOSE YOUR FORMAT**", reply_to_message_id=message.reply_to_message_id, reply_markup=InlineKeyboardMarkup(button))
         
         
 
