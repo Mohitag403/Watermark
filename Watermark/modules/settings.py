@@ -112,7 +112,10 @@ buttons2 = InlineKeyboardMarkup([
             ],
             [
                 InlineKeyboardButton("View Thumbnail", callback_data="Vthumb"),
-            ]
+            ],
+            [
+                InlineKeyboardButton("Back", callback_data="back"),
+            ] 
         ])
 
 buttons3 = InlineKeyboardMarkup([
@@ -122,6 +125,9 @@ buttons3 = InlineKeyboardMarkup([
             ],
             [
                 InlineKeyboardButton("View Caption", callback_data="Vcaption"),
+            ],
+            [
+                InlineKeyboardButton("Back", callback_data="back"),
             ]
         ])
 
@@ -132,6 +138,9 @@ buttons4 = InlineKeyboardMarkup([
             ],
             [
                 InlineKeyboardButton("View Watermark", callback_data="Vwatermark"),
+            ],
+            [
+                InlineKeyboardButton("Back", callback_data="back"),
             ]
         ])
 
@@ -149,8 +158,11 @@ async def callback(_, query):
     elif query.data=="caption":
         await query.message.edit_text(f"Choose from Below", reply_markup=buttons3)
 
-    elif query.data=="thumb":
+    elif query.data=="watermark":
         await query.message.edit_text("Choose from Below", reply_markup=buttons4)
+
+    elif query.data=="back":
+        await query.message.edit_text("Choose from Below", reply_markup=buttons1)
 
     elif query.data=="Sthumb":
         await add_thumb(query)
