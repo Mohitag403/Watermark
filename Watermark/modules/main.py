@@ -24,7 +24,7 @@ async def dl_send(message):
  
 
 
-@app.on_message((filters.document | filters.video | filters.photo) & filters.private)
+@app.on_message((filters.document | filters.video | filters.photo) & filters.private & filters.reply)
 async def watcher(app, message):
     if message.photo or (message.document and message.document.mime_type.startswith("photo/")):
         photo = await message.download()
