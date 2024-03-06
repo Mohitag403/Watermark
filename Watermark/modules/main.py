@@ -31,15 +31,16 @@ def duration(filename):
 
 @app.on_message((filters.document | filters.video | filters.photo) & filters.private)
 async def watcher(app, message):
-    if message.photo or (message.document and message.document.mime_type.startswith("photo/")):
-        photo = await message.download()
-        await message.reply_text("Yes, it's a photo\nWait downloading...")
-        await app.send_photo(chat_id=message.chat.id, photo=photo)
+    if user_id in OWNER_ID:
+        if message.photo or (message.document and message.document.mime_type.startswith("photo/")):
+            photo = await message.download()
+            await message.reply_text("Yes, it's a photo\nWait downloading...")
+            await app.send_photo(chat_id=message.chat.id, photo=photo)
         
-    elif message.video or (message.document and message.document.mime_type.startswith("video/")):
-        thread = threading.Thread(target=lambda: asyncio.run(dl_send(message)))
-        thread.start() 
+        elif message.video or (message.document and message.document.mime_type.startswith("video/")):
+            thread = threading.Thread(target=lambda: asyncio.run(dl_send(message)))
+            thread.start() 
                
-    else:
-        pass
+        else:
+            pass
 
