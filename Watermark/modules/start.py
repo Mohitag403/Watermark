@@ -17,7 +17,7 @@ async def start(_,message):
                             ]))
 
 
-@app.on_callback_query(filters.regex("^help_$"))
+@app.on_callback_query(filters.regex("help_"))
 async def help_command_callback(_, callback_query):
     await callback_query.answer()
     await callback_query.message.edit_text("**𝗕𝗦𝗗𝗞 𝗞𝗛𝗨𝗗 𝗕𝗛𝗜 𝗠𝗘𝗛𝗡𝗔𝗧 𝗞𝗔𝗥 𝗟𝗘 𝗧𝗛𝗢𝗗𝗜**", reply_markup=InlineKeyboardMarkup([
@@ -27,7 +27,7 @@ async def help_command_callback(_, callback_query):
     ]))
 
 
-@app.on_callback_query(filters.regex("^back_$"))
+@app.on_callback_query(filters.regex("back_"))
 async def back_to_start_callback(_, callback_query):
     await callback_query.answer()
     await callback_query.message.edit_text("**𝙷𝚒!**\n\n**𝙶𝚒𝚟𝚎 /Watermark 𝙲𝚘𝚖𝚖𝚊𝚗𝚍 𝚝𝚘 𝙳𝚘𝚠𝚗𝚕𝚘𝚊𝚍 𝙵𝚛𝚘𝚖 𝚊 𝚃𝚎𝚡𝚝 𝚏𝚒𝚕𝚎.**🎓✨",
