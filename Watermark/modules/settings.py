@@ -1,3 +1,4 @@
+import os
 from pyrogram import Client, filters
 from pyrogram.types import CallbackQuery, InlineKeyboardMarkup, InlineKeyboardButton
 from Watermark.core.mongo import db
@@ -18,10 +19,12 @@ async def view_thumb(query):
 async def remove_thumb(query):
     data = await db.get_data(query.from_user.id)  
     if data and data.get("thumb"):
-      await db.remove_thumbnail(query.from_user.id)
-      await query.answer("❌️ **ʏᴏᴜʀ ᴛʜᴜᴍʙɴᴀɪʟ sᴜᴄᴄᴇssғᴜʟʟʏ ᴅᴇʟᴇᴛᴇᴅ.**", show_alert=True)
+        thumb = data.get("thumb")
+        os.remove(thumb)
+        await db.remove_thumbnail(query.from_user.id)
+        await query.answer("❌️ **ʏᴏᴜʀ ᴛʜᴜᴍʙɴᴀɪʟ sᴜᴄᴄᴇssғᴜʟʟʏ ᴅᴇʟᴇᴛᴇᴅ.**", show_alert=True)
     else:
-      await query.answer("Empty !! Thumbnail", show_alert=True)
+        await query.answer("Empty !! Thumbnail", show_alert=True)
 	
 
 async def add_thumb(query):
@@ -77,10 +80,12 @@ async def view_watermark(query):
 async def remove_watermark(query):
     data = await db.get_data(query.from_user.id)  
     if data and data.get("watermark"):
-      await db.remove_watermark(query.from_user.id)
-      await query.answer("❌️ **ʏᴏᴜʀ watermark sᴜᴄᴄᴇssғᴜʟʟʏ ᴅᴇʟᴇᴛᴇᴅ.**", show_alert=True)
+        watermark = data.get("watermark")
+        os.remove(watermark)
+        await db.remove_watermark(query.from_user.id)
+        await query.answer("❌️ **ʏᴏᴜʀ watermark sᴜᴄᴄᴇssғᴜʟʟʏ ᴅᴇʟᴇᴛᴇᴅ.**", show_alert=True)
     else:
-      await query.answer("Empty !! watermark", show_alert=True)
+        await query.answer("Empty !! watermark", show_alert=True)
 	
 
 async def add_watermark(query):
