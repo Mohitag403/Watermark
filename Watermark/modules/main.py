@@ -28,7 +28,7 @@ async def watcher(_, message):
         ms = await message.reply_text("ᴛʀʏɪɴɢ ᴛᴏ ᴅᴏᴡɴʟᴏᴀᴅɪɴɢ...")
         path = await dl(message, ms)
         user_data[message.chat.id] = {'path': path, 'ms': ms}
-        await upload(message)
+        await upload(ms)
      
 
 
@@ -50,20 +50,20 @@ async def dl(message, ms):
     	return
 
 
-async def upload(message):
+async def upload(ms):
     button = [
         [
             InlineKeyboardButton("DOC", callback_data=f"upload_document"),
             InlineKeyboardButton("VIDEO", callback_data=f"upload_video")
         ]
     ]  
-    await message.reply("**CHOOSE YOUR FORMAT**", reply_markup=InlineKeyboardMarkup(button))
+    await ms.edit("**CHOOSE YOUR FORMAT**", reply_markup=InlineKeyboardMarkup(button))
 
 
 @app.on_callback_query(filters.regex("^upload"))
 async def doc(_, query):
     global user_data
-    user = user_data.get(message.chat.id, {})
+    user = user_data.get(query.message.chat.id, {})
     path = user.get('path')
     ms = user.get('ms')
 
