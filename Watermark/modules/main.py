@@ -27,8 +27,8 @@ async def watcher(app, message):
         reply_message = message.reply_to_message
         button = [
         [
-            InlineKeyboardButton("DOC", callback_data="upload"),
-            InlineKeyboardButton("VIDEO", callback_data="upload")
+            InlineKeyboardButton("DOC", callback_data="upload_document"),
+            InlineKeyboardButton("VIDEO", callback_data="upload_video")
         ],
         [
             InlineKeyboardButton("CLOSE", callback_data="close_data")
