@@ -22,7 +22,7 @@ async def remove_thumb(query):
         thumb = data.get("thumb")
         os.remove(thumb)
         await db.remove_thumbnail(query.from_user.id)
-        await query.answer("❌️ ʏᴏᴜʀ ᴛʜᴜᴍʙɴᴀɪʟ sᴜᴄᴄᴇssғᴜʟʟʏ ᴅᴇʟᴇᴛᴇᴅ.", show_alert=True)
+        await query.answer("ʏᴏᴜʀ ᴛʜᴜᴍʙɴᴀɪʟ sᴜᴄᴄᴇssғᴜʟʟʏ ᴅᴇʟᴇᴛᴇᴅ.", show_alert=True)
     else:
         await query.answer("Empty !! Thumbnail", show_alert=True)
 	
@@ -83,7 +83,7 @@ async def remove_watermark(query):
         watermark = data.get("watermark")
         os.remove(watermark)
         await db.remove_watermark(query.from_user.id)
-        await query.answer("❌️ ʏᴏᴜʀ watermark sᴜᴄᴄᴇssғᴜʟʟʏ ᴅᴇʟᴇᴛᴇᴅ.", show_alert=True)
+        await query.answer("ʏᴏᴜʀ watermark sᴜᴄᴄᴇssғᴜʟʟʏ ᴅᴇʟᴇᴛᴇᴅ.", show_alert=True)
     else:
         await query.answer("Empty !! watermark", show_alert=True)
 	
@@ -153,7 +153,7 @@ buttons4 = InlineKeyboardMarkup([
 
 @app.on_message(filters.command("settings") & filters.private)
 async def settings(_, message):
-    await message.reply_text("Choose from Below", reply_markup=buttons1)
+    await message.reply_text("**CHOOSE FROM BELOW**", reply_markup=buttons1)
 
 
 @app.on_callback_query()
