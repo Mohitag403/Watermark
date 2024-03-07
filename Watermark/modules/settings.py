@@ -12,7 +12,7 @@ async def view_thumb(query):
        thumb = data.get("thumb")    
        await query.message.reply_photo(photo=thumb)
     else:
-        await query.answer("**ʏᴏᴜ ᴅᴏɴᴛ ʜᴀᴠᴇ ᴀɴʏ ᴛʜᴜᴍʙɴᴀɪʟ.**", show_alert=True) 
+        await query.answer("ʏᴏᴜ ᴅᴏɴᴛ ʜᴀᴠᴇ ᴀɴʏ ᴛʜᴜᴍʙɴᴀɪʟ.", show_alert=True) 
 
 
 
@@ -22,7 +22,7 @@ async def remove_thumb(query):
         thumb = data.get("thumb")
         os.remove(thumb)
         await db.remove_thumbnail(query.from_user.id)
-        await query.answer("❌️ **ʏᴏᴜʀ ᴛʜᴜᴍʙɴᴀɪʟ sᴜᴄᴄᴇssғᴜʟʟʏ ᴅᴇʟᴇᴛᴇᴅ.**", show_alert=True)
+        await query.answer("❌️ ʏᴏᴜʀ ᴛʜᴜᴍʙɴᴀɪʟ sᴜᴄᴄᴇssғᴜʟʟʏ ᴅᴇʟᴇᴛᴇᴅ.", show_alert=True)
     else:
         await query.answer("Empty !! Thumbnail", show_alert=True)
 	
@@ -64,7 +64,7 @@ async def see_caption(query):
        caption = data.get("caption")
        await query.message.reply_text(f"**ʏᴏᴜʀ ᴄᴀᴘᴛɪᴏɴ:** `{caption}`")
     else:
-       await query.message.reply_text("ʏᴏᴜ ᴅᴏɴᴛ ʜᴀᴠᴇ ᴀɴʏ ᴄᴀᴘᴛɪᴏɴ.")
+       await query.answer("ʏᴏᴜ ᴅᴏɴᴛ ʜᴀᴠᴇ ᴀɴʏ ᴄᴀᴘᴛɪᴏɴ.", show_alert=True)
 
 
 async def view_watermark(query):    
@@ -73,7 +73,7 @@ async def view_watermark(query):
        thumb = data.get("watermark")    
        await query.message.reply_photo(photo=thumb)
     else:
-        await query.answer("**ʏᴏᴜ ᴅᴏɴᴛ ʜᴀᴠᴇ ᴀɴʏ watermark.**", show_alert=True) 
+        await query.answer("ʏᴏᴜ ᴅᴏɴᴛ ʜᴀᴠᴇ ᴀɴʏ watermark.", show_alert=True) 
 
 
 
@@ -83,7 +83,7 @@ async def remove_watermark(query):
         watermark = data.get("watermark")
         os.remove(watermark)
         await db.remove_watermark(query.from_user.id)
-        await query.answer("❌️ **ʏᴏᴜʀ watermark sᴜᴄᴄᴇssғᴜʟʟʏ ᴅᴇʟᴇᴛᴇᴅ.**", show_alert=True)
+        await query.answer("❌️ ʏᴏᴜʀ watermark sᴜᴄᴄᴇssғᴜʟʟʏ ᴅᴇʟᴇᴛᴇᴅ.", show_alert=True)
     else:
         await query.answer("Empty !! watermark", show_alert=True)
 	
