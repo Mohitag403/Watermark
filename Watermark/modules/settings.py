@@ -4,7 +4,7 @@ from pyrogram.types import InlineKeyboardMarkup, InlineKeyboardButton
 from Watermark.core.mongo import db
 from Watermark import app
 from Watermark.core import script
-from Watermark.core.func import subscribe,
+from Watermark.core.func import subscribe
 
 
 # --------------------Thumbnail--------------------- #
