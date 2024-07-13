@@ -86,8 +86,9 @@ async def watcher(_, message):
     elif message.video or (message.document and message.document.mime_type.startswith("video/")):
         ms = await message.reply_text("ᴛʀʏɪɴɢ ᴛᴏ ᴅᴏᴡɴʟᴏᴀᴅɪɴɢ...")
         path = await dl(message, ms)
-        user_data[message.from_user.id] = path
         await upload(ms)
+        user_data[message.from_user.id] = path
+        
      
 
 
