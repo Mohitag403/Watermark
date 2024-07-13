@@ -145,11 +145,16 @@ async def handle_callback(_, query):
     elif query.data == "thumbnail_":
         await query.message.edit_text(script.THUMBNAIL_TXT, reply_markup=buttons2)
     elif query.data == "caption_":
-        await query.message.edit_text(script.CAPTI0NS_TXT, reply_markup=buttons4)
+        await query.message.edit_text(script.CAPTI0NS_TXT, reply_markup=buttons3)
     elif query.data == "watermark_":
-        await query.message.edit_text(script.WATERMARK_TXT, reply_markup=buttons3)
+        await query.message.edit_text(script.WATERMARK_TXT, reply_markup=watermark_button)
+    elif query.data == "watermark_text":
+        await query.message.edit_text(script.WATERMARK_TXT, reply_markup=buttons4)
+    elif query.data == "watermark_image":
+        await query.message.edit_text(script.WATERMARK_TXT, reply_markup=buttons5)
+	    
     elif query.data == "about_":
-        await query.message.edit_text(script.ABOUT_TXT, reply_markup=buttons5)
+        await query.message.edit_text(script.ABOUT_TXT, reply_markup=buttons1)
     elif query.data == "back_":
         await query.message.edit_text(script.SETTINGS_TXT, reply_markup=buttons1)
 
