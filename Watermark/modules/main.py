@@ -11,7 +11,7 @@ from Watermark.core.utils import progress_bar, convert
 from pyrogram.types import InlineKeyboardButton, InlineKeyboardMarkup, ForceReply
 
 
-user_data = {}
+user_data = []
 
 
 async def dl(message, ms):
@@ -86,95 +86,88 @@ async def watcher(_, message):
     elif message.video or (message.document and message.document.mime_type.startswith("video/")):
         ms = await message.reply_text("ᴛʀʏɪɴɢ ᴛᴏ ᴅᴏᴡɴʟᴏᴀᴅɪɴɢ...")
         path = await dl(message, ms)
-        user_data[message.from_user.id] = {'path': path, 'ms': ms}
+        user_data[message.from_user.id] = path
         await upload(ms)
      
+
 
 
 
 @app.on_callback_query(filters.regex("^upload"))
 async def doc(_, query):
     global user_data
-    user = user_data.get(query.message.chat.id, {})
-    path = user.get('path')
-    ms = user.get('ms')
+    path = user_data[query.from_user.id]
 
     c_time = time.time()
     try:
         duration = 0
+        width, height = 1280, 720
+        
         try:
             metadata = extractMetadata(createParser(path))
             if metadata.has("duration"):
                 duration = metadata.get('duration').seconds
             if metadata.has("width") and metadata.has("height"):
                 width, height = metadata.get("width"), metadata.get("height")
-            else:
-                width, height = 1280, 720   
-        except:
-            pass
-
+        except Exception as e:
+            print(f"Metadata extraction error: {e}")
+        
         data = await db.get_data(query.from_user.id)
         file_name = "lol_1234"
-        
+
+        caption = f"**{file_name}**"
         if data and data.get("caption"):
             try:
                 c_caption = data.get("caption")
-                caption = c_caption.format(filename=file_name, filesize=humanize.naturalsize(os.path.getsize(path)), duration=duration)
+                caption = c_caption.format(filename=file_name, filesize=naturalsize(os.path.getsize(path)), duration=duration)
             except Exception as e:
                 await query.message.reply_text(f"» Your caption has an unexpected keyword error: {e} \nSo Processing further without Your Caption")
-                pass
-                caption = f"**{file_name}**"
-        else:
-            caption = f"**{file_name}**"
 
-        if data and data.get("thumb"):
-            ph_path = data.get("thumb")            
-        else:
-            subprocess.run(f'ffmpeg -i "{path}" -ss 00:01:00 -vframes 1 "{file_name}.jpg"', shell=True)
-            ph_path = f"{file_name}.jpg"
+        ph_path = data.get("thumb") if data and data.get("thumb") else f"{file_name}.jpg"
+        if not data or not data.get("thumb"):
+            subprocess.run(f'ffmpeg -i "{path}" -ss 00:01:00 -vframes 1 "{ph_path}"', shell=True)
 
-        if query.data=="upload_video":
-            try:
-                await _.send_video(
-                    query.message.chat.id,
-                    video=path,
-                    caption=caption,
-                    height=720, 
-                    width=1280,
-                    thumb=ph_path,
-                    duration=duration,
-                    progress=progress_bar,
-                    progress_args=("Trying to uploading...", ms, c_time)
-                )
-            except Exception:
-                await _.send_video(
-                    query.message.chat.id,
-                    video=path,
-                    caption=caption,
-                    progress=progress_bar,
-                    progress_args=("Trying to uploading...", ms, c_time)
-                )
-        elif query.data=="upload_document":
+        if query.data == "upload_video":
+            async with open(path, "rb") as vid:
+                try:
+                    await _.send_video(
+                        query.message.chat.id,
+                        video=vid,
+                        caption=caption,
+                        height=height,
+                        width=width,
+                        thumb=ph_path,
+                        duration=duration,
+                        progress=progress_bar,
+                        progress_args=("Trying to upload...", ms, c_time)
+                    )
+                except Exception:
+                    await _.send_video(
+                        query.message.chat.id,
+                        video=path,
+                        caption=caption,
+                        progress=progress_bar,
+                        progress_args=("Trying to upload...", ms, c_time)
+                    )
+        elif query.data == "upload_document":
             await _.send_document(
                 query.message.chat.id,
                 document=path,
                 caption=caption,
                 progress=progress_bar,
-                progress_args=("Trying to uploading...", ms, c_time)
+                progress_args=("Trying to upload...", ms, c_time)
             )
-        
+
         await ms.delete()
-        if os.path.exists(f"{file_name}.jpg"):
-            os.remove(f"{file_name}.jpg")
-        if os.path.exists(path):
-            os.remove(path)
+        os.remove(ph_path) if os.path.exists(ph_path) else None
+        os.remove(path) if os.path.exists(path) else None
+
     except Exception as e:
         await ms.edit(f"Error: {e}")
-        if os.path.exists(f"{file_name}.jpg"):
-            os.remove(f"{file_name}.jpg")
-        if os.path.exists(path):
-            os.remove(path)
-        return
+        os.remove(ph_path) if os.path.exists(ph_path) else None
+        os.remove(path) if os.path.exists(path) else None
+
+
 
 
 
