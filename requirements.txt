@@ -6,6 +6,6 @@ pyromod
 requests
 wget
 hachoir
-Pillow
+telegraph
 humanize
 
