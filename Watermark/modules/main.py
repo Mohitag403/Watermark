@@ -50,6 +50,7 @@ async def watcher(_, message):
         file = await message.download(progress=progress_bar ,progress_args=( "𝚃𝚁𝚈𝙸𝙽𝙶 𝚃𝙾 𝙳𝙾𝚆𝙽𝙻𝙾𝙰𝙳....",  ms, c_time))
            
         output_vid = f"watermarked_{file}"
+        """
         if data and data.get("watermark_image"):
             watermark_image = data.get("watermark_image")
             file_generator_command = [
@@ -60,7 +61,7 @@ async def watcher(_, message):
               output_vid
             ]
 
-        
+        """
         watermark_text = data.get("watermark_text")
         file_generator_command = [
           "ffmpeg",
