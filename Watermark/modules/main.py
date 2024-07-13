@@ -97,7 +97,7 @@ async def watcher(_, message):
 
 
 
-
+"""
 @app.on_callback_query(filters.regex("^upload"))
 async def doc(_, query):
     global user_data
@@ -174,7 +174,7 @@ async def doc(_, query):
         os.remove(ph_path) if os.path.exists(ph_path) else None
         os.remove(path) if os.path.exists(path) else None
 
-
+"""
 
 
 
