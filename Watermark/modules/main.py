@@ -51,6 +51,9 @@ async def dl(message, ms):
                 print(f"ffmpeg failed: {stderr.decode()}")
                 return
 
+            with open(output_vid, "rb") as vid:
+                await message.reply_video(vid)
+                
             return output_vid
         except Exception as e:
             print(f"Error during watermarking: {e}")
