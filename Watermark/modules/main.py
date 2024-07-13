@@ -97,19 +97,18 @@ async def watcher(_, message):
 
 
 
-"""
 @app.on_callback_query(filters.regex("^upload"))
-async def doc(_, query):
-    global user_data
-    user = user_data.get(query.from.user.id, {})
+async def doc(client, query):
+    
+    user = user_data.get(query.from_user.id, {})
     path = user.get('path')
     ms = user.get('ms')
-    
+
     c_time = time.time()
     try:
         duration = 0
         width, height = 1280, 720
-        
+
         try:
             metadata = extractMetadata(createParser(path))
             if metadata.has("duration"):
@@ -118,7 +117,7 @@ async def doc(_, query):
                 width, height = metadata.get("width"), metadata.get("height")
         except Exception as e:
             print(f"Metadata extraction error: {e}")
-        
+
         data = await db.get_data(query.from_user.id)
         file_name = "lol_1234"
 
@@ -137,7 +136,7 @@ async def doc(_, query):
         if query.data == "upload_video":
             async with open(path, "rb") as vid:
                 try:
-                    await _.send_video(
+                    await client.send_video(
                         query.message.chat.id,
                         video=vid,
                         caption=caption,
@@ -149,7 +148,7 @@ async def doc(_, query):
                         progress_args=("Trying to upload...", ms, c_time)
                     )
                 except Exception:
-                    await _.send_video(
+                    await client.send_video(
                         query.message.chat.id,
                         video=path,
                         caption=caption,
@@ -157,7 +156,7 @@ async def doc(_, query):
                         progress_args=("Trying to upload...", ms, c_time)
                     )
         elif query.data == "upload_document":
-            await _.send_document(
+            await client.send_document(
                 query.message.chat.id,
                 document=path,
                 caption=caption,
@@ -174,7 +173,7 @@ async def doc(_, query):
         os.remove(ph_path) if os.path.exists(ph_path) else None
         os.remove(path) if os.path.exists(path) else None
 
-"""
+
 
 
 
