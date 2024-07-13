@@ -29,12 +29,12 @@ async def set_caption(user_id, caption):
         await db.insert_one({"_id": user_id, "caption": caption})
 
 
-async def set_watermark(user_id, watermark_img):
+async def set_watermark(user_id, watermark_image):
     data = await get_data(user_id)
     if data and data.get("_id"):
-        await db.update_one({"_id": user_id}, {"$set": {"watermark_img": watermark_img}})
+        await db.update_one({"_id": user_id}, {"$set": {"watermark_image": watermark_image}})
     else:
-        await db.insert_one({"_id": user_id, "watermark_img": watermark_img})
+        await db.insert_one({"_id": user_id, "watermark_image": watermark_image})
 
 
 async def set_watermark_text(user_id, watermark_text):
@@ -52,7 +52,7 @@ async def remove_caption(user_id):
     await db.update_one({"_id": user_id}, {"$set": {"caption": None}})
 
 async def remove_watermark(user_id):
-    await db.update_one({"_id": user_id}, {"$set": {"watermark_img": None}})
+    await db.update_one({"_id": user_id}, {"$set": {"watermark_image": None}})
 
 async def remove_watermark_text(user_id):
     await db.update_one({"_id": user_id}, {"$set": {"watermark_text": None}})
