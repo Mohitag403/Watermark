@@ -69,7 +69,7 @@ async def see_caption(query):
 
 
 
-# --------------------String-Session--------------------- #
+# --------------------Watermark-Text--------------------- #
 
 async def add_watermark_text(query):    
     sos = await app.ask(query.message.chat.id, text="Give me a watermark to set.")
@@ -94,6 +94,38 @@ async def view_watermark_text(query):
        await query.answer("👀 You haven't set any watermark text !!", show_alert=True)
 
 
+# --------------------Watermark-Image--------------------- #
+
+async def add_watermark(query):
+    mkn = await app.ask(query.message.chat.id, text="Please send me your watermark photo.")
+    if mkn.photo:
+        file_name = str(query.from_user.id) + "set_thumb.jpg"
+        photo_id = mkn.photo.file_id
+        photo_path = await app.download_media(photo_id, file_name=file_name)
+        fk = upload_file(photo_path)
+        for x in fk:
+            url = "https://telegra.ph" + x
+        await db.set_watermark(query.from_user.id, url)
+        await query.message.reply_text("✅️ Your watermark photo has been successfully saved.")        	
+    else:
+        await query.message.reply_text("❌️ Please send a valid photo for your watermark.")
+
+async def delete_watermark(query):
+    data = await db.get_data(query.from_user.id)  
+    if data and data.get("watermark_image"):
+        thumb = data.get("watermark_image")
+        await db.remove_watermark(query.from_user.id)
+        await query.answer("☘️ Your watermark image has been successfully deleted.", show_alert=True)
+    else:
+        await query.answer("😜 You haven't set any watermark image.", show_alert=True)
+	
+async def view_watermark(query):    
+    data = await db.get_data(query.from_user.id)
+    if data and data.get("watermark_image"):
+       watermark_image = data.get("watermark_image")    
+       await query.message.reply_photo(watermark_image)
+    else:
+        await query.answer("😜 You haven't set any watermark image.", show_alert=True) 
 
  
 
