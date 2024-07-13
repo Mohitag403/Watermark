@@ -86,8 +86,9 @@ async def watcher(_, message):
     elif message.video or (message.document and message.document.mime_type.startswith("video/")):
         ms = await message.reply_text("ᴛʀʏɪɴɢ ᴛᴏ ᴅᴏᴡɴʟᴏᴀᴅɪɴɢ...")
         path = await dl(message, ms)
+        user_data[message.from_user.id] = {'path': path, 'ms': ms}
         await upload(ms)
-        user_data[message.from_user.id] = path
+        
         
      
 
@@ -97,8 +98,10 @@ async def watcher(_, message):
 @app.on_callback_query(filters.regex("^upload"))
 async def doc(_, query):
     global user_data
-    path = user_data[query.from_user.id]
-
+    user = user_data.get(query.from.user.id, {})
+    path = user.get('path')
+    ms = user.get('ms')
+    
     c_time = time.time()
     try:
         duration = 0
