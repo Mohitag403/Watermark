@@ -136,7 +136,7 @@ buttons1 = InlineKeyboardMarkup([
             ],
 	          [
                 InlineKeyboardButton("📝 ᴄᴀᴘᴛɪᴏɴ", callback_data="caption_"),
-		            InlineKeyboardButton("📇 ᴡᴀᴛᴇʀᴍᴀʀᴋ", callback_data="watermark_")
+		InlineKeyboardButton("📇 ᴡᴀᴛᴇʀᴍᴀʀᴋ", callback_data="watermark_")
             ]])
 
 
