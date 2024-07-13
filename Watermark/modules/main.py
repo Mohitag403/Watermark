@@ -65,11 +65,12 @@ async def watcher(_, message):
         watermark_text = data.get("watermark_text")
         file_generator_command = [
           "ffmpeg",
-          "-i", path,
+          "-i", file,
           "-vf", f"drawtext=text='{watermark_text}':x=10:y=10:fontcolor=white:fontsize=25",
           output_vid
         ]
 
+        await message.reply_text("adding watermark...")
         process = await asyncio.create_subprocess_exec(
           *file_generator_command,
           stdout=asyncio.subprocess.PIPE,
