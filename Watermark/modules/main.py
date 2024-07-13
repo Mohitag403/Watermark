@@ -13,47 +13,53 @@ from pyrogram.types import InlineKeyboardButton, InlineKeyboardMarkup, ForceRepl
 
 user_data = {}
 
-# abhi krunga thodi dher me chedio mt wrna gaand maar lunga
+
 async def dl(message, ms):
     data = await db.get_data(message.from_user.id)        
     c_time = time.time()
     try:
         file = await message.download(progress=progress_bar, progress_args=("𝚃𝚁𝚈𝙸𝙽𝙶 𝚃𝙾 𝙳𝙾𝚆𝙽𝙻𝙾𝙰𝙳....", ms, c_time))
-        output_vid = f"watermarked_{file}"
+        try:
+            output_vid = f"watermarked_{file}"
 
-        if data and data.get("watermark_image"):
-            watermark_image = data.get("watermark_image")    
-            file_generator_command = [
-                "ffmpeg",
-                "-i", file,
-                "-i", watermark_image,
-                "-filter_complex", "overlay=10:10",  # Top-left corner with 10px padding
-                output_vid
-            ]
-        else:
-            watermark_text = data.get("watermark_text")
-            file_generator_command = [
-                "ffmpeg",
-                "-i", file,
-                "-vf", f"drawtext=text='{watermark_text}':x=10:y=10:fontcolor=white:fontsize=24",
-                output_vid
-            ]
+            if data and data.get("watermark_image"):
+                watermark_image = data.get("watermark_image")
+                file_generator_command = [
+                    "ffmpeg",
+                    "-i", file,
+                    "-i", watermark_image,
+                    "-filter_complex", "overlay=10:10",  # Top-left corner with 10px padding
+                    output_vid
+                ]
+            else:
+                watermark_text = data.get("watermark_text")
+                file_generator_command = [
+                    "ffmpeg",
+                    "-i", file,
+                    "-vf", f"drawtext=text='{watermark_text}':x=10:y=10:fontcolor=white:fontsize=24",
+                    output_vid
+                ]
 
-        process = await asyncio.create_subprocess_exec(
-            *file_generator_command,
-            stdout=asyncio.subprocess.PIPE,
-            stderr=asyncio.subprocess.PIPE,
-        )
+            process = await asyncio.create_subprocess_exec(
+                *file_generator_command,
+                stdout=asyncio.subprocess.PIPE,
+                stderr=asyncio.subprocess.PIPE,
+            )
 
-        stdout, stderr = await process.communicate()
-        if process.returncode != 0:
-            print(f"ffmpeg failed: {stderr.decode()}")
-            return
+            stdout, stderr = await process.communicate()
+            if process.returncode != 0:
+                print(f"ffmpeg failed: {stderr.decode()}")
+                return
 
-        return output_vid
+            return output_vid
+        except Exception as e:
+            print(f"Error during watermarking: {e}")
+            return file
     except Exception as e:
         await ms.edit(str(e))
         return
+
+
 
 
 
