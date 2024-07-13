@@ -107,7 +107,7 @@ async def watcher(_, message):
 
         file_generator_command = [
           "ffmpeg",
-          "-i", file,
+          "-i", path,
           "-vf", f"drawtext=text='{watermark_text}':x=10:y=10:fontcolor=white:fontsize={text_size}",
           output_vid
         ]
