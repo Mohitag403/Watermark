@@ -134,7 +134,6 @@ async def handle_callback(_, query):
             reply_markup=buttons
         )
 
-    
     elif query.data == "help_":
         reply_markup = InlineKeyboardMarkup(back_button)
         await query.message.edit_text(
@@ -152,13 +151,12 @@ async def handle_callback(_, query):
         await query.message.edit_text(script.WATERMARK_TXT, reply_markup=buttons4)
     elif query.data == "watermark_image":
         await query.message.edit_text(script.WATERMARK_TXT, reply_markup=buttons5)
-	    
+
     elif query.data == "about_":
         await query.message.edit_text(script.ABOUT_TXT, reply_markup=buttons1)
     elif query.data == "back_":
         await query.message.edit_text(script.SETTINGS_TXT, reply_markup=buttons1)
 
-    
     elif query.data == "set_thumb":
         await add_thumb(query)
     elif query.data == "rm_thumb":
@@ -173,15 +171,13 @@ async def handle_callback(_, query):
     elif query.data == "views_caption":
         await see_caption(query)
 
-    
-    elif query.data == "set_watermarktxt:
+    elif query.data == "set_watermarktxt":
         await add_watermark_text(query)
     elif query.data == "rm_watermarktxt":
         await delete_watermark_text(query)
     elif query.data == "views_watermarktxt":
         await view_watermark_text(query)
-    
-  
+
     elif query.data == "set_watermarkimg":
         await add_watermark(query)
     elif query.data == "rm_watermarkimg":
@@ -189,8 +185,6 @@ async def handle_callback(_, query):
     elif query.data == "views_watermarkimg":
         await view_watermark(query)
 
-	
-	
     elif query.data == "maintainer_":    
         await query.answer("sᴏᴏɴ.... \n ʙᴏᴛ ᴜɴᴅᴇʀ ɪɴ ᴍᴀɪɴᴛᴀɪɴᴀɴᴄᴇ", show_alert=True)
 
@@ -200,7 +194,6 @@ async def handle_callback(_, query):
             await query.message.reply_to_message.delete()
         except:
             pass
-
 
 
 
