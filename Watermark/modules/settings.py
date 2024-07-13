@@ -131,11 +131,12 @@ async def view_watermark(query):
 
 
 buttons1 = InlineKeyboardMarkup([
-            [
-                InlineKeyboardButton("🏜 ᴛʜᴜᴍʙɴᴀɪʟ", callback_data="thumb_")                
-            ],
-	          [
+	    [
                 InlineKeyboardButton("📝 ᴄᴀᴘᴛɪᴏɴ", callback_data="caption_"),
+		InlineKeyboardButton("🌐 ᴛʜᴜᴍʙ", callback_data="thumbnail_")
+            ],
+	    [
+                InlineKeyboardButton("📊 ᴀʙᴏᴜᴛ", callback_data="about_"),
 		InlineKeyboardButton("📇 ᴡᴀᴛᴇʀᴍᴀʀᴋ", callback_data="watermark_")
             ]])
 
