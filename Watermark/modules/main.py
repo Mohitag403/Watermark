@@ -57,6 +57,16 @@ async def dl(message, ms):
 
 
 
+async def upload(ms):
+    button = [
+        [
+            InlineKeyboardButton("DOC", callback_data=f"upload_document"),
+            InlineKeyboardButton("VIDEO", callback_data=f"upload_video")
+        ]
+    ]  
+    await ms.edit("**CHOOSE YOUR FORMAT**", reply_markup=InlineKeyboardMarkup(button))
+
+
 
 
 @app.on_message((filters.document | filters.video | filters.photo) & filters.private)
@@ -70,26 +80,10 @@ async def watcher(_, message):
     elif message.video or (message.document and message.document.mime_type.startswith("video/")):
         ms = await message.reply_text("ᴛʀʏɪɴɢ ᴛᴏ ᴅᴏᴡɴʟᴏᴀᴅɪɴɢ...")
         path = await dl(message, ms)
-        user_data[message.chat.id] = {'path': path, 'ms': ms}
+        user_data[message.from_user.id] = {'path': path, 'ms': ms}
         await upload(ms)
      
 
-
-
-
-
-
-
-
-
-async def upload(ms):
-    button = [
-        [
-            InlineKeyboardButton("DOC", callback_data=f"upload_document"),
-            InlineKeyboardButton("VIDEO", callback_data=f"upload_video")
-        ]
-    ]  
-    await ms.edit("**CHOOSE YOUR FORMAT**", reply_markup=InlineKeyboardMarkup(button))
 
 
 @app.on_callback_query(filters.regex("^upload"))
@@ -114,7 +108,7 @@ async def doc(_, query):
             pass
 
         data = await db.get_data(query.from_user.id)
-        file_name = path.split("/")[-1]
+        file_name = "lol_1234"
         
         if data and data.get("caption"):
             try:
