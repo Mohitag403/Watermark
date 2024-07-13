@@ -7,8 +7,6 @@ from config import OWNER_ID
 from hachoir.metadata import extractMetadata
 from hachoir.parser import createParser
 from Watermark.core.mongo import db
-import humanize
-from PIL import Image
 from Watermark.core.utils import progress_bar, convert
 from pyrogram.types import InlineKeyboardButton, InlineKeyboardMarkup, ForceReply
 
@@ -130,10 +128,7 @@ async def doc(_, query):
             caption = f"**{file_name}**"
 
         if data and data.get("thumb"):
-            ph_path = data.get("thumb")
-#            img = Image.open(c_thumb)
-#            img = img.resize((width, height), Image.LANCZOS)
-#            img.save(f"{file_name}.jpg")
+            ph_path = data.get("thumb")            
         else:
             subprocess.run(f'ffmpeg -i "{path}" -ss 00:01:00 -vframes 1 "{file_name}.jpg"', shell=True)
             ph_path = f"{file_name}.jpg"
