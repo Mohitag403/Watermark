@@ -90,7 +90,8 @@ async def watcher(_, message):
         ms = await message.reply_text("ᴛʀʏɪɴɢ ᴛᴏ ᴅᴏᴡɴʟᴏᴀᴅɪɴɢ...")
         path = await dl(message, ms)
         user_data[message.from_user.id] = {'path': path, 'ms': ms}
-        await upload(ms)
+        await message.reply_video(path)
+     #   await upload(ms)
         
         
      
