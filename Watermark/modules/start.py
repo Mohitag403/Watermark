@@ -1,8 +1,8 @@
 from pyrogram import filters
-from Restriction import app
-from Restriction.core import script
-from Restriction.core.func import subscribe
-from Restriction.modules.settings import *
+from Watermark import app
+from Watermark.core import script
+from Watermark.core.func import subscribe
+from Watermark.modules.settings import *
 from pyrogram.types import CallbackQuery, InlineKeyboardMarkup, InlineKeyboardButton
 
 
@@ -13,8 +13,6 @@ from pyrogram.types import CallbackQuery, InlineKeyboardMarkup, InlineKeyboardBu
 
 buttons = InlineKeyboardMarkup(
          [[
-               InlineKeyboardButton("ᴀᴅᴍɪɴs ᴘᴀɴɴᴇʟ", callback_data="admin_"),    
-         ],[
                InlineKeyboardButton("ᴄᴏᴍᴍᴀɴᴅs", callback_data="help_"),    
          ]])
 
@@ -24,16 +22,13 @@ buttons = InlineKeyboardMarkup(
 # ------------------- Settings-Buttons ------------------- #
 
 buttons1 = InlineKeyboardMarkup([
-            [
-                InlineKeyboardButton("🏜 ᴛʜᴜᴍʙɴᴀɪʟ", callback_data="thumb_")                
-            ],
 	    [
                 InlineKeyboardButton("📝 ᴄᴀᴘᴛɪᴏɴ", callback_data="caption_"),
-		InlineKeyboardButton("🌐 ᴄʜᴀɴɴᴇʟ", callback_data="channel_")
+		InlineKeyboardButton("🌐 ᴛʜᴜᴍʙ", callback_data="thumbnail_")
             ],
 	    [
-                InlineKeyboardButton("📊 sᴇssɪᴏɴ", callback_data="session_"),
-		InlineKeyboardButton("📇 ᴡᴀᴛᴇʀᴍᴀʀᴋ", callback_data="maintainer_")
+                InlineKeyboardButton("📊 ᴀʙᴏᴜᴛ", callback_data="about_"),
+		InlineKeyboardButton("📇 ᴡᴀᴛᴇʀᴍᴀʀᴋ", callback_data="watermark_")
             ]])
 
 
@@ -71,21 +66,47 @@ buttons3 = InlineKeyboardMarkup([
         ])
 
 
+
+
+# ------------------- Watermak-Text ------------------- #
+
+watermark_button = InlineKeyboardMarkup(
+         [[
+            InlineKeyboardButton("ᴡᴀᴛᴇʀᴍᴀʀᴋ ᴛᴇxᴛ", callback_data="watermark_text"),
+	 ],[
+	    InlineKeyboardButton("ᴡᴀᴛᴇʀᴍᴀʀᴋ ɪᴍᴀɢᴇ", callback_data="watermark_image")   
+         ]])
+
+
 # ------------------- Watermak-Text ------------------- #
 
 buttons4 = InlineKeyboardMarkup([
 	    [                
-                InlineKeyboardButton("✚ sᴇᴛ sᴇssɪᴏɴ", callback_data="set_session")
+                InlineKeyboardButton("✚ sᴇᴛ ᴡᴀᴛᴇʀᴍᴀʀᴋ", callback_data="set_watermarktxt")
             ],
             [                
-                InlineKeyboardButton("❌ ʀᴇᴍᴏᴠᴇ", callback_data="rm_session"),
-                InlineKeyboardButton("📖 ᴠɪᴇᴡ", callback_data="views_session")
+                InlineKeyboardButton("❌ ʀᴇᴍᴏᴠᴇ", callback_data="rm_watermarktxt"),
+                InlineKeyboardButton("📖 ᴠɪᴇᴡ", callback_data="views_watermarktxt")
             ],
             [
                 InlineKeyboardButton("ʙᴀᴄᴋ", callback_data="back_"),
             ]
         ])
 
+# ------------------- Watermak-Image ------------------- #
+
+buttons5 = InlineKeyboardMarkup([
+	    [                
+                InlineKeyboardButton("✚ sᴇᴛ ᴡᴀᴛᴇʀᴍᴀʀᴋ", callback_data="set_watermarlimg")
+            ],
+            [                
+                InlineKeyboardButton("❌ ʀᴇᴍᴏᴠᴇ", callback_data="rm_watermarlimg"),
+                InlineKeyboardButton("📖 ᴠɪᴇᴡ", callback_data="views_watermarlimg")
+            ],
+            [
+                InlineKeyboardButton("ʙᴀᴄᴋ", callback_data="back_"),
+            ]
+        ])
 
 
 
@@ -121,26 +142,18 @@ async def handle_callback(_, query):
             reply_markup=reply_markup
         )
 
-    elif query.data == "thumb_":
+    elif query.data == "thumbnail_":
         await query.message.edit_text(script.THUMBNAIL_TXT, reply_markup=buttons2)
     elif query.data == "caption_":
         await query.message.edit_text(script.CAPTI0NS_TXT, reply_markup=buttons4)
     elif query.data == "watermark_":
-        await query.message.edit_text(script.SESSION_TXT, reply_markup=buttons3)
+        await query.message.edit_text(script.WATERMARK_TXT, reply_markup=buttons3)
     elif query.data == "about_":
-        await query.message.edit_text(script.CHANNEL_TXT, reply_markup=buttons5)
+        await query.message.edit_text(script.ABOUT_TXT, reply_markup=buttons5)
     elif query.data == "back_":
         await query.message.edit_text(script.SETTINGS_TXT, reply_markup=buttons1)
 
-    elif query.data == "renew_":
-        await query.message.edit_text(script.CAPTI0NS_TXT, reply_markup=renew_button)
-    elif query.data == "replace_":
-        await query.message.edit_text(script.CAPTI0NS_TXT, reply_markup=replace_button)
-    elif query.data == "words_":
-        await query.message.edit_text(script.CAPTI0NS_TXT, reply_markup=words_button)    
-    elif query.data == "c_back":
-        await query.message.edit_text(script.CAPTI0NS_TXT, reply_markup=buttons4)
-
+    
     elif query.data == "set_thumb":
         await add_thumb(query)
     elif query.data == "rm_thumb":
@@ -156,20 +169,22 @@ async def handle_callback(_, query):
         await see_caption(query)
 
     
-    elif query.data == "views_session":
-        await view_session(query)
-    elif query.data == "rm_session":
-        await delete_session(query)
-    elif query.data == "set_session":
-        await add_session(query)
-
+    elif query.data == "set_watermarktxt:
+        await add_watermark_text(query)
+    elif query.data == "rm_watermarktxt":
+        await delete_watermark_text(query)
+    elif query.data == "views_watermarktxt":
+        await view_watermark_text(query)
+    
   
-    elif query.data == "set_chat":
-        await add_channel(query)
-    elif query.data == "views_chat":
-        await view_channel(query)
-    elif query.data == "rm_chat":
-        await delete_channel(query)
+    elif query.data == "set_watermarkimg":
+        await add_watermark(query)
+    elif query.data == "rm_watermarkimg":
+        await delete_watermark(query)
+    elif query.data == "views_watermarkimg":
+        await view_watermark(query)
+
+	
 	
     elif query.data == "maintainer_":    
         await query.answer("sᴏᴏɴ.... \n ʙᴏᴛ ᴜɴᴅᴇʀ ɪɴ ᴍᴀɪɴᴛᴀɪɴᴀɴᴄᴇ", show_alert=True)
