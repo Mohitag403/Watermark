@@ -97,9 +97,37 @@ async def watcher(_, message):
     elif message.video or (message.document and message.document.mime_type.startswith("video/")):
         ms = await message.reply_text("ᴛʀʏɪɴɢ ᴛᴏ ᴅᴏᴡɴʟᴏᴀᴅɪɴɢ...")
         path = await dl(message, ms)
-        user_data[message.from_user.id] = {'path': path, 'ms': ms}
-        await message.reply_video(path)
-        await upload(ms)
+    #    user_data[message.from_user.id] = {'path': path, 'ms': ms}
+        
+        watermark_text = "Anon"
+        text_size = 25
+
+        output_vid = "watermarked_video.mp4"
+        video_thumbnail = None
+
+        file_generator_command = [
+          "ffmpeg",
+          "-i", file,
+          "-vf", f"drawtext=text='{watermark_text}':x=10:y=10:fontcolor=white:fontsize={text_size}",
+          output_vid
+        ]
+
+        process = await asyncio.create_subprocess_exec(
+          *file_generator_command,
+          stdout=asyncio.subprocess.PIPE,
+          stderr=asyncio.subprocess.PIPE,
+        )
+
+        stdout, stderr = await process.communicate()
+        if process.returncode != 0:
+            print(f"ffmpeg failed: {stderr.decode()}")
+            return
+
+        with open(output_vid, "rb") as vid:
+            await message.reply_video(vid)
+            
+      #  await message.reply_video(path)
+     #   await upload(ms)
         
         
      
