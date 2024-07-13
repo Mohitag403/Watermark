@@ -14,7 +14,7 @@ from pyrogram.types import InlineKeyboardButton, InlineKeyboardMarkup, ForceRepl
 user_data = {}
 
 
-async def dl(message, ms):
+async def down(message, ms):
     data = await db.get_data(message.from_user.id)        
     c_time = time.time()
     try:
@@ -64,6 +64,14 @@ async def dl(message, ms):
 
 
 
+async def dl(message, ms):
+    c_time = time.time()
+    try:
+        path = await message.download(progress=progress_bar ,progress_args=( "𝚃𝚁𝚈𝙸𝙽𝙶 𝚃𝙾 𝙳𝙾𝚆𝙽𝙻𝙾𝙰𝙳....",  ms, c_time))
+        return path
+    except Exception as e:
+    	await ms.edit(e)
+    	return
 
 
 async def upload(ms):
@@ -91,7 +99,7 @@ async def watcher(_, message):
         path = await dl(message, ms)
         user_data[message.from_user.id] = {'path': path, 'ms': ms}
         await message.reply_video(path)
-     #   await upload(ms)
+        await upload(ms)
         
         
      
