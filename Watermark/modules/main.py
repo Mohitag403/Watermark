@@ -11,7 +11,7 @@ from Watermark.core.utils import progress_bar, convert
 from pyrogram.types import InlineKeyboardButton, InlineKeyboardMarkup, ForceReply
 
 
-user_data = []
+user_data = {}
 
 
 async def dl(message, ms):
