@@ -1,6 +1,6 @@
 import os,time, requests
 from pyrogram import filters
-import asyncio 
+import asyncio,threading 
 import subprocess
 from Watermark import app
 from config import OWNER_ID
@@ -35,24 +35,24 @@ async def download_thumbnail(url):
 
 
 
-
 @app.on_message((filters.document | filters.video | filters.photo) & filters.private)
-async def watcher(client, message):
+async def watcher(_, message):
     try:
         if message.photo or (message.document and message.document.mime_type.startswith("photo/")):
             photo = await message.download()
-            await client.send_photo(chat_id=message.chat.id, photo=photo, reply_to_message_id=message.reply_to_message_id)
+            await app.send_photo(chat_id=message.chat.id, photo=photo, reply_to_message_id=message.reply_to_message_id)
             await message.reply_text("Yes, it's a photo\nWait downloading...")
 
         elif message.video or (message.document and message.document.mime_type.startswith("video/")):
             data = await db.get_data(message.from_user.id)
             c_time = time.time()
-            ms = await message.reply_text("Trying to download...")
-            file = await message.download(progress=progress_bar, progress_args=("Trying to download...", ms, c_time))
+            ms = await message.reply_text("ᴛʀʏɪɴɢ ᴛᴏ ᴅᴏᴡɴʟᴏᴀᴅɪɴɢ...")
+            file = await message.download(progress=progress_bar, progress_args=("𝚃𝚁ʏɪɴɢ ᴛᴏ ᴅᴏᴡɴʟᴏᴀᴅ....", ms, c_time))
 
             output_vid = f"watermarked_{file}"
-            watermark_text = "Anon"
 
+            
+            watermark_text = data.get("watermark_text")
             file_generator_command = [
                 "ffmpeg",
                 "-i", file,
@@ -60,6 +60,7 @@ async def watcher(client, message):
                 output_vid
             ]
 
+            await message.reply_text("adding watermark...")
             process = await asyncio.create_subprocess_exec(
                 *file_generator_command,
                 stdout=asyncio.subprocess.PIPE,
@@ -68,23 +69,28 @@ async def watcher(client, message):
 
             stdout, stderr = await process.communicate()
             if process.returncode != 0:
-                await message.reply_text(f"ffmpeg failed: {stderr.decode()}")
+                print(f"ffmpeg failed: {stderr.decode()}")
                 return
 
-            caption = data.get("caption", file)
+            caption = data.get("caption")
+            if caption:
+                caption = caption
+            else:
+                caption = ""
+                
             duration, width, height = get_duration(file)
 
             if duration <= 300:
-                await client.send_video(
-                    chat_id=message.chat.id, video=output_vid, caption=caption,
+                await app.send_video(
+                    chat_id=message.chat.id, video=file, caption=caption,
                     height=height, width=width, duration=duration,
-                    progress=progress_bar,
-                    progress_args=('Uploading...', ms, c_time)
+                    thumb=None, progress=progress_bar,
+                    progress_args=('**UPLOADING:**\n', ms, c_time)
                 )
                 await ms.delete()
                 return
 
-            thumb_path = None
+            
             if data and data.get("thumb"):
                 thumb_url = data.get("thumb")
                 thumb_path = await download_thumbnail(thumb_url)
@@ -93,10 +99,11 @@ async def watcher(client, message):
                     subprocess.run(f'ffmpeg -i "{file}" -ss 00:01:00 -vframes 1 "{message.chat.id}.jpg"', shell=True)
                     thumb_path = f"{message.chat.id}.jpg"
                 except Exception as e:
-                    print(f"Failed to generate thumbnail: {e}")
+                    print(f"failed to generate thumb: {e}")
+                    thumb_path = None
 
             with open(output_vid, "rb") as vid:
-                await client.send_video(
+                await app.send_video(
                     chat_id=message.chat.id,
                     video=vid,
                     caption=caption,
@@ -105,15 +112,17 @@ async def watcher(client, message):
                     thumb=thumb_path,
                     duration=duration,
                     progress=progress_bar,
-                    progress_args=("Uploading...", ms, c_time)
+                    progress_args=("Trying to upload...", ms, c_time)
                 )
 
+            
             await ms.delete()
             if thumb_path:
                 os.remove(thumb_path)
-            os.remove(file)
-            os.remove(output_vid)
+                os.remove(file)
 
     except Exception as e:
         await message.reply_text(f"An error occurred: {str(e)}")
+
+
 
