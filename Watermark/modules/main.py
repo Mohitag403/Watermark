@@ -52,7 +52,7 @@ async def watcher(_, message):
             output_vid = f"watermarked_{file}"
 
             
-            watermark_text = data.get("watermark_text")
+            watermark_text = "Anon" # data.get("watermark_text")
             file_generator_command = [
                 "ffmpeg",
                 "-i", file,
