@@ -51,7 +51,11 @@ async def watcher(client, message):
             file = await message.download(progress=progress_bar, progress_args=("Trying to download...", ms, c_time))
 
             output_vid = f"watermarked_{os.path.basename(file)}"
-            watermark_text = data.get("watermark_text")
+            watermark = data.get("watermark_text")
+            if watermark:
+                watermark_text = watermark
+            else:
+                watermark_text = "Anon"
 
             file_generator_command = [
                 "ffmpeg",
@@ -71,11 +75,12 @@ async def watcher(client, message):
                 await message.reply_text(f"ffmpeg failed: {stderr.decode()}")
                 return
 
-            caption = data.get(caption)
+            caption_text = data.get(caption)
             if caption:
-                caption = caption
+                caption = caption_text
             else:
                 caption = ""
+                
             duration, width, height = get_duration(file)
 
             if duration <= 300:
