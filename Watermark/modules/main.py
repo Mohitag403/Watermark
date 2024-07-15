@@ -159,7 +159,7 @@ async def watcher(client, message):
                 return
 
             caption = ""
-            duration, width, height = get_video_info(output_vid)
+            duration, width, height = get_duration(output_vid)
 
             if duration <= 300:
                 await client.send_video(
